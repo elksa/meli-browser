@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="uiModel"
+            type="com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductUiModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_item_product_thumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:imageUri="@{uiModel.thumbnail}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/lbl_item_product_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="sans-serif-black"
+            android:text="@{uiModel.title}"
+            app:layout_constraintBottom_toBottomOf="@id/img_item_product_thumbnail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/img_item_product_thumbnail"
+            app:layout_constraintTop_toTopOf="@id/img_item_product_thumbnail"
+            tools:text="Motorola 6G" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

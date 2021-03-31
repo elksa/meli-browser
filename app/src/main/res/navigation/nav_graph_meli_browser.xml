@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_meli_browser"
+    app:startDestination="@id/dest_products_list_fragment">
+
+    <fragment
+        android:id="@+id/dest_products_list_fragment"
+        android:name="com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductsListFragment"
+        android:label="fragment_products_list"
+        tools:layout="@layout/fragment_products_list" >
+        <action
+            android:id="@+id/action_dest_products_list_fragment_to_dest_product_details_fragment"
+            app:destination="@id/dest_product_details_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dest_product_details_fragment"
+        android:name="com.elksa.sample.buscador.mercadolibre.presentation.modules.details.ProductDetailsFragment"
+        android:label="fragment_product_details"
+        tools:layout="@layout/fragment_product_details" >
+        <argument
+            android:name="product"
+            app:argType="com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductUiModel" />
+    </fragment>
+</navigation>
