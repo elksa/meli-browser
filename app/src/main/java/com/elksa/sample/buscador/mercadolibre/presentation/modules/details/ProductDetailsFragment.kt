@@ -7,12 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.databinding.FragmentProductDetailsBinding
-import dagger.android.support.DaggerFragment
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.common.BaseDaggerFragment
 import javax.inject.Inject
 
-class ProductDetailsFragment : DaggerFragment() {
+class ProductDetailsFragment : BaseDaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory

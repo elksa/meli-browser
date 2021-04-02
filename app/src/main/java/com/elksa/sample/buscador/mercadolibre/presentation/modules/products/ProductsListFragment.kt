@@ -8,15 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.elksa.sample.buscador.mercadolibre.databinding.FragmentProductsListBinding
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductsListFragmentDirections.Companion.actionDestProductsListFragmentToDestProductDetailsFragment
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.CustomListAdapter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.ListItemDataAbstract
-import dagger.android.support.DaggerFragment
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.common.BaseDaggerFragment
 import javax.inject.Inject
 
-class ProductsListFragment : DaggerFragment() {
+class ProductsListFragment : BaseDaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -54,6 +52,7 @@ class ProductsListFragment : DaggerFragment() {
     }
 
     private fun setupObservers() {
+        observerViewModelEvents(viewModel)
         with(viewModel) {
             productsList.observe(viewLifecycleOwner, {
                 adapter.submitList(
@@ -62,11 +61,6 @@ class ProductsListFragment : DaggerFragment() {
                     }
                 )
             })
-            productDetailsNavigationEvent.observe(viewLifecycleOwner, {
-                it?.let { product ->
-                    navigateToProductDetails(product)
-                }
-            })
             hideKeyboardEvent.observe(viewLifecycleOwner, {
                 if (it == true) {
                     binding.searchView.clearFocus()
@@ -74,11 +68,4 @@ class ProductsListFragment : DaggerFragment() {
             })
         }
     }
-
-    private fun navigateToProductDetails(product: ProductUiModel) {
-        findNavController().navigate(
-            actionDestProductsListFragmentToDestProductDetailsFragment(product)
-        )
-    }
-
 }
