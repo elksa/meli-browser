@@ -72,6 +72,7 @@ dependencies {
     // Unit tests
     testImplementation "junit:junit:$junit_version"
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     // Unit tests Mockito
     testImplementation "org.mockito:mockito-core:${mockito_version}"
     testImplementation "org.mockito:mockito-inline:${mockito_version}"

@@ -9,6 +9,8 @@ import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
 import com.elksa.sample.buscador.mercadolibre.domain.utils.IScheduler
 import com.elksa.sample.buscador.mercadolibre.interactors.SearchProductsUseCase
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.SearchProductEvent
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -17,7 +19,8 @@ private const val TAG = "ProductsListViewModel"
 class ProductsListViewModel @Inject constructor(
     private val searchProductsUseCase: SearchProductsUseCase,
     private val scheduler: IScheduler,
-    private val logger: ILogger
+    private val logger: ILogger,
+    private val eventBus: IEventBus
 ) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -31,11 +34,25 @@ class ProductsListViewModel @Inject constructor(
         _productDetailsNavigationEvent.value = null
     }
 
+    private var _hideKeyboardEvent = MutableLiveData(false)
+    val hideKeyboardEvent: LiveData<Boolean> get() = _hideKeyboardEvent
+    fun hideKeyboardEventConsumed() {
+        _hideKeyboardEvent.value = false
+    }
+
     private var _loaderVisibility = MutableLiveData(GONE)
     val loaderVisibility: LiveData<Int> get() = _loaderVisibility
 
+    fun init() {
+        compositeDisposable.add(
+            eventBus.listen(SearchProductEvent::class.java).subscribe { searchProducts(it.query) }
+        )
+        searchProducts("Motorola")
+    }
+
     fun searchProducts(query: String) {
         _loaderVisibility.value = VISIBLE
+        _hideKeyboardEvent.value = true
         compositeDisposable.add(
             searchProductsUseCase.searchProducts(query)
                 .compose(scheduler.applySingleDefaultSchedulers())
