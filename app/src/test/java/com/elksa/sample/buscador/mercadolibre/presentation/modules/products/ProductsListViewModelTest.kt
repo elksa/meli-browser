@@ -8,7 +8,9 @@ import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
 import com.elksa.sample.buscador.mercadolibre.interactors.SearchProductsUseCase
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductsListFragmentDirections.Companion.actionDestProductsListFragmentToDestProductDetailsFragment
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationToDirectionEvent
 import com.elksa.sample.buscador.mercadolibre.utils.TestScheduler
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -94,6 +96,19 @@ class ProductsListViewModelTest {
         // then
         assertEquals(GONE, sut.loaderVisibility.value)
         verify(loggerMock).log(TAG, error.toString(), error, ERROR)
+    }
+
+    @Test
+    fun onProductSelected_productSelected_navigateToProductDetailsEventTriggered() {
+        // given
+        val selectedProduct = getProductUiModelFromProductEntity(getSampleProducts()[0])
+        val expectedEvent = NavigationToDirectionEvent(
+            actionDestProductsListFragmentToDestProductDetailsFragment(selectedProduct)
+        )
+        // when
+        sut.onProductSelected(selectedProduct)
+        // then
+        assertEquals(expectedEvent, sut.navigationEvent.value)
     }
 
     // region Helper methods

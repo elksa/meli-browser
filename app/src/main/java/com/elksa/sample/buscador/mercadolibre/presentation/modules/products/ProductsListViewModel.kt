@@ -4,14 +4,16 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
 import com.elksa.sample.buscador.mercadolibre.domain.utils.IScheduler
 import com.elksa.sample.buscador.mercadolibre.interactors.SearchProductsUseCase
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductsListFragmentDirections.Companion.actionDestProductsListFragmentToDestProductDetailsFragment
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.SearchProductEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.SingleLiveEvent
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.common.BaseViewModel
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationToDirectionEvent
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -22,15 +24,12 @@ class ProductsListViewModel @Inject constructor(
     private val scheduler: IScheduler,
     private val logger: ILogger,
     private val eventBus: IEventBus
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
     private var _productsList = MutableLiveData(listOf<ProductUiModel>())
     val productsList: LiveData<List<ProductUiModel>> get() = _productsList
-
-    private var _productDetailsNavigationEvent = SingleLiveEvent<ProductUiModel>()
-    val productDetailsNavigationEvent: LiveData<ProductUiModel> get() = _productDetailsNavigationEvent
 
     private var _hideKeyboardEvent = SingleLiveEvent<Boolean>()
     val hideKeyboardEvent: LiveData<Boolean> get() = _hideKeyboardEvent
@@ -66,7 +65,9 @@ class ProductsListViewModel @Inject constructor(
     }
 
     fun onProductSelected(selectedProduct: ProductUiModel) {
-        _productDetailsNavigationEvent.value = selectedProduct
+        _navigationEvent.value = NavigationToDirectionEvent(
+            actionDestProductsListFragmentToDestProductDetailsFragment(selectedProduct)
+        )
     }
 
     override fun onCleared() {
