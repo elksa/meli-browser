@@ -41,7 +41,7 @@ class ProductsListFragment : DaggerFragment() {
         }
 
         setupObservers()
-        viewModel.searchProducts("Motorola")
+        viewModel.init()
 
         val searchManager = requireActivity().getSystemService(SEARCH_SERVICE) as SearchManager
         binding.searchView.apply {
@@ -66,6 +66,12 @@ class ProductsListFragment : DaggerFragment() {
                 it?.let { product ->
                     navigateToProductDetails(product)
                     productDetailsNavigationEventConsumed()
+                }
+            })
+            hideKeyboardEvent.observe(viewLifecycleOwner, {
+                if (it == true) {
+                    binding.searchView.clearFocus()
+                    viewModel.hideKeyboardEventConsumed()
                 }
             })
         }

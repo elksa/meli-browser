@@ -7,7 +7,7 @@
     tools:context="com.elksa.sample.buscador.mercadolibre.MainActivity">
 
     <fragment
-        android:id="@+id/fragment"
+        android:id="@+id/nav_host_meli_browser"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

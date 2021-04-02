@@ -5,17 +5,21 @@ import android.content.Intent
 import android.content.Intent.ACTION_SEARCH
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
-import android.widget.Toast
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.SuggestionsProvider.Companion.AUTHORITY
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.SuggestionsProvider.Companion.MODE
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.SearchProductEvent
 import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
+
+    @Inject
+    lateinit var eventBus: IEventBus
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        handleIntent(intent)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -26,16 +30,15 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private fun handleIntent(intent: Intent) {
         if (ACTION_SEARCH == intent.action) {
-            val jargon = intent.getBooleanExtra("JARGON", false)
             intent.getStringExtra(QUERY)?.also { query ->
                 saveRecentQuery(query)
-                doMySearch("$query - $jargon")
+                doSearch(query)
             }
         }
     }
 
-    private fun doMySearch(query: String) {
-        Toast.makeText(this, "Searching for $query", Toast.LENGTH_SHORT).show()
+    private fun doSearch(query: String) {
+        eventBus.publish(SearchProductEvent(query))
     }
 
     private fun saveRecentQuery(query: String) {
