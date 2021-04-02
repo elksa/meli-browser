@@ -3,11 +3,11 @@ package com.elksa.sample.buscador.mercadolibre.presentation.modules.products
 import android.view.View
 import android.view.View.GONE
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.elksa.sample.buscador.mercadolibre.domain.SearchProductsUseCase
-import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductsSearchResultEntity
+import com.elksa.sample.buscador.mercadolibre.domain.ProductsSearchResultEntity
 import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
+import com.elksa.sample.buscador.mercadolibre.interactors.SearchProductsUseCase
 import com.elksa.sample.buscador.mercadolibre.utils.TestScheduler
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -48,7 +48,12 @@ class ProductsListViewModelTest {
     fun getProductsList_onSuccessWithResults_productsShownLoaderGone() {
         // given
         whenever(searchProductsUseCaseMock.searchProducts(anyString())).thenReturn(
-            Single.just(ProductsSearchResultEntity(EMPTY_STRING, listOf()))
+            Single.just(
+                ProductsSearchResultEntity(
+                    EMPTY_STRING,
+                    listOf()
+                )
+            )
         )
         // when
         sut.searchProducts(EMPTY_STRING)

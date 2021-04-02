@@ -5,6 +5,6 @@ import androidx.databinding.BindingAdapter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.imageLoader.GlideImageLoader
 
 @BindingAdapter("imageUri")
-fun ImageView.setImageFromUri(uri: String) {
-    GlideImageLoader(context).loadImage(uri, this)
+fun ImageView.setImageFromUri(uri: String?) {
+    uri?.let { GlideImageLoader(context).loadImage(uri, this) }
 }

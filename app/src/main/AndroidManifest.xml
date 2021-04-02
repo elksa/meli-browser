@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.elksa.sample.buscador.mercadolibre">
 
+    <queries>
+        <intent>
+            <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
+        </intent>
+    </queries>
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -15,13 +21,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BuscadorMercadoLibre.NoActionBar"
         tools:targetApi="n">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
+
+        <provider
+            android:name=".presentation.modules.products.SuggestionsProvider"
+            android:authorities="com.elksa.sample.buscador.mercadolibre.presentation.modules.products.SuggestionsProvider"
+            android:exported="false" />
     </application>
 
 </manifest>

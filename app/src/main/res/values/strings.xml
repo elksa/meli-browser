@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Buscador Mercado Libre</string>
+    <string name="app_name">Mercado Libre Browser</string>
+    <string name="content_description_buy">Comprar</string>
+    <string name="title_product_details">Producto</string>
+    <string name="hint_search">Buscar productos</string>
+    <string name="action_search">Buscar</string>
 </resources>

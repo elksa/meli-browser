@@ -1,5 +1,7 @@
 package com.elksa.sample.buscador.mercadolibre.presentation.modules.products
 
+import android.app.SearchManager
+import android.content.Context.SEARCH_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +21,7 @@ class ProductsListFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var binding1: FragmentProductsListBinding
+    private lateinit var binding: FragmentProductsListBinding
     private val viewModel: ProductsListViewModel by viewModels { viewModelFactory }
     private val adapter = CustomListAdapter { parent, _ ->
         ProductItemView(
@@ -32,7 +34,7 @@ class ProductsListFragment : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding1 = FragmentProductsListBinding.inflate(inflater).apply {
+        binding = FragmentProductsListBinding.inflate(inflater).apply {
             viewModel = this@ProductsListFragment.viewModel
             lifecycleOwner = this@ProductsListFragment
             rvProductsListResults.adapter = adapter
@@ -41,7 +43,14 @@ class ProductsListFragment : DaggerFragment() {
         setupObservers()
         viewModel.searchProducts("Motorola")
 
-        return binding1.root
+        val searchManager = requireActivity().getSystemService(SEARCH_SERVICE) as SearchManager
+        binding.searchView.apply {
+            setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
+            isSubmitButtonEnabled = true
+            isQueryRefinementEnabled = true
+        }
+
+        return binding.root
     }
 
     private fun setupObservers() {

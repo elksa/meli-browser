@@ -5,10 +5,10 @@ import android.view.View.VISIBLE
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.elksa.sample.buscador.mercadolibre.domain.SearchProductsUseCase
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
 import com.elksa.sample.buscador.mercadolibre.domain.utils.IScheduler
+import com.elksa.sample.buscador.mercadolibre.interactors.SearchProductsUseCase
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -19,6 +19,8 @@ class ProductsListViewModel @Inject constructor(
     private val scheduler: IScheduler,
     private val logger: ILogger
 ) : ViewModel() {
+
+    private val compositeDisposable = CompositeDisposable()
 
     private var _productsList = MutableLiveData(listOf<ProductUiModel>())
     val productsList: LiveData<List<ProductUiModel>> get() = _productsList
@@ -31,8 +33,6 @@ class ProductsListViewModel @Inject constructor(
 
     private var _loaderVisibility = MutableLiveData(GONE)
     val loaderVisibility: LiveData<Int> get() = _loaderVisibility
-
-    private val compositeDisposable = CompositeDisposable()
 
     fun searchProducts(query: String) {
         _loaderVisibility.value = VISIBLE

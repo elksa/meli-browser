@@ -1,7 +1,7 @@
 package com.elksa.sample.buscador.mercadolibre.presentation.modules.products
 
 import android.os.Parcelable
-import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductEntity
+import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
