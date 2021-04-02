@@ -11,6 +11,7 @@ import com.elksa.sample.buscador.mercadolibre.domain.utils.IScheduler
 import com.elksa.sample.buscador.mercadolibre.interactors.SearchProductsUseCase
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.SearchProductEvent
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.SingleLiveEvent
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -28,17 +29,11 @@ class ProductsListViewModel @Inject constructor(
     private var _productsList = MutableLiveData(listOf<ProductUiModel>())
     val productsList: LiveData<List<ProductUiModel>> get() = _productsList
 
-    private var _productDetailsNavigationEvent: MutableLiveData<ProductUiModel> = MutableLiveData()
+    private var _productDetailsNavigationEvent = SingleLiveEvent<ProductUiModel>()
     val productDetailsNavigationEvent: LiveData<ProductUiModel> get() = _productDetailsNavigationEvent
-    fun productDetailsNavigationEventConsumed() {
-        _productDetailsNavigationEvent.value = null
-    }
 
-    private var _hideKeyboardEvent = MutableLiveData(false)
+    private var _hideKeyboardEvent = SingleLiveEvent<Boolean>()
     val hideKeyboardEvent: LiveData<Boolean> get() = _hideKeyboardEvent
-    fun hideKeyboardEventConsumed() {
-        _hideKeyboardEvent.value = false
-    }
 
     private var _loaderVisibility = MutableLiveData(GONE)
     val loaderVisibility: LiveData<Int> get() = _loaderVisibility

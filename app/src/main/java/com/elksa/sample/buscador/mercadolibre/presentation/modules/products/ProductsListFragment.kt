@@ -65,13 +65,11 @@ class ProductsListFragment : DaggerFragment() {
             productDetailsNavigationEvent.observe(viewLifecycleOwner, {
                 it?.let { product ->
                     navigateToProductDetails(product)
-                    productDetailsNavigationEventConsumed()
                 }
             })
             hideKeyboardEvent.observe(viewLifecycleOwner, {
                 if (it == true) {
                     binding.searchView.clearFocus()
-                    viewModel.hideKeyboardEventConsumed()
                 }
             })
         }
