@@ -40,11 +40,42 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_products_list_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.emptySearchVisibility}"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/lbl_products_list_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/error_empty_search"
+                android:textSize="@dimen/text_size_large"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/img_products_list_empty"
+                android:layout_width="@dimen/error_icon_list_width"
+                android:layout_height="@dimen/error_icon_list_height"
+                android:layout_marginBottom="@dimen/spacing_small"
+                app:layout_constraintBottom_toTopOf="@id/lbl_products_list_empty"
+                app:layout_constraintEnd_toEndOf="@id/lbl_products_list_empty"
+                app:layout_constraintStart_toStartOf="@id/lbl_products_list_empty"
+                app:srcCompat="@drawable/ic_warning"
+                tools:ignore="ContentDescription" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/layout_swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:visibility="gone">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_products_list_results"

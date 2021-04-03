@@ -8,20 +8,23 @@
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
-    <!-- Custom dimensions -->
+    <!-- General dimensions -->
     <dimen name="spacing_xxsmall">2dp</dimen>
     <dimen name="spacing_xsmall">4dp</dimen>
     <dimen name="spacing_small">8dp</dimen>
     <dimen name="spacing_medium">16dp</dimen>
     <dimen name="spacing_large">32dp</dimen>
     <dimen name="spacing_xlarge">64dp</dimen>
-    <!-- Image list thumbnail width -->
+    <!-- Custom dimensions -->
     <dimen name="thumbnail_list_width">72dp</dimen>
     <dimen name="thumbnail_list_height">72dp</dimen>
-    <!-- Radius -->
+    <dimen name="error_icon_list_width">64dp</dimen>
+    <dimen name="error_icon_list_height">64dp</dimen>
+    <!-- General radius -->
     <dimen name="radius_xsmall">4dp</dimen>
     <dimen name="radius_small">8dp</dimen>
     <!-- Text -->
     <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
     <dimen name="text_size_xlarge">26sp</dimen>
 </resources>
