@@ -93,5 +93,16 @@
                 tools:listitem="@layout/list_item_product" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_products_list_loader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:visibility="@{viewModel.loaderVisibility}"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="lottie_loader_yellow.json"
+            app:lottie_loop="true" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
