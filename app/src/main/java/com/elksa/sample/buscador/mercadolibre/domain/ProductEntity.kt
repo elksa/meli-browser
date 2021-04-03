@@ -6,8 +6,14 @@ data class ProductEntity(
     val price: Double,
     val idCurrency: String,
     val quantity: Int,
-    val condition: String,
+    val condition: ItemCondition,
     val link: String,
     val thumbnail: String,
-    val stopTime: String
-)
+    val stopTime: String,
+    val shippingInformation: ShippingInformationEntity
+) {
+
+    enum class ItemCondition {
+        NEW, USED
+    }
+}

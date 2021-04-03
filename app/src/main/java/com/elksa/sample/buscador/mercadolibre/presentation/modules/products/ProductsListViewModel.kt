@@ -11,6 +11,7 @@ import com.elksa.sample.buscador.mercadolibre.interactors.SearchProductsUseCase
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductsListFragmentDirections.Companion.actionDestProductsListFragmentToDestProductDetailsFragment
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.SearchProductEvent
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.formatters.IMoneyFormatter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.SingleLiveEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.common.BaseViewModel
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationToDirectionEvent
@@ -23,7 +24,8 @@ class ProductsListViewModel @Inject constructor(
     private val searchProductsUseCase: SearchProductsUseCase,
     private val scheduler: IScheduler,
     private val logger: ILogger,
-    private val eventBus: IEventBus
+    private val eventBus: IEventBus,
+    private val moneyFormatter: IMoneyFormatter
 ) : BaseViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -53,7 +55,9 @@ class ProductsListViewModel @Inject constructor(
                 .subscribe(
                     { response ->
                         _productsList.value = response.results.map {
-                            ProductUiModel.mapFromDomain(it)
+                            ProductUiModel.mapFromDomain(it, moneyFormatter.format(it.price)).apply {
+                                price
+                            }
                         }
                         _loaderVisibility.value = GONE
                     }, {

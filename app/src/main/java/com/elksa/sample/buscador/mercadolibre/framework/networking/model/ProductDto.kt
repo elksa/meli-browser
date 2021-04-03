@@ -1,6 +1,7 @@
 package com.elksa.sample.buscador.mercadolibre.framework.networking.model
 
 import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity
+import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition
 import com.google.gson.annotations.SerializedName
 
 data class ProductDto(
@@ -11,13 +12,27 @@ data class ProductDto(
     val idCurrency: String,
     @SerializedName("available_quantity")
     val quantity: Int,
-    val condition: String,
+    val condition: ItemConditionDto,
     @SerializedName("permalink")
     val link: String,
     val thumbnail: String,
     @SerializedName("stop_time")
-    val stopTime: String
+    val stopTime: String,
+    val shipping: ShippingInformationDto
 ) {
+
+    enum class ItemConditionDto {
+        @SerializedName("new") NEW,
+        @SerializedName("used") USED;
+
+        companion object {
+
+            fun mapToDomain(type: ItemConditionDto) = when(type) {
+                NEW -> ItemCondition.NEW
+                USED -> ItemCondition.USED
+            }
+        }
+    }
 
     fun mapToDomain() = ProductEntity(
         id,
@@ -25,9 +40,10 @@ data class ProductDto(
         price,
         idCurrency,
         quantity,
-        condition,
+        ItemConditionDto.mapToDomain(condition),
         link,
         thumbnail,
-        stopTime
+        stopTime,
+        shipping.mapToDomain()
     )
 }
