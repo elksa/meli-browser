@@ -1,6 +1,6 @@
 package com.elksa.sample.buscador.mercadolibre.di.modules
 
-import com.elksa.sample.buscador.mercadolibre.data.utils.SERVER_URL
+import com.elksa.sample.buscador.mercadolibre.framework.networking.utils.SERVER_URL
 import com.elksa.sample.buscador.mercadolibre.framework.networking.MeliBrowserApi
 import dagger.Module
 import dagger.Provides

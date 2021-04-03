@@ -16,8 +16,8 @@ class GlideImageLoader @Inject constructor(
     private val options by lazy {
         RequestOptions()
             .dontTransform()
-            .placeholder(R.mipmap.ic_launcher)
-            .error(R.mipmap.ic_launcher)
+            .placeholder(R.drawable.ic_image_placeholder)
+            .error(R.drawable.ic_broken_image)
     }
 
     override fun loadImage(uri: String, target: ImageView) {
