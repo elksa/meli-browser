@@ -66,6 +66,11 @@ class ProductsListFragment : BaseDaggerFragment() {
                     binding.searchView.clearFocus()
                 }
             })
+            errorProductsSearchEvent.observe(viewLifecycleOwner, {
+                it?.let {
+                    showError(binding.rvProductsListResults, it)
+                }
+            })
         }
     }
 }

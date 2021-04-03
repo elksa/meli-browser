@@ -10,4 +10,7 @@
     <string name="label_condition_used">Usado</string>
     <!-- Formats -->
     <string name="format_money">$ %s</string>
+    <!-- Errors -->
+    <string name="error_products_search">Se produjo un error al buscar los productos.</string>
+    <string name="error_empty_search">¡Oops! No hay nada por aquí…</string>
 </resources>
