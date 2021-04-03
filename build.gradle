@@ -8,6 +8,7 @@ buildscript {
     ext.mockito_kotlin_version = '2.2.0'
     ext.junit_version = '4.13.2'
     ext.glide_version = '4.11.0'
+    ext.lottie_version = '3.4.0'
 
     repositories {
         google()
