@@ -31,6 +31,8 @@ class ProductsListViewModel @Inject constructor(
 
     private val compositeDisposable = CompositeDisposable()
 
+    private var eventListenerInitialized = false
+
     private var _productsList = MutableLiveData(listOf<ProductUiModel>())
     val productsList: LiveData<List<ProductUiModel>> get() = _productsList
 
@@ -41,10 +43,17 @@ class ProductsListViewModel @Inject constructor(
     val emptySearchVisibility: LiveData<Int> get() = _emptySearchVisibility
 
     fun init() {
-        compositeDisposable.add(
-            eventBus.listen(SearchProductEvent::class.java).subscribe { searchProducts(it.query) }
-        )
-        searchProducts("Motorola")
+        if (eventListenerInitialized.not()) {
+            compositeDisposable.add(
+                eventBus.listen(SearchProductEvent::class.java).subscribe {
+                    searchProducts(it.query)
+                }
+            )
+            eventListenerInitialized = true
+        }
+        if (productsList.value.isNullOrEmpty()) {
+            searchProducts("Motorola")
+        }
     }
 
     fun searchProducts(query: String) {

@@ -128,7 +128,7 @@ class ProductsListViewModelTest {
         verify(loggerMock).log(TAG, error.toString(), error, ERROR)
         assertEquals(GONE, sut.loaderVisibility.value)
         assertEquals(VISIBLE, sut.emptySearchVisibility.value)
-        assertEquals(R.string.error_products_search, sut.errorProductsSearchEvent.value)
+        assertEquals(R.string.error_products_search, sut.errorEvent.value)
     }
 
     @Test

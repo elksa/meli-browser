@@ -38,8 +38,12 @@ class ProductDetailsViewModel @Inject constructor(
     val currentPicturePosition: LiveData<Int> get() = _currentPicturePosition
 
     fun init(product: ProductUiModel) {
-        _product.value = product
-        loadProductDetails()
+        if (_product.value == null) {
+            _product.value = product
+        }
+        if (_productDetails.value == null) {
+            loadProductDetails()
+        }
     }
 
     private fun loadProductDetails() {
