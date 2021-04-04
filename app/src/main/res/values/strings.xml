@@ -14,5 +14,6 @@
     <string name="format_details_item_condition_units_sold">%1$s | %2$d vendidos</string>
     <!-- Errors -->
     <string name="error_products_search">Se produjo un error al buscar los productos.</string>
+    <string name="error_products_details">Se produjo un error cargando los detalles del producto.</string>
     <string name="error_empty_search">¡Oops! No hay nada por aquí…</string>
 </resources>

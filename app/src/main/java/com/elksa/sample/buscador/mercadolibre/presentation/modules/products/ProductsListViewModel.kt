@@ -40,9 +40,6 @@ class ProductsListViewModel @Inject constructor(
     private var _emptySearchVisibility = MutableLiveData(GONE)
     val emptySearchVisibility: LiveData<Int> get() = _emptySearchVisibility
 
-    private var _errorProductsSearchEvent = SingleLiveEvent<Int>()
-    val errorProductsSearchEvent: LiveData<Int> get() = _errorProductsSearchEvent
-
     fun init() {
         compositeDisposable.add(
             eventBus.listen(SearchProductEvent::class.java).subscribe { searchProducts(it.query) }
@@ -67,7 +64,7 @@ class ProductsListViewModel @Inject constructor(
                         _loaderVisibility.value = GONE
                     }, {
                         _loaderVisibility.value = GONE
-                        _errorProductsSearchEvent.value = R.string.error_products_search
+                        _errorEvent.value = R.string.error_products_search
                         _emptySearchVisibility.value = VISIBLE
                         logger.log(TAG, it.toString(), it, ERROR)
                     }

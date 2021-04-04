@@ -4,6 +4,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
 import com.elksa.sample.buscador.mercadolibre.domain.utils.IScheduler
@@ -53,6 +54,7 @@ class ProductDetailsViewModel @Inject constructor(
                             _isThumbnailVisible.value = details.pictures.isEmpty()
                             _loaderVisibility.value = GONE
                         },{ error ->
+                            _errorEvent.value = R.string.error_products_details
                             _isThumbnailVisible.value = true
                             logger.log(TAG, error.toString(), error, ERROR)
                             _loaderVisibility.value = GONE

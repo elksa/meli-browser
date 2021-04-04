@@ -12,6 +12,9 @@ abstract class BaseViewModel : ViewModel() {
     protected var _loaderVisibility = MutableLiveData(View.GONE)
     val loaderVisibility: LiveData<Int> get() = _loaderVisibility
 
+    protected var _errorEvent = SingleLiveEvent<Int>()
+    val errorEvent: LiveData<Int> get() = _errorEvent
+
     protected val _navigationEvent = SingleLiveEvent<NavigationEvent>()
     val navigationEvent: LiveData<NavigationEvent> get() = _navigationEvent
 }

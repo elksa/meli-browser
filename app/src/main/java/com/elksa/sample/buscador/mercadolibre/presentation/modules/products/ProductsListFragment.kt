@@ -52,8 +52,8 @@ class ProductsListFragment : BaseDaggerFragment() {
     }
 
     private fun setupObservers() {
-        observerViewModelEvents(viewModel)
-        with(viewModel) {
+        viewModel.run {
+            observerViewModelEvents(this)
             productsList.observe(viewLifecycleOwner, {
                 adapter.submitList(
                     it.map { productUiModel ->
@@ -66,7 +66,7 @@ class ProductsListFragment : BaseDaggerFragment() {
                     binding.searchView.clearFocus()
                 }
             })
-            errorProductsSearchEvent.observe(viewLifecycleOwner, {
+            errorEvent.observe(viewLifecycleOwner, {
                 it?.let {
                     showError(binding.rvProductsListResults, it)
                 }
