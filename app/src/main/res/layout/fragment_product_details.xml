@@ -62,7 +62,7 @@
                     android:layout_marginTop="@dimen/spacing_small"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="@{viewModel.productDetails.title}"
+                    android:text="@{viewModel.product.title}"
                     android:textSize="@dimen/text_size_large"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -139,6 +139,7 @@
                     android:layout_marginTop="@dimen/spacing_small"
                     android:text="@string/label_description"
                     android:textSize="@dimen/text_size_large"
+                    app:isVisible="@{viewModel.productDetails.description != null}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/lbl_product_details_price" />
 

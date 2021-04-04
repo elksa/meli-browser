@@ -54,13 +54,20 @@ class ProductDetailsFragment : BaseDaggerFragment() {
 
 
     private fun setupObservers() {
-        observerViewModelEvents(viewModel)
-        viewModel.productDetails.observe(viewLifecycleOwner, {
-            setupPicturesPager()
-            adapter.submitList(
-                it.pictures.map { pictureUiModel -> ListItemDataAbstract(pictureUiModel) }
-            )
-        })
+        viewModel.run {
+            observerViewModelEvents(this)
+            productDetails.observe(viewLifecycleOwner, {
+                setupPicturesPager()
+                adapter.submitList(
+                    it.pictures.map { pictureUiModel -> ListItemDataAbstract(pictureUiModel) }
+                )
+            })
+            errorEvent.observe(viewLifecycleOwner, {
+                it?.let {
+                    showError(binding.lblProductDetailsDescription, it)
+                }
+            })
+        }
     }
 
     private fun setupPicturesPager() {
