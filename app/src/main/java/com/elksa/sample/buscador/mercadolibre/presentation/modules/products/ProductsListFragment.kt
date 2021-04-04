@@ -56,20 +56,14 @@ class ProductsListFragment : BaseDaggerFragment() {
             observerViewModelEvents(this)
             productsList.observe(viewLifecycleOwner, {
                 adapter.submitList(
-                    it.map { productUiModel ->
-                        ListItemDataAbstract(productUiModel)
-                    }
+                    it.map { productUiModel -> ListItemDataAbstract(productUiModel) }
                 )
             })
             hideKeyboardEvent.observe(viewLifecycleOwner, {
-                if (it == true) {
-                    binding.searchView.clearFocus()
-                }
+                if (it == true) binding.searchView.clearFocus()
             })
             errorEvent.observe(viewLifecycleOwner, {
-                it?.let {
-                    showError(binding.rvProductsListResults, it)
-                }
+                it?.let { showError(binding.rvProductsListResults, it) }
             })
         }
     }

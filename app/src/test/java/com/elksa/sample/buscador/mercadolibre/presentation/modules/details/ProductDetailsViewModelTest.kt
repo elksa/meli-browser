@@ -5,10 +5,13 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.elksa.sample.buscador.mercadolibre.domain.PictureEntity
 import com.elksa.sample.buscador.mercadolibre.domain.ProductDetailsEntity
+import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition.USED
+import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ItemDescriptionEntity
 import com.elksa.sample.buscador.mercadolibre.interactors.FetchProductDetailsUseCase
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.OnBackPressedEvent
 import com.elksa.sample.buscador.mercadolibre.utils.TestScheduler
 import com.elksa.sample.buscador.mercadolibre.utils.callPrivateFun
@@ -16,6 +19,7 @@ import com.elksa.sample.buscador.mercadolibre.utils.getProductUiModelFromProduct
 import com.elksa.sample.buscador.mercadolibre.utils.getSampleProducts
 import com.elksa.sample.buscador.mercadolibre.utils.setField
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
@@ -169,6 +173,42 @@ class ProductDetailsViewModelTest {
         assertEquals(GONE, sut.loaderVisibility.value)
         assertEquals(true, sut.isThumbnailVisible.value)
         verify(loggerMock).log(TAG, error.toString(), error, ERROR)
+    }
+
+    @Test
+    fun init_existingProduct_newProductNotSet() {
+        // given
+        val product = getProductUiModelFromProductEntity(getSampleProducts()[0])
+        setField(FIELD_NAME_PRODUCT, MutableLiveData(product), sut)
+        whenever(fetchProductDetailsUseCaseMock.fetchProductDetails(anyString()))
+            .thenReturn(Single.error(Throwable()))
+        val newProduct = ProductUiModel(
+            "newId",
+            EMPTY_STRING,
+            EMPTY_STRING,
+            EMPTY_STRING,
+            3,
+            0,
+            USED,
+            EMPTY_STRING,
+            EMPTY_STRING,
+            EMPTY_STRING,
+            false
+        )
+        // when
+        sut.init(newProduct)
+        // then
+        assertEquals(product, sut.product.value)
+    }
+
+    @Test
+    fun init_existingProductDetails_productDetailsNotLoaded() {
+        // given
+        setField(FIELD_NAME_PRODUCT_DETAILS, MutableLiveData(getSampleProductDetails()), sut)
+        // when
+        sut.init(getProductUiModelFromProductEntity(getSampleProducts()[0]))
+        // then
+        verifyZeroInteractions(fetchProductDetailsUseCaseMock)
     }
 
     @Test
