@@ -1,13 +1,18 @@
 package com.elksa.sample.buscador.mercadolibre.presentation.modules.details
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2.ORIENTATION_HORIZONTAL
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.elksa.sample.buscador.mercadolibre.databinding.FragmentProductDetailsBinding
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.CustomListAdapter
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.ListItemDataAbstract
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.common.BaseDaggerFragment
 import javax.inject.Inject
 
@@ -19,6 +24,9 @@ class ProductDetailsFragment : BaseDaggerFragment() {
     private lateinit var binding: FragmentProductDetailsBinding
     private val viewModel: ProductDetailsViewModel by viewModels { viewModelFactory }
     private val args by navArgs<ProductDetailsFragmentArgs>()
+    private val adapter = CustomListAdapter { parent, _ ->
+        ProductItemView(parent.context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,8 +38,42 @@ class ProductDetailsFragment : BaseDaggerFragment() {
         }
 
         viewModel.init(args.product)
+        setupObservers()
 
         return binding.root
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (requireActivity() as AppCompatActivity).run {
+            setSupportActionBar(binding.toolbar)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+        binding.toolbar.setNavigationOnClickListener { viewModel.onBackPressed() }
+    }
+
+
+    private fun setupObservers() {
+        observerViewModelEvents(viewModel)
+        viewModel.productDetails.observe(viewLifecycleOwner, {
+            setupPicturesPager()
+            adapter.submitList(
+                it.pictures.map { pictureUiModel -> ListItemDataAbstract(pictureUiModel) }
+            )
+        })
+    }
+
+    private fun setupPicturesPager() {
+        binding.pagerProductDetailsPictures.run {
+            orientation = ORIENTATION_HORIZONTAL
+            adapter = this@ProductDetailsFragment.adapter
+            setPageTransformer(ZoomOutTransformation())
+            registerOnPageChangeCallback(object : OnPageChangeCallback() {
+
+                override fun onPageSelected(position: Int) {
+                    viewModel.updatePageIndicator(position)
+                }
+            })
+        }
+    }
 }

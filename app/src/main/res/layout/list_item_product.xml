@@ -75,17 +75,15 @@
 
             <TextView
                 android:id="@+id/lbl_item_product_shipping"
-                shipping="@{uiModel.freeShipping}"
+                style="@style/Shipping"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/spacing_xxsmall"
                 android:paddingEnd="@dimen/spacing_xxsmall"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_small"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/lbl_item_product_price"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lbl_item_product_condition"
+                app:freeShipping="@{uiModel.freeShipping}"
                 tools:background="@drawable/shp_bg_green_radius_xsmall"
                 tools:text="Envío gratis" />
         </androidx.constraintlayout.widget.ConstraintLayout>

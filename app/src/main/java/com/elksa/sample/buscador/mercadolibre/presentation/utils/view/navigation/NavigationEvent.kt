@@ -7,3 +7,5 @@ sealed class NavigationEvent
 data class NavigationToDirectionEvent(
     val navDirections: NavDirections
 ) : NavigationEvent()
+
+object OnBackPressedEvent : NavigationEvent()

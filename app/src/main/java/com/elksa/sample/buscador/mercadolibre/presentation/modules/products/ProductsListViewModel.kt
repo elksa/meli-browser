@@ -37,9 +37,6 @@ class ProductsListViewModel @Inject constructor(
     private var _hideKeyboardEvent = SingleLiveEvent<Boolean>()
     val hideKeyboardEvent: LiveData<Boolean> get() = _hideKeyboardEvent
 
-    private var _loaderVisibility = MutableLiveData(GONE)
-    val loaderVisibility: LiveData<Int> get() = _loaderVisibility
-
     private var _emptySearchVisibility = MutableLiveData(GONE)
     val emptySearchVisibility: LiveData<Int> get() = _emptySearchVisibility
 

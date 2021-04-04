@@ -20,6 +20,9 @@
     <dimen name="thumbnail_list_height">72dp</dimen>
     <dimen name="error_icon_list_width">64dp</dimen>
     <dimen name="error_icon_list_height">64dp</dimen>
+    <dimen name="indicator_horizontal_margin">2dp</dimen>
+    <dimen name="indicator_height">26dp</dimen>
+    <dimen name="details_pictures_height">250dp</dimen>
     <!-- General radius -->
     <dimen name="radius_xsmall">4dp</dimen>
     <dimen name="radius_small">8dp</dimen>

@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationToDirectionEvent
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.OnBackPressedEvent
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
 
@@ -15,9 +16,10 @@ abstract class BaseDaggerFragment : DaggerFragment() {
         viewModel.navigationEvent.observe(viewLifecycleOwner, Observer(::navigateFragment))
     }
 
-    protected fun navigateFragment(navigation: NavigationEvent) {
+    private fun navigateFragment(navigation: NavigationEvent) {
         when (navigation) {
             is NavigationToDirectionEvent -> findNavController().navigate(navigation.navDirections)
+            is OnBackPressedEvent -> requireActivity().onBackPressed()
         }
     }
 

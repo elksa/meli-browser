@@ -4,10 +4,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.elksa.sample.buscador.mercadolibre.R
-import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity
-import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition.NEW
 import com.elksa.sample.buscador.mercadolibre.domain.ProductsSearchResultEntity
-import com.elksa.sample.buscador.mercadolibre.domain.ShippingInformationEntity
 import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
@@ -16,9 +13,7 @@ import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.Prod
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.formatters.MoneyFormatter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationToDirectionEvent
-import com.elksa.sample.buscador.mercadolibre.utils.TestScheduler
-import com.elksa.sample.buscador.mercadolibre.utils.callPrivateFun
-import com.elksa.sample.buscador.mercadolibre.utils.setField
+import com.elksa.sample.buscador.mercadolibre.utils.*
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -149,6 +144,18 @@ class ProductsListViewModelTest {
     }
 
     @Test
+    fun getProductsList_invocation_searchProductsUseCaseProperlyInvoked() {
+        // given
+        whenever(searchProductsUseCaseMock.searchProducts(anyString(), anyString())).thenReturn(
+            Single.error(Throwable())
+        )
+        // when
+        sut.searchProducts(EMPTY_STRING)
+        // then
+        verify(searchProductsUseCaseMock).searchProducts(EMPTY_STRING)
+    }
+
+    @Test
     fun onProductSelected_productSelected_navigateToProductDetailsEventTriggered() {
         // given
         val selectedProduct = getProductUiModelFromProductEntity(getSampleProducts()[0])
@@ -170,35 +177,4 @@ class ProductsListViewModelTest {
         // then
         verify(compositeDisposableMock).clear()
     }
-
-    // region Helper methods
-    private fun getSampleProducts() = listOf(
-        ProductEntity(
-            "id",
-            "title",
-            0.0,
-            "COP",
-            1,
-            NEW,
-            "link",
-            "thumbnail",
-            "stop",
-            ShippingInformationEntity(freeShipping = true, storePickUp = false)
-        )
-    )
-
-    private fun getProductUiModelFromProductEntity(product: ProductEntity, price: String? = null) =
-        ProductUiModel(
-            product.id,
-            product.title,
-            price ?: product.price.toString(),
-            product.idCurrency,
-            product.quantity,
-            product.condition,
-            product.link,
-            product.thumbnail,
-            product.stopTime,
-            true
-        )
-    // endregion
 }

@@ -6,6 +6,7 @@ data class ProductEntity(
     val price: Double,
     val idCurrency: String,
     val quantity: Int,
+    val soldQuantity: Int,
     val condition: ItemCondition,
     val link: String,
     val thumbnail: String,

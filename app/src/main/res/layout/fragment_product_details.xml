@@ -13,32 +13,23 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".presentation.modules.details.ProductDetailsFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/app_bar_height"
-            android:fitsSystemWindows="true"
+            android:layout_height="wrap_content"
             android:theme="@style/Theme.BuscadorMercadoLibre.AppBarOverlay">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/toolbar_layout"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/Theme.BuscadorMercadoLibre.PopupOverlay"
-                    app:title="@string/title_product_details" />
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:popupTheme="@style/Theme.BuscadorMercadoLibre.PopupOverlay"
+                app:title="@string/title_product_details" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
@@ -54,42 +45,131 @@
                 android:paddingEnd="@dimen/activity_default_margin"
                 android:paddingBottom="@dimen/activity_default_margin">
 
-                <ImageView
-                    android:id="@+id/img_book_details_cover"
-                    imageUrl="@{viewModel.product.thumbnail}"
-                    android:layout_width="@dimen/thumbnail_list_width"
+                <TextView
+                    android:id="@+id/lbl_product_details_condition"
+                    itemConditionUnitsSold="@{viewModel.product}"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@null"
+                    android:textSize="@dimen/text_size_small"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@mipmap/ic_launcher" />
+                    tools:text="Nuevo | 56 vendidos" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/lbl_product_details_title"
                     android:layout_width="@dimen/match_constraint"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:ellipsize="end"
+                    android:maxLines="2"
                     android:text="@{viewModel.productDetails.title}"
-                    app:layout_constraintBottom_toBottomOf="@id/img_book_details_cover"
+                    android:textSize="@dimen/text_size_large"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@id/img_book_details_cover"
-                    app:layout_constraintTop_toTopOf="@id/img_book_details_cover"
-                    tools:text="Motorola 6G" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_product_details_condition"
+                    tools:text="Ghost of Tsushima PS4 formato físico, juego Playstation 4" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_product_details_pictures"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_product_details_title">
+
+                    <ImageView
+                        android:id="@+id/img_product_details_thumbnail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerInside"
+                        app:imageUrl="@{viewModel.product.thumbnail}"
+                        app:isVisible="@{viewModel.isThumbnailVisible}"
+                        app:layout_constraintStart_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription"
+                        tools:srcCompat="@tools:sample/avatars"
+                        tools:visibility="visible" />
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/pager_product_details_pictures"
+                        android:layout_width="@dimen/match_constraint"
+                        android:layout_height="@dimen/details_pictures_height"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        app:isVisible="@{!viewModel.isThumbnailVisible}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_product_details_pager_indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/indicator_height"
+                        android:layout_marginTop="@dimen/spacing_xsmall"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:indicatorData="@{viewModel.productDetails.pictures.size()}"
+                        app:indicatorPage="@{viewModel.currentPicturePosition}"
+                        app:isVisible="@{!viewModel.isThumbnailVisible}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/pager_product_details_pictures" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/lbl_product_details_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xsmall"
+                    android:text="@{viewModel.product.price}"
+                    android:textSize="@dimen/text_size_xlarge"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_product_details_pictures"
+                    tools:text="$ 199,900" />
+
+                <TextView
+                    android:id="@+id/tv_product_details_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:text="@string/label_description"
+                    android:textSize="@dimen/text_size_large"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_product_details_price" />
+
+                <TextView
+                    android:id="@+id/lbl_product_details_description"
+                    android:layout_width="@dimen/match_constraint"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:text="@{viewModel.productDetails.description}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_product_details_description"
+                    tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                    eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+
+                <TextView
+                    android:id="@+id/lbl_product_details_shipping"
+                    style="@style/Shipping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/spacing_xxsmall"
+                    android:paddingEnd="@dimen/spacing_xxsmall"
+                    app:freeShipping="@{viewModel.product.freeShipping}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:background="@drawable/shp_bg_green_radius_xsmall"
+                    tools:text="Envío gratis" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
-            android:contentDescription="@string/content_description_buy"
-            android:src="@drawable/ic_add_shopping_cart_24"
-            app:layout_anchor="@id/app_bar"
-            app:layout_anchorGravity="bottom|end" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

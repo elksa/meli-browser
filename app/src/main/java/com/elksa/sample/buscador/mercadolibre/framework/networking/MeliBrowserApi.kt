@@ -1,6 +1,6 @@
 package com.elksa.sample.buscador.mercadolibre.framework.networking
 
-import com.elksa.sample.buscador.mercadolibre.framework.networking.model.CategoryDto
+import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ItemDescriptionDto
 import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ProductDetailsDto
 import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ProductsSearchResultDto
 import io.reactivex.Single
@@ -21,8 +21,8 @@ interface MeliBrowserApi {
         @Path("idProduct") idItem: String,
     ): Single<ProductDetailsDto>
 
-    @GET("categories/{idCategory}")
-    fun getCategory(
-        @Path("idCategory") idCategory: String,
-    ): Single<CategoryDto>
+    @GET("items/{idItem}/description")
+    fun getItemDescription(
+        @Path("idItem") idItem: String,
+    ): Single<ItemDescriptionDto>
 }
