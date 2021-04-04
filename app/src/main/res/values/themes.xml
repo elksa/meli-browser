@@ -21,4 +21,10 @@
     <style name="Theme.BuscadorMercadoLibre.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.BuscadorMercadoLibre.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Shipping">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

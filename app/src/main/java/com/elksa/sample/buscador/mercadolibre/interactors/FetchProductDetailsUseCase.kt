@@ -7,15 +7,13 @@ import javax.inject.Inject
 
 class FetchProductDetailsUseCase @Inject constructor(
     private val meliBrowserApi: MeliBrowserApi,
-    private val fetchCategoryUseCase: FetchCategoryUseCase
+    private val fetchItemDescriptionUseCase: FetchItemDescriptionUseCase
 ) {
 
-    fun loadProductDetails(idProduct: String): Single<ProductDetailsEntity> {
+    fun fetchProductDetails(idProduct: String): Single<ProductDetailsEntity> {
         return meliBrowserApi.getProductDetails(idProduct).flatMap {
-            fetchCategoryUseCase.loadCategory(it.idCategory).map { category ->
-                it.mapToDomain().apply {
-                    this.category = category
-                }
+            fetchItemDescriptionUseCase.fetchItemDescription(it.id).map { description ->
+                it.mapToDomain().apply { this.description = description }
             }
         }
     }

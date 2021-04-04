@@ -12,6 +12,8 @@ data class ProductDto(
     val idCurrency: String,
     @SerializedName("available_quantity")
     val quantity: Int,
+    @SerializedName("sold_quantity")
+    val soldQuantity: Int,
     val condition: ItemConditionDto,
     @SerializedName("permalink")
     val link: String,
@@ -40,6 +42,7 @@ data class ProductDto(
         price,
         idCurrency,
         quantity,
+        soldQuantity,
         ItemConditionDto.mapToDomain(condition),
         link,
         thumbnail,
