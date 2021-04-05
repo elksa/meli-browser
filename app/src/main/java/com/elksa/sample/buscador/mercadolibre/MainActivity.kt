@@ -44,8 +44,4 @@ class MainActivity : DaggerAppCompatActivity() {
     private fun saveRecentQuery(query: String) {
         SearchRecentSuggestions(this, AUTHORITY, MODE).saveRecentQuery(query, null)
     }
-
-    private fun clearRecentQueries() {
-        SearchRecentSuggestions(this, AUTHORITY, MODE).clearHistory()
-    }
 }

@@ -37,6 +37,9 @@ class ProductDetailsViewModel @Inject constructor(
     private var _currentPicturePosition = MutableLiveData<Int>()
     val currentPicturePosition: LiveData<Int> get() = _currentPicturePosition
 
+    private var _loaderVisibility = MutableLiveData(GONE)
+    val loaderVisibility: LiveData<Int> get() = _loaderVisibility
+
     fun init(product: ProductUiModel) {
         if (_product.value == null) {
             _product.value = product

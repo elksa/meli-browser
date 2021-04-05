@@ -25,13 +25,15 @@ data class ProductDto(
 
     enum class ItemConditionDto {
         @SerializedName("new") NEW,
-        @SerializedName("used") USED;
+        @SerializedName("used") USED,
+        @SerializedName("not_specified") NOT_SPECIFIED;
 
         companion object {
 
             fun mapToDomain(type: ItemConditionDto) = when(type) {
                 NEW -> ItemCondition.NEW
                 USED -> ItemCondition.USED
+                NOT_SPECIFIED -> ItemCondition.NOT_SPECIFIED
             }
         }
     }

@@ -10,7 +10,13 @@ class SearchProductsUseCase @Inject constructor(
     private val meliBrowserApi: MeliBrowserApi
 ) {
 
-    fun searchProducts(query: String, idSite: String = SITE_ID_CO): Single<ProductsSearchResultEntity> {
-        return meliBrowserApi.searchProducts(idSite, query).map { it.mapToDomain() }
+    fun searchProducts(
+        query: String,
+        offset: Int,
+        limit: Int
+    ): Single<ProductsSearchResultEntity> {
+        return meliBrowserApi.searchProducts(SITE_ID_CO, query, offset, limit).map {
+            it.mapToDomain()
+        }
     }
 }

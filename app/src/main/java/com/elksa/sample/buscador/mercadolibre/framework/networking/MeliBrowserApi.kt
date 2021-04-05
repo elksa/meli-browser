@@ -13,7 +13,9 @@ interface MeliBrowserApi {
     @GET("sites/{idSite}/search")
     fun searchProducts(
         @Path("idSite") idSite: String,
-        @Query("q") query: String
+        @Query("q") query: String,
+        @Query("offset") offset: Int,
+        @Query("limit") limit: Int,
     ): Single<ProductsSearchResultDto>
 
     @GET("items/{idProduct}")
