@@ -4,19 +4,18 @@ import android.app.SearchManager.QUERY
 import android.content.Intent
 import android.content.Intent.ACTION_SEARCH
 import android.os.Bundle
-import android.provider.SearchRecentSuggestions
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.elksa.sample.buscador.mercadolibre.R
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.SuggestionsProvider.Companion.AUTHORITY
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.SuggestionsProvider.Companion.MODE
-import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus
-import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.SearchProductEvent
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
 
     @Inject
-    lateinit var eventBus: IEventBus
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val viewModel: MainViewModel by viewModels { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,17 +31,8 @@ class MainActivity : DaggerAppCompatActivity() {
     private fun handleIntent(intent: Intent) {
         if (ACTION_SEARCH == intent.action) {
             intent.getStringExtra(QUERY)?.also { query ->
-                saveRecentQuery(query)
-                doSearch(query)
+                viewModel.performSearch(query)
             }
         }
-    }
-
-    private fun doSearch(query: String) {
-        eventBus.publish(SearchProductEvent(query))
-    }
-
-    private fun saveRecentQuery(query: String) {
-        SearchRecentSuggestions(this, AUTHORITY, MODE).saveRecentQuery(query, null)
     }
 }

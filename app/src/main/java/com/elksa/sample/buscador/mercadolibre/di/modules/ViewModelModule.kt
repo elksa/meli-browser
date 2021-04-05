@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider.Factory
 import com.elksa.sample.buscador.mercadolibre.di.ViewModelFactory
 import com.elksa.sample.buscador.mercadolibre.di.ViewModelKey
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.details.ProductDetailsViewModel
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.main.MainViewModel
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductsListViewModel
 import dagger.Binds
 import dagger.Module
@@ -25,4 +26,9 @@ internal abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ProductDetailsViewModel::class)
     internal abstract fun bindProductDetailsViewModel(viewModel: ProductDetailsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    internal abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
 }

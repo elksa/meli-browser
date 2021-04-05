@@ -1,7 +1,6 @@
 package com.elksa.sample.buscador.mercadolibre.presentation.modules.products
 
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.provider.SearchRecentSuggestions
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.elksa.sample.buscador.mercadolibre.R
@@ -17,7 +16,8 @@ import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.SearchProductEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.formatters.IMoneyFormatter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.SingleLiveEvent
-import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.common.BaseViewModel
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseViewModel
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationToDirectionEvent
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -30,21 +30,22 @@ class ProductsListViewModel @Inject constructor(
     private val scheduler: IScheduler,
     private val logger: ILogger,
     private val eventBus: IEventBus,
-    private val moneyFormatter: IMoneyFormatter
+    private val moneyFormatter: IMoneyFormatter,
+    private val searchRecentSuggestions: SearchRecentSuggestions
 ) : BaseViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
-    /**
-     * Flag to keep track of the bus listener initialization.
-     */
-    private var eventListenerInitialized = false
+    private var isEventListenerInitialized = false
 
-    /**
-     * List of products, this is the result of the search.
-     */
     private var _productsList = MutableLiveData(listOf<ProductUiModel>())
     val productsList: LiveData<List<ProductUiModel>> get() = _productsList
+
+    private var _iseEmptySearchVisible = MutableLiveData(false)
+    val iseEmptySearchVisible: LiveData<Boolean> get() = _iseEmptySearchVisible
+
+    private var _isLoaderVisible = MutableLiveData(false)
+    val isLoaderVisible: LiveData<Boolean> get() = _isLoaderVisible
 
     /**
      * Event to for hiding the keyboard. In some cases when the keyboard is shown and the
@@ -54,24 +55,15 @@ class ProductsListViewModel @Inject constructor(
     val hideKeyboardEvent: LiveData<Boolean> get() = _hideKeyboardEvent
 
     /**
-     * Event for deleting recent searches.
+     * Event for deleting recent searches, notifies about the need for recent searches deletion with
+     * the information of the dialog to be presented to the user.
      */
-    private var _deleteRecentSearchesEvent = SingleLiveEvent<Boolean>()
-    val deleteRecentSearchesEvent: LiveData<Boolean> get() = _deleteRecentSearchesEvent
-
-    /**
-     * Whether empty state should be visible or not.
-     */
-    private var _emptySearchVisibility = MutableLiveData(GONE)
-    val emptySearchVisibility: LiveData<Int> get() = _emptySearchVisibility
-
-    /**
-     * Whether the loader should be visible or not
-     */
-    private var _isLoaderVisible = MutableLiveData(false)
-    val isLoaderVisible: LiveData<Boolean> get() = _isLoaderVisible
+    private var _deleteRecentSearchesEvent = SingleLiveEvent<DialogInfoUiModel>()
+    val deleteRecentSearchesEvent: LiveData<DialogInfoUiModel> get() = _deleteRecentSearchesEvent
 
     private var query = "Motorola"
+
+    private val deleteRecentSearches = { searchRecentSuggestions.clearHistory() }
 
     /**
      * Initializes the listener for incoming queries and, caches the query and clears the cached
@@ -79,7 +71,7 @@ class ProductsListViewModel @Inject constructor(
      * first search to populate the list.
      */
     fun init() {
-        if (eventListenerInitialized.not()) {
+        if (isEventListenerInitialized.not()) {
             compositeDisposable.add(
                 eventBus.listen(SearchProductEvent::class.java).subscribe {
                     query = it.query
@@ -87,7 +79,7 @@ class ProductsListViewModel @Inject constructor(
                     searchProducts()
                 }
             )
-            eventListenerInitialized = true
+            isEventListenerInitialized = true
         }
         if (productsList.value.isNullOrEmpty()) {
             searchProducts()
@@ -119,11 +111,16 @@ class ProductsListViewModel @Inject constructor(
     /**
      * Handles the failure search scenario, for this it hides the loader, triggers the error event,
      * logs the error and show the empty state if there are no previously loaded products.
+     * @param error The error to be handled.
      */
     private fun handleSearchError(error: Throwable) {
         _isLoaderVisible.value = false
-        _errorEvent.value = R.string.error_products_search
-        _emptySearchVisibility.value = if (_productsList.value.isNullOrEmpty()) VISIBLE else GONE
+        _errorEvent.value = DialogInfoUiModel(
+            R.drawable.ic_error,
+            R.string.error_title_generic,
+            R.string.error_products_search
+        )
+        _iseEmptySearchVisible.value = _productsList.value.isNullOrEmpty()
         logger.log(TAG, error.toString(), error, ERROR)
     }
 
@@ -131,6 +128,7 @@ class ProductsListViewModel @Inject constructor(
      * Process the successful search scenario. In order to keep an "infinite" list of results, it
      * concatenates the new results with the previous ones if present, then hides the loader and
      * shows the empty state only if the result of the concatenation is empty.
+     * @param searchResult The result of the search to be handled.
      */
     private fun handleSearchSuccess(searchResult: ProductsSearchResultEntity) {
         val currentResults = _productsList.value
@@ -140,13 +138,9 @@ class ProductsListViewModel @Inject constructor(
             newResults
         )
         _isLoaderVisible.value = false
-        _emptySearchVisibility.value =
-            if (_productsList.value.isNullOrEmpty()) VISIBLE else GONE
+        _iseEmptySearchVisible.value = _productsList.value.isNullOrEmpty()
     }
 
-    /**
-     * Maps the product domain entity to the product UI model.
-     */
     private fun getProductUiModelFromEntity(product: ProductEntity) = ProductUiModel(
         product.id,
         product.title,
@@ -161,11 +155,15 @@ class ProductsListViewModel @Inject constructor(
         product.shippingInformation.freeShipping
     )
 
-    /**
-     * Triggers the delete recent searches event.
-     */
     fun onDeleteRecentSearches() {
-        _deleteRecentSearchesEvent.value = true
+        _deleteRecentSearchesEvent.value = DialogInfoUiModel(
+            R.drawable.ic_help,
+            R.string.title_dialog_delete_recent_searches,
+            R.string.message_dialog_delete_recent_searches,
+            android.R.string.ok,
+            deleteRecentSearches,
+            android.R.string.cancel
+        )
     }
 
     /**

@@ -2,7 +2,8 @@
     <string name="app_name">Mercado Libre Browser</string>
     <string name="content_description_buy">Comprar</string>
     <string name="title_product_details">Producto</string>
-    <string name="title_dialog_delete_recent_searches">¿Seguro que desea eliminar las búsquedas recientes?</string>
+    <string name="message_dialog_delete_recent_searches">¿Seguro que desea eliminar las búsquedas recientes?</string>
+    <string name="title_dialog_delete_recent_searches">Eliminar búsquedas recientes</string>
     <string name="hint_search">Buscar en Mercado Libre</string>
     <string name="action_search">Buscar</string>
     <string name="label_shipment_free">Envío gratis</string>
@@ -11,11 +12,11 @@
     <string name="label_condition_used">Usado</string>
     <string name="label_condition_not_specified">Sin especficar</string>
     <string name="label_description">Descripción</string>
-    <string name="description_delete_recent">Eliminar búsquedas recientes</string>
     <!-- Formats -->
     <string name="format_money">$ %s</string>
     <string name="format_details_item_condition_units_sold">%1$s | %2$d vendidos</string>
     <!-- Errors -->
+    <string name="error_title_generic">Error</string>
     <string name="error_products_search">Se produjo un error al buscar los productos.</string>
     <string name="error_products_details">Se produjo un error cargando los detalles del producto.</string>
     <string name="error_empty_search">¡Oops! No hay nada por aquí…</string>

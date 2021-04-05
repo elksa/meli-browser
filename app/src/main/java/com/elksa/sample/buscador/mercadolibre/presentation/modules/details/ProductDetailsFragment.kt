@@ -13,7 +13,7 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.elksa.sample.buscador.mercadolibre.databinding.FragmentProductDetailsBinding
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.CustomListAdapter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.ListItemDataAbstract
-import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.common.BaseDaggerFragment
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseDaggerFragment
 import javax.inject.Inject
 
 class ProductDetailsFragment : BaseDaggerFragment() {
@@ -62,10 +62,8 @@ class ProductDetailsFragment : BaseDaggerFragment() {
                     it.pictures.map { pictureUiModel -> ListItemDataAbstract(pictureUiModel) }
                 )
             })
-            errorEvent.observe(viewLifecycleOwner, {
-                it?.let {
-                    showError(binding.lblProductDetailsDescription, it)
-                }
+            errorEvent.observe(viewLifecycleOwner, { dialogInfo ->
+                dialogInfo?.let { showDialog(it) }
             })
         }
     }

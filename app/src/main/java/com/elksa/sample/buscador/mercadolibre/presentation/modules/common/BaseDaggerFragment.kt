@@ -1,13 +1,11 @@
-package com.elksa.sample.buscador.mercadolibre.presentation.utils.view.common
+package com.elksa.sample.buscador.mercadolibre.presentation.modules.common
 
-import android.view.View
-import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.CustomDialogFragment.Companion.TAG
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationToDirectionEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.OnBackPressedEvent
-import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
 
 abstract class BaseDaggerFragment : DaggerFragment() {
@@ -23,8 +21,14 @@ abstract class BaseDaggerFragment : DaggerFragment() {
         }
     }
 
-    protected fun showError(view: View, @StringRes message: Int) {
-        Snackbar.make(view, getString(message), Snackbar.LENGTH_LONG)
-            .setAction(null, null).show()
+    protected fun showDialog(dialogModel: DialogInfoUiModel) {
+        CustomDialogFragment.Builder()
+            .setIcon(dialogModel.icon)
+            .setTitle(dialogModel.title)
+            .setMessage(dialogModel.message)
+            .setPositiveButton(dialogModel.positiveButtonText, dialogModel.onPositiveClickListener)
+            .setNegativeButton(dialogModel.negativeButtonText)
+            .create()
+            .show(childFragmentManager, TAG)
     }
 }

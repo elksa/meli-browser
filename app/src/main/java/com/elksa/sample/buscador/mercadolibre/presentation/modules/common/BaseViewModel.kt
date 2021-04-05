@@ -1,4 +1,4 @@
-package com.elksa.sample.buscador.mercadolibre.presentation.utils.view.common
+package com.elksa.sample.buscador.mercadolibre.presentation.modules.common
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -7,8 +7,8 @@ import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation
 
 abstract class BaseViewModel : ViewModel() {
 
-    protected var _errorEvent = SingleLiveEvent<Int>()
-    val errorEvent: LiveData<Int> get() = _errorEvent
+    protected var _errorEvent = SingleLiveEvent<DialogInfoUiModel>()
+    val errorEvent: LiveData<DialogInfoUiModel> get() = _errorEvent
 
     protected val _navigationEvent = SingleLiveEvent<NavigationEvent>()
     val navigationEvent: LiveData<NavigationEvent> get() = _navigationEvent
