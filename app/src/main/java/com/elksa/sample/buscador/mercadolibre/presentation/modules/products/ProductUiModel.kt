@@ -1,7 +1,6 @@
 package com.elksa.sample.buscador.mercadolibre.presentation.modules.products
 
 import android.os.Parcelable
-import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity
 import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition
 import kotlinx.android.parcel.Parcelize
 
@@ -18,22 +17,4 @@ data class ProductUiModel(
     val thumbnail: String,
     val stopTime: String,
     val freeShipping: Boolean
-) : Parcelable {
-
-    companion object {
-
-        fun mapFromDomain(productEntity: ProductEntity, formattedPrice: String) = ProductUiModel(
-            productEntity.id,
-            productEntity.title,
-            formattedPrice,
-            productEntity.idCurrency,
-            productEntity.quantity,
-            productEntity.soldQuantity,
-            productEntity.condition,
-            productEntity.link,
-            productEntity.thumbnail,
-            productEntity.stopTime,
-            productEntity.shippingInformation.freeShipping
-        )
-    }
-}
+) : Parcelable

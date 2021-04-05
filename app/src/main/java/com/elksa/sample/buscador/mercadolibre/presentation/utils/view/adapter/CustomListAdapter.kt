@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 typealias AdapterFactory = (parent: ViewGroup, viewType: Int) -> ListItemView<*>
 
+/**
+ * Reusable ListAdapter adapter.
+ */
 class CustomListAdapter(
     private val factory: AdapterFactory
 ) : ListAdapter<ListItemData<*>, RecyclerView.ViewHolder>(ItemDiffCallback()) {

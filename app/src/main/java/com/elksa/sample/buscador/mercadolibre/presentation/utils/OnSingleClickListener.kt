@@ -6,6 +6,9 @@ import android.view.View.OnClickListener
 
 private const val MIN_CLICK_INTERVAL = 800L
 
+/**
+ * Single click listener to prevent multiple calls in a short predefined period of time.
+ */
 class OnSingleClickListener(
     private val onSingleClick: (View) -> Unit
 ) : OnClickListener {

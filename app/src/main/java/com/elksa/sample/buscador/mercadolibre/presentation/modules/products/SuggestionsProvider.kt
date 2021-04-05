@@ -6,7 +6,7 @@ class SuggestionsProvider : SearchRecentSuggestionsProvider() {
 
     companion object {
         const val AUTHORITY = "com.elksa.sample.buscador.mercadolibre.presentation.modules.products.SuggestionsProvider"
-        const val MODE: Int = DATABASE_MODE_QUERIES // or DATABASE_MODE_2LINES
+        const val MODE: Int = DATABASE_MODE_QUERIES
     }
 
     init {
