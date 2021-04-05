@@ -9,10 +9,10 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition
-import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition.NEW
-import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition.USED
+import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition.*
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.imageLoader.GlideImageLoader
 
@@ -46,6 +46,7 @@ fun TextView.setItemCondition(itemCondition: ItemCondition?) {
             when (it) {
                 NEW -> R.string.label_condition_new
                 USED -> R.string.label_condition_used
+                NOT_SPECIFIED -> R.string.label_condition_not_specified
             }
         )
     }
@@ -57,6 +58,7 @@ fun TextView.setItemConditionUnitsSold(product: ProductUiModel?) {
         val condition = when (it.condition) {
             NEW -> context.getString(R.string.label_condition_new)
             USED -> context.getString(R.string.label_condition_used)
+            NOT_SPECIFIED -> R.string.label_condition_not_specified
         }
         text = context.getString(
             R.string.format_details_item_condition_units_sold, condition, it.soldQuantity
@@ -92,4 +94,14 @@ fun LinearLayout.setIndicatorData(itemCount: Int?, currentPage: Int?) {
             }
         }
     }
+}
+
+@BindingAdapter("isRefreshing")
+fun SwipeRefreshLayout.setRefreshing(refreshing: Boolean?) {
+    refreshing?.let { isRefreshing = it }
+}
+
+@BindingAdapter("isPullToRefreshEnabled")
+fun SwipeRefreshLayout.setPullToRefreshEnabled(pullToRefreshEnabled: Boolean?) {
+    pullToRefreshEnabled?.let { isEnabled = it }
 }

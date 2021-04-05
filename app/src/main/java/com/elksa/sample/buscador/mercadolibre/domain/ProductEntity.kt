@@ -15,6 +15,6 @@ data class ProductEntity(
 ) {
 
     enum class ItemCondition {
-        NEW, USED
+        NEW, USED, NOT_SPECIFIED
     }
 }

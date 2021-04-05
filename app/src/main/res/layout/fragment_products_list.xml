@@ -21,22 +21,44 @@
             android:layout_height="wrap_content"
             android:theme="@style/Theme.BuscadorMercadoLibre.AppBarOverlay">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:popupTheme="@style/Theme.BuscadorMercadoLibre.PopupOverlay"
-                app:title="@string/app_name">
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|enterAlways|snap">
 
-                <SearchView
-                    android:id="@+id/searchView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:iconifiedByDefault="false"
-                    android:queryHint="@string/hint_search" />
-            </androidx.appcompat.widget.Toolbar>
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/tb_products_list_search"
+                    android:layout_width="@dimen/match_constraint"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:contentInsetEnd="@dimen/spacing_zero"
+                    app:contentInsetStart="@dimen/spacing_zero"
+                    app:layout_constraintEnd_toStartOf="@id/btn_products_list_delete_recent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:popupTheme="@style/Theme.BuscadorMercadoLibre.PopupOverlay"
+                    app:title="@string/app_name">
+
+                    <SearchView
+                        android:id="@+id/sv_products_list_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:iconifiedByDefault="false"
+                        android:queryHint="@string/hint_search" />
+                </androidx.appcompat.widget.Toolbar>
+
+                <ImageButton
+                    android:id="@+id/btn_products_list_delete_recent"
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?android:selectableItemBackground"
+                    android:contentDescription="@string/description_delete_recent"
+                    android:onClick="@{() -> viewModel.onDeleteRecentSearches()}"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_delete_recent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -71,9 +93,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/layout_swipe_refresh"
+            android:id="@+id/srl_products_list_results"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:isPullToRefreshEnabled="@{false}"
+            app:isRefreshing="@{viewModel.isLoaderVisible}"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:visibility="gone">
 
@@ -85,24 +109,12 @@
                 android:paddingTop="@dimen/spacing_xsmall"
                 android:paddingEnd="@dimen/spacing_small"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/list_item_product" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/lottie_products_list_loader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            android:visibility="@{viewModel.loaderVisibility}"
-            app:lottie_autoPlay="true"
-            app:lottie_fileName="lottie_loader_yellow.json"
-            app:lottie_loop="true" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
