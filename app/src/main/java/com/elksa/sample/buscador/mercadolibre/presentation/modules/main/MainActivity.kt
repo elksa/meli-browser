@@ -1,10 +1,11 @@
-package com.elksa.sample.buscador.mercadolibre
+package com.elksa.sample.buscador.mercadolibre.presentation.modules.main
 
 import android.app.SearchManager.QUERY
 import android.content.Intent
 import android.content.Intent.ACTION_SEARCH
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
+import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.SuggestionsProvider.Companion.AUTHORITY
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.SuggestionsProvider.Companion.MODE
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus

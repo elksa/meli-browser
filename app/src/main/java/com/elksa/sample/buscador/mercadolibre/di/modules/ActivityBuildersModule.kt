@@ -1,6 +1,6 @@
 package com.elksa.sample.buscador.mercadolibre.di.modules
 
-import com.elksa.sample.buscador.mercadolibre.MainActivity
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.main.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

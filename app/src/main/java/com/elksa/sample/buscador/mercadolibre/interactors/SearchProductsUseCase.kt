@@ -10,6 +10,13 @@ class SearchProductsUseCase @Inject constructor(
     private val meliBrowserApi: MeliBrowserApi
 ) {
 
+    /**
+     * Performs product search by query and pagination data.
+     * @param query the text query
+     * @param offset the lower limit for the result block.
+     * @param limit the page size.
+     * @return product search result entity.
+     */
     fun searchProducts(
         query: String,
         offset: Int,

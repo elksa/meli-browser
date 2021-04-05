@@ -22,7 +22,7 @@
         android:theme="@style/Theme.BuscadorMercadoLibre.NoActionBar"
         tools:targetApi="n">
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.modules.main.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

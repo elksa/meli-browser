@@ -253,6 +253,17 @@ class ProductDetailsViewModelTest {
     }
 
     @Test
+    fun updatePageIndicator_positionOutOfBoundsPositive_currentPictureRemainsNull() {
+        // given
+        val productDetails = ProductDetailsUiModel.mapFromDomain(getSampleProductDetails(2))
+        setField(FIELD_NAME_PRODUCT_DETAILS, MutableLiveData(productDetails), sut)
+        // when
+        sut.updatePageIndicator( 2)
+        // then
+        assertNull(sut.currentPicturePosition.value)
+    }
+
+    @Test
     fun updatePageIndicator_positionPositive_currentPictureSetToPosition() {
         // given
         val productDetails = ProductDetailsUiModel.mapFromDomain(getSampleProductDetails(3))
