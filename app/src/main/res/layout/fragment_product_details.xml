@@ -155,6 +155,20 @@
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                     eiusmod tempor incididunt ut labore et dolore magna aliqua." />
 
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_products_details_description_loader"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/details_loader_height"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:visibility="@{viewModel.loaderVisibility}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_product_details_description"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="lottie_loader_yellow.json"
+                    app:lottie_loop="true" />
+
                 <TextView
                     android:id="@+id/lbl_product_details_shipping"
                     style="@style/Shipping"
