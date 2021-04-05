@@ -11,7 +11,8 @@ import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERRO
 import com.elksa.sample.buscador.mercadolibre.domain.utils.IScheduler
 import com.elksa.sample.buscador.mercadolibre.interactors.FetchProductDetailsUseCase
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductUiModel
-import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.common.BaseViewModel
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseViewModel
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.OnBackPressedEvent
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -26,24 +27,17 @@ class ProductDetailsViewModel @Inject constructor(
 
     private val compositeDisposable = CompositeDisposable()
 
-    /**
-     * The product coming from the list.
-     */
     private var _product = MutableLiveData<ProductUiModel>()
     val product: LiveData<ProductUiModel> get() = _product
 
-    /**
-     * The product's details, including description and pictures.
-     */
     private var _productDetails = MutableLiveData<ProductDetailsUiModel>()
     val productDetails: LiveData<ProductDetailsUiModel> get() = _productDetails
 
-    /**
-     * Whether the thumbnail should be visible or not, it is only visible if there are no pictures
-     * after loading the details or if the details loading fails.
-     */
     private var _isThumbnailVisible = MutableLiveData(false)
     val isThumbnailVisible: LiveData<Boolean> get() = _isThumbnailVisible
+
+    private var _loaderVisibility = MutableLiveData(GONE)
+    val loaderVisibility: LiveData<Int> get() = _loaderVisibility
 
     /**
      * Represents the visible picture inside the pager, if the user swipes in order to see another,
@@ -51,12 +45,6 @@ class ProductDetailsViewModel @Inject constructor(
      */
     private var _currentPicturePosition = MutableLiveData<Int>()
     val currentPicturePosition: LiveData<Int> get() = _currentPicturePosition
-
-    /**
-     * Whether the loader should be visible or not.
-     */
-    private var _loaderVisibility = MutableLiveData(GONE)
-    val loaderVisibility: LiveData<Int> get() = _loaderVisibility
 
     /**
      * Sets the cached product info with the one coming from the list screen, allows faster data loading
@@ -99,9 +87,14 @@ class ProductDetailsViewModel @Inject constructor(
     /**
      * Handles the failure scenario. If there is an error the proper live data is set in order to
      * show it and log it, the loader is hidden.
+     * @param error The error to be handled.
      */
     private fun handleDetailsError(error: Throwable) {
-        _errorEvent.value = R.string.error_products_details
+        _errorEvent.value = DialogInfoUiModel(
+            R.drawable.ic_error,
+            R.string.error_title_generic,
+            R.string.error_products_details
+        )
         _isThumbnailVisible.value = true
         logger.log(TAG, error.toString(), error, ERROR)
         _loaderVisibility.value = GONE
@@ -110,6 +103,7 @@ class ProductDetailsViewModel @Inject constructor(
     /**
      * Handles the successful scenario. If there is no error then the details are updated with the
      * new information, the thumbnail is hidden, so is the loader.
+     * @param details The successful response containing the full product details.
      */
     private fun handleDetailsSuccess(details: ProductDetailsEntity) {
         _productDetails.value = ProductDetailsUiModel.mapFromDomain(details)
@@ -117,9 +111,6 @@ class ProductDetailsViewModel @Inject constructor(
         _loaderVisibility.value = GONE
     }
 
-    /**
-     * Triggers the back navigation event.
-     */
     fun onBackPressed() {
         _navigationEvent.value = OnBackPressedEvent
     }

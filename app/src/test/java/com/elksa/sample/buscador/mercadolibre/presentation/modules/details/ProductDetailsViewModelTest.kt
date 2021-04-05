@@ -3,6 +3,7 @@ package com.elksa.sample.buscador.mercadolibre.presentation.modules.details
 import android.view.View.GONE
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.domain.PictureEntity
 import com.elksa.sample.buscador.mercadolibre.domain.ProductDetailsEntity
 import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition.USED
@@ -11,6 +12,7 @@ import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ItemDescriptionEntity
 import com.elksa.sample.buscador.mercadolibre.interactors.FetchProductDetailsUseCase
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.OnBackPressedEvent
 import com.elksa.sample.buscador.mercadolibre.utils.TestScheduler
@@ -167,11 +169,17 @@ class ProductDetailsViewModelTest {
         val error = Throwable("error loadig product details")
         whenever(fetchProductDetailsUseCaseMock.fetchProductDetails(anyString()))
             .thenReturn(Single.error(error))
+        val info = DialogInfoUiModel(
+            R.drawable.ic_error,
+            R.string.error_title_generic,
+            R.string.error_products_details
+        )
         // when
         sut.init(getProductUiModelFromProductEntity(getSampleProducts()[0]))
         // then
         assertEquals(GONE, sut.loaderVisibility.value)
         assertEquals(true, sut.isThumbnailVisible.value)
+        assertEquals(info, sut.errorEvent.value)
         verify(loggerMock).log(TAG, error.toString(), error, ERROR)
     }
 

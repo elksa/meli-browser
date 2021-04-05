@@ -1,7 +1,6 @@
 package com.elksa.sample.buscador.mercadolibre.presentation.modules.products
 
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.provider.SearchRecentSuggestions
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.elksa.sample.buscador.mercadolibre.R
@@ -10,12 +9,14 @@ import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
 import com.elksa.sample.buscador.mercadolibre.interactors.SearchProductsUseCase
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductsListFragmentDirections.Companion.actionDestProductsListFragmentToDestProductDetailsFragment
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.formatters.MoneyFormatter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationToDirectionEvent
 import com.elksa.sample.buscador.mercadolibre.utils.TestScheduler
 import com.elksa.sample.buscador.mercadolibre.utils.callPrivateFun
+import com.elksa.sample.buscador.mercadolibre.utils.getField
 import com.elksa.sample.buscador.mercadolibre.utils.getProductUiModelFromProductEntity
 import com.elksa.sample.buscador.mercadolibre.utils.getSampleProducts
 import com.elksa.sample.buscador.mercadolibre.utils.setField
@@ -39,6 +40,7 @@ private const val TAG = "ProductsListViewModel"
 private const val FIELD_NAME_COMPOSITE_DISPOSABLE = "compositeDisposable"
 private const val FIELD_NAME_PRODUCTS_LIST = "_productsList"
 private const val FIELD_NAME_QUERY = "query"
+private const val FIELD_NAME_DELETE_RECENT_SEARCHES = "deleteRecentSearches"
 private const val FUNCTION_NAME_ON_CLEARED = "onCleared"
 
 @RunWith(MockitoJUnitRunner::class)
@@ -66,6 +68,9 @@ class ProductsListViewModelTest {
     @Mock
     private lateinit var compositeDisposableMock: CompositeDisposable
 
+    @Mock
+    private lateinit var searchRecentSuggestionsMock: SearchRecentSuggestions
+
     @Before
     fun setUp() {
         sut = ProductsListViewModel(
@@ -73,7 +78,8 @@ class ProductsListViewModelTest {
             testScheduler,
             loggerMock,
             eventBusMock,
-            moneyFormatterMock
+            moneyFormatterMock,
+            searchRecentSuggestionsMock
         )
     }
 
@@ -92,7 +98,7 @@ class ProductsListViewModelTest {
         // then
         assertEquals(products.size, sut.productsList.value?.size)
         assertEquals(false, sut.isLoaderVisible.value)
-        assertEquals(GONE, sut.emptySearchVisibility.value)
+        assertEquals(false, sut.iseEmptySearchVisible.value)
     }
 
     @Test
@@ -127,7 +133,7 @@ class ProductsListViewModelTest {
         // then
         assertEquals(true, sut.productsList.value?.isEmpty())
         assertEquals(false, sut.isLoaderVisible.value)
-        assertEquals(VISIBLE, sut.emptySearchVisibility.value)
+        assertEquals(true, sut.iseEmptySearchVisible.value)
     }
 
     @Test
@@ -143,7 +149,7 @@ class ProductsListViewModelTest {
         // when
         sut.searchProducts()
         // then
-        assertEquals(GONE, sut.emptySearchVisibility.value)
+        assertEquals(false, sut.iseEmptySearchVisible.value)
     }
 
     @Test
@@ -155,13 +161,18 @@ class ProductsListViewModelTest {
             anyInt(),
             anyInt()
         )).thenReturn(Single.error(error))
+        val info = DialogInfoUiModel(
+            R.drawable.ic_error,
+            R.string.error_title_generic,
+            R.string.error_products_search
+        )
         // when
         sut.searchProducts()
         // then
         verify(loggerMock).log(TAG, error.toString(), error, ERROR)
         assertEquals(false, sut.isLoaderVisible.value)
-        assertEquals(VISIBLE, sut.emptySearchVisibility.value)
-        assertEquals(R.string.error_products_search, sut.errorEvent.value)
+        assertEquals(true, sut.iseEmptySearchVisible.value)
+        assertEquals(info, sut.errorEvent.value)
     }
 
     @Test
@@ -178,7 +189,7 @@ class ProductsListViewModelTest {
         // when
         sut.searchProducts()
         // then
-        assertEquals(GONE, sut.emptySearchVisibility.value)
+        assertEquals(false, sut.iseEmptySearchVisible.value)
     }
 
     @Test
@@ -254,9 +265,18 @@ class ProductsListViewModelTest {
 
     @Test
     fun onDeleteRecentSearches_invoked_deleteRecentSearchesEventTriggered() {
+        // given
+        val info = DialogInfoUiModel(
+            R.drawable.ic_help,
+            R.string.title_dialog_delete_recent_searches,
+            R.string.message_dialog_delete_recent_searches,
+            android.R.string.ok,
+            getField(sut, FIELD_NAME_DELETE_RECENT_SEARCHES),
+            android.R.string.cancel
+        )
         // when
         sut.onDeleteRecentSearches()
         // then
-        assertEquals(true, sut.deleteRecentSearchesEvent.value)
+        assertEquals(info, sut.deleteRecentSearchesEvent.value)
     }
 }

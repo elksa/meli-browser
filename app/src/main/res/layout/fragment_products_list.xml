@@ -52,7 +52,7 @@
                     android:layout_width="?attr/actionBarSize"
                     android:layout_height="?attr/actionBarSize"
                     android:background="?android:selectableItemBackground"
-                    android:contentDescription="@string/description_delete_recent"
+                    android:contentDescription="@string/title_dialog_delete_recent_searches"
                     android:onClick="@{() -> viewModel.onDeleteRecentSearches()}"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_delete_recent"
@@ -66,7 +66,7 @@
             android:id="@+id/layout_products_list_empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{viewModel.emptySearchVisibility}"
+            app:isVisible="@{viewModel.iseEmptySearchVisible}"
             tools:visibility="visible">
 
             <TextView
@@ -97,6 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:isPullToRefreshEnabled="@{false}"
+            app:isVisible="@{!viewModel.iseEmptySearchVisible}"
             app:isRefreshing="@{viewModel.isLoaderVisible}"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:visibility="gone">
