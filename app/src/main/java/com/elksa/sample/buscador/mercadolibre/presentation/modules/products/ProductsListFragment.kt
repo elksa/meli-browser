@@ -4,13 +4,19 @@ import android.app.SearchManager
 import android.content.Context.SEARCH_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.databinding.FragmentProductsListBinding
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseDaggerFragment
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.CustomListAdapter
@@ -25,6 +31,7 @@ class ProductsListFragment : BaseDaggerFragment() {
     private var visibleItemCount = 0
     private var totalItemCount = 0
     private var pastVisibleItems = 0
+    private lateinit var searchView: SearchView
 
     private lateinit var binding: FragmentProductsListBinding
     private val viewModel: ProductsListViewModel by viewModels { viewModelFactory }
@@ -33,6 +40,19 @@ class ProductsListFragment : BaseDaggerFragment() {
             parent.context,
             viewModel::onProductSelected
         )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().invalidateOptionsMenu()
+        setHasOptionsMenu(true)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (requireActivity() as AppCompatActivity).run {
+            setSupportActionBar(binding.layoutProductsListToolbar.tbAppBar)
+        }
     }
 
     override fun onCreateView(
@@ -65,14 +85,26 @@ class ProductsListFragment : BaseDaggerFragment() {
         setupObservers()
         viewModel.init()
 
+        return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.products_list, menu)
+        val searchViewItem = menu.findItem(R.id.action_search)
         val searchManager = requireActivity().getSystemService(SEARCH_SERVICE) as SearchManager
-        binding.svProductsListSearch.apply {
+        searchView = (searchViewItem.actionView as SearchView).apply {
             setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
             isSubmitButtonEnabled = true
             isQueryRefinementEnabled = true
         }
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 
-        return binding.root
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.action_delete_searches -> viewModel.onDeleteRecentSearches()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setupObservers() {
@@ -84,7 +116,7 @@ class ProductsListFragment : BaseDaggerFragment() {
                 )
             })
             hideKeyboardEvent.observe(viewLifecycleOwner, {
-                if (it == true) binding.svProductsListSearch.clearFocus()
+                if (it == true && ::searchView.isInitialized) searchView.clearFocus()
             })
             errorEvent.observe(viewLifecycleOwner, { dialogInfo ->
                 dialogInfo?.let { showDialog(it) }

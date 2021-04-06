@@ -16,21 +16,9 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".presentation.modules.details.ProductDetailsFragment">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/Theme.BuscadorMercadoLibre.AppBarOverlay">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:popupTheme="@style/Theme.BuscadorMercadoLibre.PopupOverlay"
-                app:title="@string/title_product_details" />
-        </com.google.android.material.appbar.AppBarLayout>
+        <include
+            android:id="@+id/layout_products_list_toolbar"
+            layout="@layout/layout_app_bar" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -155,19 +143,16 @@
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                     eiusmod tempor incididunt ut labore et dolore magna aliqua." />
 
-                <com.airbnb.lottie.LottieAnimationView
+                <ProgressBar
                     android:id="@+id/lottie_products_details_description_loader"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/details_loader_height"
-                    android:layout_gravity="center"
-                    android:scaleType="centerCrop"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
                     android:visibility="@{viewModel.loaderVisibility}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_product_details_description"
-                    app:lottie_autoPlay="true"
-                    app:lottie_fileName="lottie_loader_yellow.json"
-                    app:lottie_loop="true" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_product_details_description" />
 
                 <TextView
                     android:id="@+id/lbl_product_details_shipping"
