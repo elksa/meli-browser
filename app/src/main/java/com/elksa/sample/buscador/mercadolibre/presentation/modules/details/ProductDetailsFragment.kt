@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2.ORIENTATION_HORIZONTAL
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.databinding.FragmentProductDetailsBinding
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.CustomListAdapter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.ListItemDataAbstract
@@ -46,10 +47,13 @@ class ProductDetailsFragment : BaseDaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         (requireActivity() as AppCompatActivity).run {
-            setSupportActionBar(binding.toolbar)
+            setSupportActionBar(binding.layoutProductsListToolbar.tbAppBar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
-        binding.toolbar.setNavigationOnClickListener { viewModel.onBackPressed() }
+        binding.layoutProductsListToolbar.tbAppBar.run {
+            setNavigationOnClickListener { viewModel.onBackPressed() }
+            setTitle(R.string.title_product_details)
+        }
     }
 
 
