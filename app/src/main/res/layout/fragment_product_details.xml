@@ -71,7 +71,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:scaleType="centerInside"
-                        app:imageUrl="@{viewModel.product.thumbnail}"
                         app:isVisible="@{viewModel.isThumbnailVisible}"
                         app:layout_constraintStart_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

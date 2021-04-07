@@ -6,6 +6,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.CustomDialogFragment.Builder.Companion.ARG_ICON
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.CustomDialogFragment.Builder.Companion.ARG_POSITIVE_BUTTON
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.CustomDialogFragment.Builder.Companion.ARG_NEGATIVE_BUTTON
@@ -56,8 +57,8 @@ class CustomDialogFragment : DialogFragment() {
         fun create(): CustomDialogFragment {
             val dialog = CustomDialogFragment()
             dialog.arguments = arguments
-            dialog.onPositiveClickListener = onPositiveClickListener
-            dialog.onNegativeClickListener = onNegativeClickListener
+            dialog.dialogPositiveClickListener = onPositiveClickListener
+            dialog.dialogNegativeClickListener = onNegativeClickListener
             return dialog
         }
     }
@@ -66,8 +67,9 @@ class CustomDialogFragment : DialogFragment() {
         const val TAG = "MeliDialogFragment"
     }
 
-    private var onPositiveClickListener: (() -> Unit)? = null
-    private var onNegativeClickListener: (() -> Unit)? = null
+    private var viewModel: CustomDialogViewModel? = null
+    private var dialogPositiveClickListener: (() -> Unit)? = null
+    private var dialogNegativeClickListener: (() -> Unit)? = null
     private var icon: Int = 0
     private var title: Int = 0
     private var message: Int = 0
@@ -76,6 +78,7 @@ class CustomDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(CustomDialogViewModel::class.java)
         loadParams()
     }
 
@@ -86,13 +89,13 @@ class CustomDialogFragment : DialogFragment() {
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(getString(textPositive)) { _, _ ->
-                onPositiveClickListener?.invoke()
+                viewModel?.onPositiveClickListener?.invoke()
             }
-        if (negativeButtonText != 0 || onNegativeClickListener != null) {
+        if (negativeButtonText != 0 || viewModel?.onNegativeClickListener != null) {
             val textNegative =
                 if (negativeButtonText != 0) negativeButtonText else android.R.string.cancel
             builder.setNegativeButton(textNegative) { _, _ ->
-                onNegativeClickListener?.invoke()
+                viewModel?.onNegativeClickListener?.invoke()
             }
         }
 
@@ -108,5 +111,7 @@ class CustomDialogFragment : DialogFragment() {
             positiveButtonText = getInt(ARG_POSITIVE_BUTTON)
             negativeButtonText = getInt(ARG_NEGATIVE_BUTTON)
         }
+        dialogPositiveClickListener?.let { viewModel?.onPositiveClickListener = it }
+        dialogNegativeClickListener?.let { viewModel?.onNegativeClickListener = it }
     }
 }

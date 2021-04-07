@@ -15,6 +15,7 @@ import com.elksa.sample.buscador.mercadolibre.databinding.FragmentProductDetails
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.CustomListAdapter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.ListItemDataAbstract
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseDaggerFragment
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.imageLoader.IImageLoader
 import javax.inject.Inject
 
 class ProductDetailsFragment : BaseDaggerFragment() {
@@ -22,11 +23,14 @@ class ProductDetailsFragment : BaseDaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    @Inject
+    lateinit var imageLoader: IImageLoader<*>
+
     private lateinit var binding: FragmentProductDetailsBinding
     private val viewModel: ProductDetailsViewModel by viewModels { viewModelFactory }
     private val args by navArgs<ProductDetailsFragmentArgs>()
     private val adapter = CustomListAdapter { parent, _ ->
-        ProductItemView(parent.context)
+        ProductItemView(parent.context, imageLoader)
     }
 
     override fun onCreateView(
@@ -68,6 +72,10 @@ class ProductDetailsFragment : BaseDaggerFragment() {
             })
             errorEvent.observe(viewLifecycleOwner, { dialogInfo ->
                 dialogInfo?.let { showDialog(it) }
+                imageLoader.loadImage(
+                    args.product.thumbnail,
+                    binding.imgProductDetailsThumbnail
+                )
             })
         }
     }

@@ -32,7 +32,6 @@
                 android:id="@+id/img_item_product_thumbnail"
                 android:layout_width="@dimen/thumbnail_list_width"
                 android:layout_height="@dimen/thumbnail_list_height"
-                app:imageUrl="@{uiModel.thumbnail}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
