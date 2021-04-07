@@ -1,13 +1,13 @@
 package com.elksa.sample.buscador.mercadolibre.presentation.modules.products
 
-import android.provider.SearchRecentSuggestions
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.elksa.sample.buscador.mercadolibre.R
-import com.elksa.sample.buscador.mercadolibre.domain.ProductsSearchResultEntity
 import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
+import com.elksa.sample.buscador.mercadolibre.interactors.ClearRecentSuggestionsUseCase
+import com.elksa.sample.buscador.mercadolibre.interactors.FetchProductRecommendationsUseCase
 import com.elksa.sample.buscador.mercadolibre.interactors.SearchProductsUseCase
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductsListFragmentDirections.Companion.actionDestProductsListFragmentToDestProductDetailsFragment
@@ -36,6 +36,7 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
 private const val PAGE_SIZE = 50
+private const val PAGE_SIZE_RECOMMENDATIONS = 15
 private const val TAG = "ProductsListViewModel"
 private const val FIELD_NAME_COMPOSITE_DISPOSABLE = "compositeDisposable"
 private const val FIELD_NAME_PRODUCTS_LIST = "_productsList"
@@ -69,32 +70,37 @@ class ProductsListViewModelTest {
     private lateinit var compositeDisposableMock: CompositeDisposable
 
     @Mock
-    private lateinit var searchRecentSuggestionsMock: SearchRecentSuggestions
+    private lateinit var fetchProductRecommendationsUseCaseMock: FetchProductRecommendationsUseCase
+
+    @Mock
+    private lateinit var clearRecentSuggestionsUseCaseMock: ClearRecentSuggestionsUseCase
 
     @Before
     fun setUp() {
         sut = ProductsListViewModel(
             searchProductsUseCaseMock,
+            fetchProductRecommendationsUseCaseMock,
+            clearRecentSuggestionsUseCaseMock,
             testScheduler,
             loggerMock,
             eventBusMock,
-            moneyFormatterMock,
-            searchRecentSuggestionsMock
+            moneyFormatterMock
         )
     }
 
     @Test
-    fun getProductsList_onSuccessWithResults_productsSetLoaderGoneEmptyInfoGone() {
+    fun doSearch_onSuccessSearchResultsWithResults_productsSetLoaderGoneEmptyInfoGone() {
         // given
         val products = getSampleProducts()
         whenever(searchProductsUseCaseMock.searchProducts(
             anyString(),
             anyInt(),
             anyInt()
-        )).thenReturn(Single.just(ProductsSearchResultEntity(EMPTY_STRING, products)))
+        )).thenReturn(Single.just(products))
         whenever(moneyFormatterMock.format(any())).thenReturn(EMPTY_STRING)
+        setField(FIELD_NAME_QUERY, EMPTY_STRING, sut)
         // when
-        sut.searchProducts()
+        sut.doSearch()
         // then
         assertEquals(products.size, sut.productsList.value?.size)
         assertEquals(false, sut.isLoaderVisible.value)
@@ -102,7 +108,7 @@ class ProductsListViewModelTest {
     }
 
     @Test
-    fun getProductsList_onSuccessWithResults_productsProperlyMapped() {
+    fun doSearch_onSuccessSearchProductsSuccessWithResults_productsProperlyMapped() {
         // given
         val products = getSampleProducts()
         val formattedPrice = "formattedPrice"
@@ -110,26 +116,28 @@ class ProductsListViewModelTest {
             anyString(),
             anyInt(),
             anyInt()
-        )).thenReturn(Single.just(ProductsSearchResultEntity(EMPTY_STRING, products)))
+        )).thenReturn(Single.just(products))
         whenever(moneyFormatterMock.format(any())).thenReturn(formattedPrice)
         val expectedProductUiModel = getProductUiModelFromProductEntity(products[0], formattedPrice)
+        setField(FIELD_NAME_QUERY, EMPTY_STRING, sut)
         // when
-        sut.searchProducts()
+        sut.doSearch()
         // then
         assertEquals(products.size, sut.productsList.value?.size)
         assertEquals(expectedProductUiModel, sut.productsList.value?.get(0))
     }
 
     @Test
-    fun getProductsList_onSuccessNoResults_productsEmptyLoaderGoneEmptyInfoVisible() {
+    fun doSearch_onSuccessSearchProductsNoResults_productsEmptyLoaderGoneEmptyInfoVisible() {
         // given
         whenever(searchProductsUseCaseMock.searchProducts(
             anyString(),
             anyInt(),
             anyInt()
-        )).thenReturn(Single.just(ProductsSearchResultEntity(EMPTY_STRING, listOf())))
+        )).thenReturn(Single.just(listOf()))
+        setField(FIELD_NAME_QUERY, EMPTY_STRING, sut)
         // when
-        sut.searchProducts()
+        sut.doSearch()
         // then
         assertEquals(true, sut.productsList.value?.isEmpty())
         assertEquals(false, sut.isLoaderVisible.value)
@@ -137,7 +145,7 @@ class ProductsListViewModelTest {
     }
 
     @Test
-    fun getProductsList_onSuccessNoResultsWithPreviousProducts_emptyInfoGone() {
+    fun doSearch_onSuccessSearchProductsNoResultsWithPreviousProducts_emptyInfoGone() {
         // given
         val products = listOf(getProductUiModelFromProductEntity(getSampleProducts()[0]))
         setField(FIELD_NAME_PRODUCTS_LIST, MutableLiveData(products), sut)
@@ -145,15 +153,16 @@ class ProductsListViewModelTest {
             anyString(),
             anyInt(),
             anyInt()
-        )).thenReturn(Single.just(ProductsSearchResultEntity(EMPTY_STRING, listOf())))
+        )).thenReturn(Single.just(listOf()))
+        setField(FIELD_NAME_QUERY, EMPTY_STRING, sut)
         // when
-        sut.searchProducts()
+        sut.doSearch()
         // then
         assertEquals(false, sut.iseEmptySearchVisible.value)
     }
 
     @Test
-    fun getProductsList_onFailure_emptyInfoVisibleLoaderGoneErrorLoggedAndShown() {
+    fun doSearch_onFailureSearchProductsNoPreviousProducts_emptyInfoVisibleLoaderGoneErrorLoggedAndShown() {
         // given
         val error = Throwable("error loading products")
         whenever(searchProductsUseCaseMock.searchProducts(
@@ -161,53 +170,66 @@ class ProductsListViewModelTest {
             anyInt(),
             anyInt()
         )).thenReturn(Single.error(error))
-        val info = DialogInfoUiModel(
+        val errorInfo = DialogInfoUiModel(
+            R.drawable.ic_error,
+            R.string.error_title_generic,
+            R.string.error_products_search
+        )
+        setField(FIELD_NAME_QUERY, EMPTY_STRING, sut)
+        // when
+        sut.doSearch()
+        // then
+        verify(loggerMock).log(TAG, error.toString(), error, ERROR)
+        assertEquals(false, sut.isLoaderVisible.value)
+        assertEquals(true, sut.iseEmptySearchVisible.value)
+        assertEquals(errorInfo, sut.errorEvent.value)
+    }
+
+    @Test
+    fun doSearch_onFailureSearchProductsWithPreviousProducts_emptyInfoGoneLoaderGoneErrorLoggedAndShown() {
+        // given
+        val products = listOf(getProductUiModelFromProductEntity(getSampleProducts()[0]))
+        setField(FIELD_NAME_PRODUCTS_LIST, MutableLiveData(products), sut)
+        val error = Throwable("error loading products")
+        whenever(searchProductsUseCaseMock.searchProducts(
+            anyString(),
+            anyInt(),
+            anyInt()
+        )).thenReturn(Single.error(error))
+        setField(FIELD_NAME_QUERY, EMPTY_STRING, sut)
+        val errorInfo = DialogInfoUiModel(
             R.drawable.ic_error,
             R.string.error_title_generic,
             R.string.error_products_search
         )
         // when
-        sut.searchProducts()
-        // then
-        verify(loggerMock).log(TAG, error.toString(), error, ERROR)
-        assertEquals(false, sut.isLoaderVisible.value)
-        assertEquals(true, sut.iseEmptySearchVisible.value)
-        assertEquals(info, sut.errorEvent.value)
-    }
-
-    @Test
-    fun getProductsList_onFailurePreviousProducts_emptyInfoGone() {
-        // given
-        val products = listOf(getProductUiModelFromProductEntity(getSampleProducts()[0]))
-        setField(FIELD_NAME_PRODUCTS_LIST, MutableLiveData(products), sut)
-        val error = Throwable("error loading products")
-        whenever(searchProductsUseCaseMock.searchProducts(
-            anyString(),
-            anyInt(),
-            anyInt()
-        )).thenReturn(Single.error(error))
-        // when
-        sut.searchProducts()
+        sut.doSearch()
         // then
         assertEquals(false, sut.iseEmptySearchVisible.value)
+
+        verify(loggerMock).log(TAG, error.toString(), error, ERROR)
+        assertEquals(false, sut.isLoaderVisible.value)
+        assertEquals(false, sut.iseEmptySearchVisible.value)
+        assertEquals(errorInfo, sut.errorEvent.value)
     }
 
     @Test
-    fun getProductsList_invocation_hideKeyboardEventTriggered() {
+    fun doSearch_searchProducts_hideKeyboardEventTriggered() {
         // given
         whenever(searchProductsUseCaseMock.searchProducts(
             anyString(),
             anyInt(),
             anyInt()
         )).thenReturn(Single.error(Throwable()))
+        setField(FIELD_NAME_QUERY, EMPTY_STRING, sut)
         // when
-        sut.searchProducts()
+        sut.doSearch()
         // then
         assertEquals(true, sut.hideKeyboardEvent.value)
     }
 
     @Test
-    fun getProductsList_invocationPreviousProducts_searchProductsUseCaseProperlyInvoked() {
+    fun doSearch_searchProductsWithPreviousProducts_searchProductsUseCaseProperlyInvoked() {
         // given
         val query = "query"
         whenever(searchProductsUseCaseMock.searchProducts(
@@ -219,13 +241,37 @@ class ProductsListViewModelTest {
         setField(FIELD_NAME_PRODUCTS_LIST, MutableLiveData(products), sut)
         setField(FIELD_NAME_QUERY, query, sut)
         // when
-        sut.searchProducts()
+        sut.doSearch()
         // then
         verify(searchProductsUseCaseMock).searchProducts(query, products.size, PAGE_SIZE)
     }
 
     @Test
-    fun getProductsList_invocationNoPreviousProducts_searchProductsUseCaseyInvokedOffsetZero() {
+    fun doSearch_onSearchProductsSuccessResultsWithPreviousResults_productsConcatenated() {
+        // given
+        val products = getSampleProducts()
+        val formattedPrice = "formattedPrice"
+        whenever(searchProductsUseCaseMock.searchProducts(
+            anyString(),
+            anyInt(),
+            anyInt()
+        )).thenReturn(Single.just(products))
+        whenever(moneyFormatterMock.format(any())).thenReturn(formattedPrice)
+        val expectedProductUiModel1 = getProductUiModelFromProductEntity(products[0], formattedPrice)
+        val expectedProductUiModel2 = getProductUiModelFromProductEntity(products[0], formattedPrice)
+        val existingProducts = listOf(expectedProductUiModel2)
+        setField(FIELD_NAME_QUERY, EMPTY_STRING, sut)
+        setField(FIELD_NAME_PRODUCTS_LIST, MutableLiveData(existingProducts), sut)
+        // when
+        sut.doSearch()
+        // then
+        assertEquals(products.size + existingProducts.size, sut.productsList.value?.size)
+        assertEquals(expectedProductUiModel1, sut.productsList.value?.get(0))
+        assertEquals(expectedProductUiModel2, sut.productsList.value?.get(1))
+    }
+
+    @Test
+    fun doSearch_searchProductsNoPreviousProducts_searchProductsUseCaseyInvokedOffsetZero() {
         // given
         val query = "query"
         whenever(searchProductsUseCaseMock.searchProducts(
@@ -235,9 +281,148 @@ class ProductsListViewModelTest {
         )).thenReturn(Single.error(Throwable()))
         setField(FIELD_NAME_QUERY, query, sut)
         // when
-        sut.searchProducts()
+        sut.doSearch()
         // then
         verify(searchProductsUseCaseMock).searchProducts(query, 0, PAGE_SIZE)
+    }
+
+    @Test
+    fun doSearch_onFetchRecommendationsSuccessWithResults_productsProperlyMapped() {
+        // given
+        val products = getSampleProducts()
+        val formattedPrice = "formattedPrice"
+        whenever(fetchProductRecommendationsUseCaseMock.fetchProductRecommendations(
+            anyInt(),
+            anyInt()
+        )).thenReturn(Single.just(products))
+        whenever(moneyFormatterMock.format(any())).thenReturn(formattedPrice)
+        val expectedProductUiModel = getProductUiModelFromProductEntity(products[0], formattedPrice)
+        setField(FIELD_NAME_QUERY, null, sut)
+        // when
+        sut.doSearch()
+        // then
+        assertEquals(products.size, sut.productsList.value?.size)
+        assertEquals(expectedProductUiModel, sut.productsList.value?.get(0))
+    }
+
+    @Test
+    fun doSearch_onFetchRecommendationsNoResults_productsListEmptyLoaderGoneEmptyInfoVisible() {
+        // given
+        whenever(fetchProductRecommendationsUseCaseMock.fetchProductRecommendations(
+            anyInt(),
+            anyInt()
+        )).thenReturn(Single.just(listOf()))
+        setField(FIELD_NAME_QUERY, null, sut)
+        // when
+        sut.doSearch()
+        // then
+        assertEquals(true, sut.productsList.value?.isEmpty())
+        assertEquals(false, sut.isLoaderVisible.value)
+        assertEquals(true, sut.iseEmptySearchVisible.value)
+    }
+
+    @Test
+    fun doSearch_onFetchRecommendationsSuccessResultsWithPreviousResults_productsConcatenated() {
+        // given
+        val products = getSampleProducts()
+        val formattedPrice = "formattedPrice"
+        whenever(fetchProductRecommendationsUseCaseMock.fetchProductRecommendations(
+            anyInt(),
+            anyInt()
+        )).thenReturn(Single.just(products))
+        whenever(moneyFormatterMock.format(any())).thenReturn(formattedPrice)
+        val expectedProductUiModel1 = getProductUiModelFromProductEntity(products[0], formattedPrice)
+        val expectedProductUiModel2 = getProductUiModelFromProductEntity(products[0], formattedPrice)
+        val existingProducts = listOf(expectedProductUiModel2)
+        setField(FIELD_NAME_QUERY, null, sut)
+        setField(FIELD_NAME_PRODUCTS_LIST, MutableLiveData(existingProducts), sut)
+        // when
+        sut.doSearch()
+        // then
+        assertEquals(products.size + existingProducts.size, sut.productsList.value?.size)
+        assertEquals(expectedProductUiModel1, sut.productsList.value?.get(0))
+        assertEquals(expectedProductUiModel2, sut.productsList.value?.get(1))
+    }
+
+    @Test
+    fun doSearch_onFetchRecommendationsFailureNoPreviousResults_listEmptyLoaderGoneEmptyInfoVisibleErrorLoggedAndShowed() {
+        // given
+        val error = Throwable("error fetching recommendations")
+        whenever(fetchProductRecommendationsUseCaseMock.fetchProductRecommendations(
+            anyInt(),
+            anyInt()
+        )).thenReturn(Single.error(error))
+        setField(FIELD_NAME_QUERY, null, sut)
+        // when
+        sut.doSearch()
+        val errorInfo = DialogInfoUiModel(
+            R.drawable.ic_error,
+            R.string.error_title_generic,
+            R.string.error_products_search
+        )
+        // then
+        assertEquals(true, sut.productsList.value?.isNullOrEmpty())
+        assertEquals(false, sut.isLoaderVisible.value)
+        assertEquals(true, sut.iseEmptySearchVisible.value)
+        assertEquals(errorInfo, sut.errorEvent.value)
+    }
+
+    @Test
+    fun doSearch_onFetchRecommendationsFailurePreviousResults_listNotEmptyLoaderGoneEmptyInfoGoneErrorLoggedAndShowed() {
+        // given
+        val error = Throwable("error fetching recommendations")
+        whenever(fetchProductRecommendationsUseCaseMock.fetchProductRecommendations(
+            anyInt(),
+            anyInt()
+        )).thenReturn(Single.error(error))
+        setField(FIELD_NAME_QUERY, null, sut)
+        setField(FIELD_NAME_PRODUCTS_LIST, MutableLiveData(getSampleProducts()), sut)
+        // when
+        sut.doSearch()
+        val errorInfo = DialogInfoUiModel(
+            R.drawable.ic_error,
+            R.string.error_title_generic,
+            R.string.error_products_search
+        )
+        // then
+        assertEquals(false, sut.productsList.value?.isEmpty())
+        assertEquals(false, sut.isLoaderVisible.value)
+        assertEquals(false, sut.iseEmptySearchVisible.value)
+        assertEquals(errorInfo, sut.errorEvent.value)
+    }
+
+    @Test
+    fun doSearch_fetchRecommendationsWithPreviousProducts_fetchRecommendationsUseCaseProperlyInvoked() {
+        // given
+        whenever(fetchProductRecommendationsUseCaseMock.fetchProductRecommendations(
+            anyInt(),
+            anyInt()
+        )).thenReturn(Single.error(Throwable()))
+        val products = listOf(getProductUiModelFromProductEntity(getSampleProducts()[0]))
+        setField(FIELD_NAME_PRODUCTS_LIST, MutableLiveData(products), sut)
+        // when
+        sut.doSearch()
+        // then
+        verify(fetchProductRecommendationsUseCaseMock).fetchProductRecommendations(
+            products.size,
+            PAGE_SIZE_RECOMMENDATIONS
+        )
+    }
+
+    @Test
+    fun doSearch_fetchRecommendationsNoPreviousProducts_searchProductsUseCaseyInvokedOffsetZero() {
+        // given
+        whenever(fetchProductRecommendationsUseCaseMock.fetchProductRecommendations(
+            anyInt(),
+            anyInt()
+        )).thenReturn(Single.error(Throwable()))
+        // when
+        sut.doSearch()
+        // then
+        verify(fetchProductRecommendationsUseCaseMock).fetchProductRecommendations(
+            0,
+            PAGE_SIZE_RECOMMENDATIONS
+        )
     }
 
     @Test

@@ -39,8 +39,8 @@
         </activity>
 
         <provider
-            android:name=".presentation.modules.products.SuggestionsProvider"
-            android:authorities="com.elksa.sample.buscador.mercadolibre.presentation.modules.products.SuggestionsProvider"
+            android:name=".framework.android.SuggestionsProvider"
+            android:authorities="com.elksa.sample.buscador.mercadolibre.framework.android.SuggestionsProvider"
             android:exported="false" />
     </application>
 

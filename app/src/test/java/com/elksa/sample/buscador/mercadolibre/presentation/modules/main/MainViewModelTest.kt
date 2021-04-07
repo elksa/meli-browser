@@ -1,7 +1,7 @@
 package com.elksa.sample.buscador.mercadolibre.presentation.modules.main
 
-import android.provider.SearchRecentSuggestions
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.elksa.sample.buscador.mercadolibre.interactors.SaveRecentSearchUseCase
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.SearchProductEvent
 import com.nhaarman.mockitokotlin2.verify
@@ -25,11 +25,11 @@ class MainViewModelTest {
     private lateinit var eventBusMock: IEventBus
 
     @Mock
-    private lateinit var searchRecentSuggestionsMock: SearchRecentSuggestions
+    private lateinit var saveRecentSearchUseCaseMok: SaveRecentSearchUseCase
 
     @Before
     fun setUp() {
-        sut = MainViewModel(searchRecentSuggestionsMock, eventBusMock)
+        sut = MainViewModel(saveRecentSearchUseCaseMok, eventBusMock)
     }
 
     @Test
@@ -39,7 +39,7 @@ class MainViewModelTest {
         // when
         sut.performSearch(query)
         // then
-        verify(searchRecentSuggestionsMock).saveRecentQuery(query, null)
+        verify(saveRecentSearchUseCaseMok).saveRecentSearchQuery(query)
     }
 
     @Test

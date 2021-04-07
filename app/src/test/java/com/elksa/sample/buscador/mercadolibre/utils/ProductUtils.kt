@@ -1,7 +1,11 @@
 package com.elksa.sample.buscador.mercadolibre.utils
 
 import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity
+import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition
 import com.elksa.sample.buscador.mercadolibre.domain.ShippingInformationEntity
+import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ProductDto
+import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ProductDto.ItemConditionDto.NEW
+import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ShippingInformationDto
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductUiModel
 
 fun getSampleProducts() = listOf(
@@ -9,14 +13,24 @@ fun getSampleProducts() = listOf(
         "id",
         "title",
         0.0,
-        "COP",
         3,
         1,
-        ProductEntity.ItemCondition.NEW,
-        "link",
+        ItemCondition.NEW,
         "thumbnail",
-        "stop",
-        ShippingInformationEntity(freeShipping = true, storePickUp = false)
+        ShippingInformationEntity(true)
+    )
+)
+
+fun getSampleProductsDto() = listOf(
+    ProductDto(
+        "id",
+        "title",
+        0.0,
+        3,
+        1,
+        NEW,
+        "thumbnail",
+        ShippingInformationDto(true)
     )
 )
 
@@ -25,12 +39,9 @@ fun getProductUiModelFromProductEntity(product: ProductEntity, price: String? = 
         product.id,
         product.title,
         price ?: product.price.toString(),
-        product.idCurrency,
         product.quantity,
         product.soldQuantity,
         product.condition,
-        product.link,
         product.thumbnail,
-        product.stopTime,
         true
     )
