@@ -4,6 +4,7 @@ import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
 import com.elksa.sample.buscador.mercadolibre.framework.networking.MeliBrowserApi
 import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ProductsSearchResultDto
 import com.elksa.sample.buscador.mercadolibre.framework.networking.utils.SITE_ID_CO
+import com.elksa.sample.buscador.mercadolibre.utils.getSampleProductsDto
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
@@ -32,14 +33,25 @@ class SearchProductsUseCaseTest {
     @Test
     fun searchProducts_onSuccess_returnsProductsSearch() {
         // given
-        val productsSearchResult = ProductsSearchResultDto(EMPTY_STRING, listOf())
+        val products = getSampleProductsDto()
+        val productsSearchResult = ProductsSearchResultDto(EMPTY_STRING, products)
         whenever(meliBrowserApiMock.searchProducts(anyString(), anyString(), anyInt(), anyInt()))
             .thenReturn(Single.just(productsSearchResult))
-        val expectedResult = productsSearchResult.mapToDomain()
+        val expectedResult = productsSearchResult.results.map { it.mapToDomain() }
         // when
         val result = sut.searchProducts(EMPTY_STRING, 0, 0)
         // then
-        assertEquals(expectedResult, result.blockingGet())
+        assertEquals(expectedResult[0].id, result.blockingGet()[0].id)
+        assertEquals(expectedResult[0].price, result.blockingGet()[0].price, 0.0)
+        assertEquals(expectedResult[0].quantity, result.blockingGet()[0].quantity)
+        assertEquals(expectedResult[0].soldQuantity, result.blockingGet()[0].soldQuantity)
+        assertEquals(expectedResult[0].thumbnail, result.blockingGet()[0].thumbnail)
+        assertEquals(expectedResult[0].title, result.blockingGet()[0].title)
+        assertEquals(expectedResult[0].condition, result.blockingGet()[0].condition)
+        assertEquals(
+            expectedResult[0].shippingInformation.freeShipping,
+            result.blockingGet()[0].shippingInformation.freeShipping
+        )
     }
 
     @Test

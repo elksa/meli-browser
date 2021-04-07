@@ -1,6 +1,6 @@
 package com.elksa.sample.buscador.mercadolibre.interactors
 
-import com.elksa.sample.buscador.mercadolibre.domain.ProductsSearchResultEntity
+import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity
 import com.elksa.sample.buscador.mercadolibre.framework.networking.MeliBrowserApi
 import com.elksa.sample.buscador.mercadolibre.framework.networking.utils.SITE_ID_CO
 import io.reactivex.Single
@@ -13,17 +13,17 @@ class SearchProductsUseCase @Inject constructor(
     /**
      * Performs product search by query and pagination data.
      * @param query the text query
-     * @param offset the lower limit for the result block.
-     * @param limit the page size.
-     * @return product search result entity.
+     * @param offset the lower limit of the result block.
+     * @param limit the amount of results to be fetched or page size.
+     * @return list of products matching the search query.
      */
     fun searchProducts(
         query: String,
         offset: Int,
         limit: Int
-    ): Single<ProductsSearchResultEntity> {
+    ): Single<List<ProductEntity>> {
         return meliBrowserApi.searchProducts(SITE_ID_CO, query, offset, limit).map {
-            it.mapToDomain()
+            it.results.map { product -> product.mapToDomain() }
         }
     }
 }

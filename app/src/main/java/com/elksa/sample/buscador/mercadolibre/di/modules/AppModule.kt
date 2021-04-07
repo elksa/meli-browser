@@ -3,8 +3,8 @@ package com.elksa.sample.buscador.mercadolibre.di.modules
 import android.app.Application
 import android.content.Context
 import android.provider.SearchRecentSuggestions
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.SuggestionsProvider.Companion.AUTHORITY
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.SuggestionsProvider.Companion.MODE
+import com.elksa.sample.buscador.mercadolibre.framework.android.SuggestionsProvider.Companion.AUTHORITY
+import com.elksa.sample.buscador.mercadolibre.framework.android.SuggestionsProvider.Companion.MODE
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

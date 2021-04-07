@@ -5,13 +5,8 @@ import com.google.gson.annotations.SerializedName
 
 class ShippingInformationDto(
     @SerializedName("free_shipping")
-    val freeShipping: Boolean,
-    @SerializedName("store_pick_up")
-    val storePickUp: Boolean
+    val freeShipping: Boolean
 ) {
 
-    fun mapToDomain() = ShippingInformationEntity(
-        freeShipping,
-        storePickUp
-    )
+    fun mapToDomain() = ShippingInformationEntity(freeShipping)
 }

@@ -194,12 +194,9 @@ class ProductDetailsViewModelTest {
             "newId",
             EMPTY_STRING,
             EMPTY_STRING,
-            EMPTY_STRING,
             3,
             0,
             USED,
-            EMPTY_STRING,
-            EMPTY_STRING,
             EMPTY_STRING,
             false
         )

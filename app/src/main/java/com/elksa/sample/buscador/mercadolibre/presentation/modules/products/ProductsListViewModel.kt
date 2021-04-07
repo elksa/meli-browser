@@ -1,37 +1,40 @@
 package com.elksa.sample.buscador.mercadolibre.presentation.modules.products
 
-import android.provider.SearchRecentSuggestions
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity
-import com.elksa.sample.buscador.mercadolibre.domain.ProductsSearchResultEntity
+import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
 import com.elksa.sample.buscador.mercadolibre.domain.utils.IScheduler
+import com.elksa.sample.buscador.mercadolibre.interactors.ClearRecentSuggestionsUseCase
+import com.elksa.sample.buscador.mercadolibre.interactors.FetchProductRecommendationsUseCase
 import com.elksa.sample.buscador.mercadolibre.interactors.SearchProductsUseCase
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseViewModel
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductsListFragmentDirections.Companion.actionDestProductsListFragmentToDestProductDetailsFragment
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.concatenate
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.SearchProductEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.formatters.IMoneyFormatter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.SingleLiveEvent
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseViewModel
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationToDirectionEvent
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 private const val TAG = "ProductsListViewModel"
 private const val PAGE_SIZE = 50
+private const val PAGE_SIZE_RECOMMENDATIONS = 15
 
 class ProductsListViewModel @Inject constructor(
     private val searchProductsUseCase: SearchProductsUseCase,
+    private val fetchProductRecommendationsUseCase: FetchProductRecommendationsUseCase,
+    private val clearRecentSuggestionsUseCase: ClearRecentSuggestionsUseCase,
     private val scheduler: IScheduler,
     private val logger: ILogger,
     private val eventBus: IEventBus,
-    private val moneyFormatter: IMoneyFormatter,
-    private val searchRecentSuggestions: SearchRecentSuggestions
+    private val moneyFormatter: IMoneyFormatter
 ) : BaseViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -61,9 +64,9 @@ class ProductsListViewModel @Inject constructor(
     private var _deleteRecentSearchesEvent = SingleLiveEvent<DialogInfoUiModel>()
     val deleteRecentSearchesEvent: LiveData<DialogInfoUiModel> get() = _deleteRecentSearchesEvent
 
-    private var query = "Motorola"
+    private var query: String? = null
 
-    private val deleteRecentSearches = { searchRecentSuggestions.clearHistory() }
+    private val deleteRecentSearches = { clearRecentSuggestionsUseCase.clearRecentSuggestions() }
 
     /**
      * Initializes the listener for incoming queries and, caches the query and clears the cached
@@ -81,37 +84,55 @@ class ProductsListViewModel @Inject constructor(
             )
             isEventListenerInitialized = true
         }
-        if (productsList.value.isNullOrEmpty()) {
+        if (query == null) {
+            fetchProductRecommendations()
+        } else if (productsList.value.isNullOrEmpty()) {
             searchProducts()
         }
     }
+
+    fun doSearch() {
+        if (query == null) fetchProductRecommendations() else searchProducts()
+    }
+
+    private fun getOffset() = _productsList.value?.size ?: 0
 
     /**
      * Searches the products. For this shows the loader and hides the keyboard. Then handles
      * possible errors or the search success. This method works both for the first search and
      * further results as per the pagination.
      */
-    fun searchProducts() {
+    private fun searchProducts() {
         _isLoaderVisible.value = true
         _hideKeyboardEvent.value = true
-        val offset = _productsList.value?.size ?: 0
         compositeDisposable.add(
-            searchProductsUseCase.searchProducts(query, offset, PAGE_SIZE)
-                .compose(scheduler.applySingleDefaultSchedulers())
-                .subscribe(
-                    {
-                        handleSearchSuccess(it)
-                    }, {
-                        handleSearchError(it)
-                    }
-                )
+            searchProductsUseCase.searchProducts(
+                query ?: EMPTY_STRING,
+                getOffset(),
+                PAGE_SIZE
+            ).compose(scheduler.applySingleDefaultSchedulers()).subscribe(
+                { handleSearchSuccess(it) },
+                { handleSearchError(it) }
+            )
+        )
+    }
+
+    private fun fetchProductRecommendations() {
+        _isLoaderVisible.value = true
+        compositeDisposable.add(
+            fetchProductRecommendationsUseCase.fetchProductRecommendations(
+                getOffset(), PAGE_SIZE_RECOMMENDATIONS
+            ).compose(scheduler.applySingleDefaultSchedulers()).subscribe(
+                { handleSearchSuccess(it) },
+                { handleSearchError(it) }
+            )
         )
     }
 
     /**
      * Handles the failure search scenario, for this it hides the loader, triggers the error event,
      * logs the error and show the empty state if there are no previously loaded products.
-     * @param error The error to be handled.
+     * @param error The search error.
      */
     private fun handleSearchError(error: Throwable) {
         _isLoaderVisible.value = false
@@ -128,11 +149,11 @@ class ProductsListViewModel @Inject constructor(
      * Process the successful search scenario. In order to keep an "infinite" list of results, it
      * concatenates the new results with the previous ones if present, then hides the loader and
      * shows the empty state only if the result of the concatenation is empty.
-     * @param searchResult The result of the search to be handled.
+     * @param results The results of the search.
      */
-    private fun handleSearchSuccess(searchResult: ProductsSearchResultEntity) {
+    private fun handleSearchSuccess(results: List<ProductEntity>) {
         val currentResults = _productsList.value
-        val newResults = searchResult.results.map { getProductUiModelFromEntity(it) }
+        val newResults = results.map { getProductUiModelFromEntity(it) }
         _productsList.value = concatenate(
             currentResults ?: listOf(),
             newResults
@@ -145,13 +166,10 @@ class ProductsListViewModel @Inject constructor(
         product.id,
         product.title,
         moneyFormatter.format(product.price),
-        product.idCurrency,
         product.quantity,
         product.soldQuantity,
         product.condition,
-        product.link,
         product.thumbnail,
-        product.stopTime,
         product.shippingInformation.freeShipping
     )
 

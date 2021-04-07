@@ -74,7 +74,7 @@ class ProductsListFragment : BaseDaggerFragment() {
                         }
                         if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
                             if (binding.srlProductsListResults.isRefreshing.not()) {
-                                this@ProductsListFragment.viewModel.searchProducts()
+                                this@ProductsListFragment.viewModel.doSearch()
                             }
                         }
                     }

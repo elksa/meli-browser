@@ -9,12 +9,9 @@ data class ProductUiModel(
     val id: String,
     val title: String,
     val price: String,
-    val idCurrency: String,
     val quantity: Int,
     val soldQuantity: Int,
     val condition: ItemCondition,
-    val link: String,
     val thumbnail: String,
-    val stopTime: String,
     val freeShipping: Boolean
 ) : Parcelable
