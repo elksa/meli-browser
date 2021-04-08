@@ -21,15 +21,12 @@ import com.elksa.sample.buscador.mercadolibre.databinding.FragmentProductsListBi
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseDaggerFragment
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.CustomListAdapter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.ListItemDataAbstract
-import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.imageLoader.IImageLoader
 import javax.inject.Inject
 
 class ProductsListFragment : BaseDaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject
-    lateinit var imageLoader: IImageLoader<*>
 
     private var visibleItemCount = 0
     private var totalItemCount = 0
@@ -38,12 +35,13 @@ class ProductsListFragment : BaseDaggerFragment() {
 
     private lateinit var binding: FragmentProductsListBinding
     private val viewModel: ProductsListViewModel by viewModels { viewModelFactory }
-    private val adapter = CustomListAdapter { parent, _ ->
-        ProductItemView(
-            parent.context,
-            imageLoader,
-            viewModel::onProductSelected
-        )
+    private val adapter by lazy {
+        CustomListAdapter { parent, _ ->
+            ProductItemView(
+                parent.context,
+                viewModel::onProductSelected
+            )
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -10,7 +10,6 @@ import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.imageLoade
 
 class ProductItemView(
     override val context: Context,
-    private val imageLoader: IImageLoader<*>,
 ) : ListItemView<PictureUiModel> {
 
     private val binding = ListItemPictureBinding.inflate(LayoutInflater.from(context))
@@ -27,7 +26,6 @@ class ProductItemView(
 
     override fun bind(item: PictureUiModel) {
         data = item
-        imageLoader.loadImage(item.url, binding.imgItemPictureImage)
         binding.uiModel = item
         binding.executePendingBindings()
     }

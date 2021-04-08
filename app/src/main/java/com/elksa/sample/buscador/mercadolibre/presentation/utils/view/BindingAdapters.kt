@@ -16,6 +16,12 @@ import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition
 import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition.NOT_SPECIFIED
 import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition.USED
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductUiModel
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.imageLoader.GlideImageLoader
+
+@BindingAdapter("imageUrl")
+fun ImageView.setImageFromUrl(url: String?) {
+    url?.let { GlideImageLoader(context).loadImage(url, this) }
+}
 
 @BindingAdapter("isVisible")
 fun View.isVisible(isVisible: Boolean) {
