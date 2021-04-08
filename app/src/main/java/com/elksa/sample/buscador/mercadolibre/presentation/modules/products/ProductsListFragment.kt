@@ -130,4 +130,9 @@ class ProductsListFragment : BaseDaggerFragment() {
             })
         }
     }
+
+    override fun onDestroyView() {
+        binding.rvProductsListResults.adapter = null
+        super.onDestroyView()
+    }
 }
