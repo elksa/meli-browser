@@ -2,7 +2,7 @@ package com.elksa.sample.buscador.mercadolibre.presentation.modules.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.elksa.sample.buscador.mercadolibre.interactors.SaveRecentSearchUseCase
-import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBusPublisher
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.SearchProductEvent
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Before
@@ -22,14 +22,14 @@ class MainViewModelTest {
     val rule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var eventBusMock: IEventBus
+    private lateinit var eventBusPublisherMock: IEventBusPublisher
 
     @Mock
     private lateinit var saveRecentSearchUseCaseMok: SaveRecentSearchUseCase
 
     @Before
     fun setUp() {
-        sut = MainViewModel(saveRecentSearchUseCaseMok, eventBusMock)
+        sut = MainViewModel(saveRecentSearchUseCaseMok, eventBusPublisherMock)
     }
 
     @Test
@@ -49,6 +49,6 @@ class MainViewModelTest {
         // when
         sut.performSearch(query)
         // then
-        verify(eventBusMock).publish(SearchProductEvent(query))
+        verify(eventBusPublisherMock).publish(SearchProductEvent(query))
     }
 }

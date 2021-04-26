@@ -11,7 +11,7 @@ import com.elksa.sample.buscador.mercadolibre.interactors.FetchProductRecommenda
 import com.elksa.sample.buscador.mercadolibre.interactors.SearchProductsUseCase
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductsListFragmentDirections.Companion.actionDestProductsListFragmentToDestProductDetailsFragment
-import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBusListener
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.formatters.MoneyFormatter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationToDirectionEvent
 import com.elksa.sample.buscador.mercadolibre.utils.TestScheduler
@@ -61,7 +61,7 @@ class ProductsListViewModelTest {
     private lateinit var loggerMock: ILogger
 
     @Mock
-    private lateinit var eventBusMock: IEventBus
+    private lateinit var eventBusListenerMock: IEventBusListener
 
     @Mock
     private lateinit var moneyFormatterMock: MoneyFormatter
@@ -83,7 +83,7 @@ class ProductsListViewModelTest {
             clearRecentSuggestionsUseCaseMock,
             testScheduler,
             loggerMock,
-            eventBusMock,
+            eventBusListenerMock,
             moneyFormatterMock
         )
     }

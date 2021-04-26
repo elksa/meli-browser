@@ -4,7 +4,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
-class RxEventBus @Inject constructor() : IEventBus {
+class RxEventBus @Inject constructor() : IEventBusPublisher, IEventBusListener {
 
     private val publisher = PublishSubject.create<BusEvent>()
 

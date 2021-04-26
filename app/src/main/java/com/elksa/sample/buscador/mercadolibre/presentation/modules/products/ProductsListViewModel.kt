@@ -15,7 +15,7 @@ import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseVi
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductsListFragmentDirections.Companion.actionDestProductsListFragmentToDestProductDetailsFragment
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.concatenate
-import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBus
+import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBusListener
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.SearchProductEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.formatters.IMoneyFormatter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.SingleLiveEvent
@@ -33,7 +33,7 @@ class ProductsListViewModel @Inject constructor(
     private val clearRecentSuggestionsUseCase: ClearRecentSuggestionsUseCase,
     private val scheduler: IScheduler,
     private val logger: ILogger,
-    private val eventBus: IEventBus,
+    private val eventBusListener: IEventBusListener,
     private val moneyFormatter: IMoneyFormatter
 ) : BaseViewModel() {
 
@@ -76,7 +76,7 @@ class ProductsListViewModel @Inject constructor(
     fun init() {
         if (isEventListenerInitialized.not()) {
             compositeDisposable.add(
-                eventBus.listen(SearchProductEvent::class.java).subscribe {
+                eventBusListener.listen(SearchProductEvent::class.java).subscribe {
                     query = it.query
                     _productsList.value = listOf()
                     searchProducts()
