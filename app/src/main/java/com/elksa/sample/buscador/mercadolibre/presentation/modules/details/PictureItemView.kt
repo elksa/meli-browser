@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import com.elksa.sample.buscador.mercadolibre.databinding.ListItemPictureBinding
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.ListItemView
-import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.imageLoader.IImageLoader
 
 class ProductItemView(
     override val context: Context,

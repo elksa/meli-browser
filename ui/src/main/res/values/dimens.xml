@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common -->
+    <dimen name="ui_match_constraint">0dp</dimen>
+    <!-- General dimensions -->
+    <dimen name="ui_spacing_xsmall">4dp</dimen>
+    <dimen name="ui_spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="spacing_xlarge">64dp</dimen>
+    <!-- Custom dimensions -->
+    <dimen name="ui_indicator_horizontal_margin">2dp</dimen>
+    <dimen name="ui_indicator_height">26dp</dimen>
+    <dimen name="ui_details_pictures_height">250dp</dimen>
+</resources>

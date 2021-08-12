@@ -9,11 +9,11 @@ import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERRO
 import com.elksa.sample.buscador.mercadolibre.interactors.ClearRecentSuggestionsUseCase
 import com.elksa.sample.buscador.mercadolibre.interactors.FetchProductRecommendationsUseCase
 import com.elksa.sample.buscador.mercadolibre.interactors.SearchProductsUseCase
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductsListFragmentDirections.Companion.actionDestProductsListFragmentToDestProductDetailsFragment
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBusListener
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.formatters.MoneyFormatter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationToDirectionEvent
+import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.utils.TestScheduler
 import com.elksa.sample.buscador.mercadolibre.utils.callPrivateFun
 import com.elksa.sample.buscador.mercadolibre.utils.getField

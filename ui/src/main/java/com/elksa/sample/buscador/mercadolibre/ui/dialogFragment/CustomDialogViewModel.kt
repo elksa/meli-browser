@@ -1,4 +1,4 @@
-package com.elksa.sample.buscador.mercadolibre.presentation.modules.common
+package com.elksa.sample.buscador.mercadolibre.ui.dialogFragment
 
 import androidx.lifecycle.ViewModel
 

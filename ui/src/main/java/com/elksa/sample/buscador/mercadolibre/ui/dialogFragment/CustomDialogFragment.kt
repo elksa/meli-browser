@@ -1,4 +1,4 @@
-package com.elksa.sample.buscador.mercadolibre.presentation.modules.common
+package com.elksa.sample.buscador.mercadolibre.ui.dialogFragment
 
 import android.app.Dialog
 import android.os.Bundle
@@ -7,11 +7,11 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.CustomDialogFragment.Builder.Companion.ARG_ICON
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.CustomDialogFragment.Builder.Companion.ARG_POSITIVE_BUTTON
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.CustomDialogFragment.Builder.Companion.ARG_NEGATIVE_BUTTON
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.CustomDialogFragment.Builder.Companion.ARG_SUBTITLE
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.CustomDialogFragment.Builder.Companion.ARG_TITLE
+import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.CustomDialogFragment.Builder.Companion.ARG_ICON
+import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.CustomDialogFragment.Builder.Companion.ARG_NEGATIVE_BUTTON
+import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.CustomDialogFragment.Builder.Companion.ARG_POSITIVE_BUTTON
+import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.CustomDialogFragment.Builder.Companion.ARG_SUBTITLE
+import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.CustomDialogFragment.Builder.Companion.ARG_TITLE
 
 class CustomDialogFragment : DialogFragment() {
 

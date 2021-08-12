@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.SingleLiveEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationEvent
+import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.DialogInfoUiModel
 
 abstract class BaseViewModel : ViewModel() {
 

@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2.ORIENTATION_HORIZONTAL
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.databinding.FragmentProductDetailsBinding
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.CustomListAdapter
@@ -73,16 +72,11 @@ class ProductDetailsFragment : BaseDaggerFragment() {
     }
 
     private fun setupPicturesPager() {
-        binding.pagerProductDetailsPictures.run {
-            orientation = ORIENTATION_HORIZONTAL
-            adapter = this@ProductDetailsFragment.adapter
-            setPageTransformer(ZoomOutTransformation())
-            registerOnPageChangeCallback(object : OnPageChangeCallback() {
-
-                override fun onPageSelected(position: Int) {
-                    viewModel.updatePageIndicator(position)
-                }
-            })
-        }
+        binding.carouselProductDetailsPictures.setupCarousel(
+            ORIENTATION_HORIZONTAL,
+            adapter,
+            viewModel::updatePageIndicator,
+            ZoomOutTransformation()
+        )
     }
 }

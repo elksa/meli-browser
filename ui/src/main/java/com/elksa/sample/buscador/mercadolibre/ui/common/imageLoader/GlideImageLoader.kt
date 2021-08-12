@@ -1,4 +1,4 @@
-package com.elksa.sample.buscador.mercadolibre.presentation.utils.view.imageLoader
+package com.elksa.sample.buscador.mercadolibre.ui.common.imageLoader
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -6,10 +6,9 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
-import com.elksa.sample.buscador.mercadolibre.R
-import javax.inject.Inject
+import com.elksa.sample.buscador.mercadolibre.ui.R
 
-class GlideImageLoader @Inject constructor(
+class GlideImageLoader(
     private val context: Context
 ) : IImageLoader<RequestListener<Drawable>> {
 

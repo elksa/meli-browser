@@ -57,57 +57,18 @@
                     app:layout_constraintTop_toBottomOf="@id/lbl_product_details_condition"
                     tools:text="Ghost of Tsushima PS4 formato físico, juego Playstation 4" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_product_details_pictures"
+                <com.elksa.sample.buscador.mercadolibre.ui.carousel.CarouselView
+                    android:id="@+id/carousel_product_details_pictures"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_small"
+                    app:indicatorCurrentPage="@{viewModel.currentPicturePosition}"
+                    app:indicatorDefaultImageUrl="@{viewModel.product.thumbnail}"
+                    app:indicatorItemCount="@{viewModel.productDetails.pictures.size()}"
+                    app:indicatorThumbnailVisible="@{viewModel.isThumbnailVisible}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/lbl_product_details_title">
-
-                    <ImageView
-                        android:id="@+id/img_product_details_thumbnail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:scaleType="centerInside"
-                        app:imageUrl="@{viewModel.product.thumbnail}"
-                        app:isVisible="@{viewModel.isThumbnailVisible}"
-                        app:layout_constraintStart_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="ContentDescription"
-                        tools:srcCompat="@tools:sample/avatars"
-                        tools:visibility="visible" />
-
-                    <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/pager_product_details_pictures"
-                        android:layout_width="@dimen/match_constraint"
-                        android:layout_height="@dimen/details_pictures_height"
-                        android:layout_marginTop="@dimen/spacing_small"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        app:isVisible="@{!viewModel.isThumbnailVisible}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <LinearLayout
-                        android:id="@+id/layout_product_details_pager_indicator"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/indicator_height"
-                        android:layout_marginTop="@dimen/spacing_xsmall"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        app:indicatorData="@{viewModel.productDetails.pictures.size()}"
-                        app:indicatorPage="@{viewModel.currentPicturePosition}"
-                        app:isVisible="@{!viewModel.isThumbnailVisible}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/pager_product_details_pictures" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintTop_toBottomOf="@id/lbl_product_details_title"/>
 
                 <TextView
                     android:id="@+id/lbl_product_details_price"
@@ -117,7 +78,7 @@
                     android:text="@{viewModel.product.price}"
                     android:textSize="@dimen/text_size_xlarge"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/layout_product_details_pictures"
+                    app:layout_constraintTop_toBottomOf="@id/carousel_product_details_pictures"
                     tools:text="$ 199,900" />
 
                 <TextView
