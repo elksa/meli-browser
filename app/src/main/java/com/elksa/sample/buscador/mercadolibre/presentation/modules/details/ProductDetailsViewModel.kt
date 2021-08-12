@@ -12,8 +12,8 @@ import com.elksa.sample.buscador.mercadolibre.domain.utils.IScheduler
 import com.elksa.sample.buscador.mercadolibre.interactors.FetchProductDetailsUseCase
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseViewModel
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.OnBackPressedEvent
+import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.DialogInfoUiModel
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 

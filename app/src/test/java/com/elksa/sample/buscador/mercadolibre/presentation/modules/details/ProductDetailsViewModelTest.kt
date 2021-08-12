@@ -12,9 +12,9 @@ import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ItemDescriptionEntity
 import com.elksa.sample.buscador.mercadolibre.interactors.FetchProductDetailsUseCase
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.OnBackPressedEvent
+import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.utils.TestScheduler
 import com.elksa.sample.buscador.mercadolibre.utils.callPrivateFun
 import com.elksa.sample.buscador.mercadolibre.utils.getProductUiModelFromProductEntity

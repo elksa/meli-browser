@@ -1,4 +1,4 @@
-package com.elksa.sample.buscador.mercadolibre.presentation.utils.view.imageLoader
+package com.elksa.sample.buscador.mercadolibre.ui.common.imageLoader
 
 import android.widget.ImageView
 

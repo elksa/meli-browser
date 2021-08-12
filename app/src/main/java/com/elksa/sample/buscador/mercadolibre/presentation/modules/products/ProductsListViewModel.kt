@@ -12,7 +12,6 @@ import com.elksa.sample.buscador.mercadolibre.interactors.ClearRecentSuggestions
 import com.elksa.sample.buscador.mercadolibre.interactors.FetchProductRecommendationsUseCase
 import com.elksa.sample.buscador.mercadolibre.interactors.SearchProductsUseCase
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseViewModel
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.DialogInfoUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductsListFragmentDirections.Companion.actionDestProductsListFragmentToDestProductDetailsFragment
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.concatenate
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBusListener
@@ -20,6 +19,7 @@ import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.Search
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.formatters.IMoneyFormatter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.SingleLiveEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationToDirectionEvent
+import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.DialogInfoUiModel
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 

@@ -2,10 +2,12 @@ package com.elksa.sample.buscador.mercadolibre.presentation.modules.common
 
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.CustomDialogFragment.Companion.TAG
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationToDirectionEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.OnBackPressedEvent
+import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.CustomDialogFragment
+import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.CustomDialogFragment.Companion.TAG
+import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.DialogInfoUiModel
 import dagger.android.support.DaggerFragment
 
 abstract class BaseDaggerFragment : DaggerFragment() {

@@ -1,4 +1,4 @@
-package com.elksa.sample.buscador.mercadolibre.presentation.modules.common
+package com.elksa.sample.buscador.mercadolibre.ui.dialogFragment
 
 data class DialogInfoUiModel(
     val icon: Int,

@@ -2,7 +2,7 @@ package com.elksa.sample.buscador.mercadolibre.presentation.modules.products
 
 import android.os.Parcelable
 import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ProductUiModel(
