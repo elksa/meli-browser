@@ -23,7 +23,8 @@
         tools:targetApi="n">
         <activity
             android:name=".presentation.modules.main.MainActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
