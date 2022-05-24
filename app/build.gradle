@@ -55,6 +55,7 @@ android {
                     '**/R.class'
         }
     }
+    namespace 'com.elksa.sample.buscador.mercadolibre'
 }
 
 dependencies {
