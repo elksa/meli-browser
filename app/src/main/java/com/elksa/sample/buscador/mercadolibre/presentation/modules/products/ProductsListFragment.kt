@@ -64,6 +64,7 @@ class ProductsListFragment : BaseDaggerFragment() {
         binding = FragmentProductsListBinding.inflate(inflater).apply {
             viewModel = this@ProductsListFragment.viewModel
             lifecycleOwner = this@ProductsListFragment
+            rvProductsListResults.setHasFixedSize(true)
             rvProductsListResults.adapter = adapter
             rvProductsListResults.addOnScrollListener(object : OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
