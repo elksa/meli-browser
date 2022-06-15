@@ -1,9 +1,6 @@
 package com.elksa.sample.buscador.mercadolibre.presentation.modules.details
 
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -28,23 +25,17 @@ class ProductDetailsFragment : BaseDaggerFragment() {
         CustomListAdapter { parent, _ -> ProductItemView(parent.context) }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun getCurrentView() = binding.root
+
+    override fun initComponents(inflater: LayoutInflater) {
         binding = FragmentProductDetailsBinding.inflate(inflater).apply {
             viewModel = this@ProductDetailsFragment.viewModel
             lifecycleOwner = this@ProductDetailsFragment
         }
-
         viewModel.init(args.product)
-        setupObservers()
-
-        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun setupActionBar() {
         (requireActivity() as AppCompatActivity).run {
             setSupportActionBar(binding.layoutProductsListToolbar.tbAppBar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -55,8 +46,7 @@ class ProductDetailsFragment : BaseDaggerFragment() {
         }
     }
 
-
-    private fun setupObservers() {
+    override fun setupObservers() {
         viewModel.run {
             observerViewModelEvents(this)
             productDetails.observe(viewLifecycleOwner) {

@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
@@ -50,17 +48,9 @@ class ProductsListFragment : BaseDaggerFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        (requireActivity() as AppCompatActivity).run {
-            setSupportActionBar(binding.layoutProductsListToolbar.tbAppBar)
-        }
-    }
+    override fun getCurrentView() = binding.root
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun initComponents(inflater: LayoutInflater) {
         binding = FragmentProductsListBinding.inflate(inflater).apply {
             viewModel = this@ProductsListFragment.viewModel
             lifecycleOwner = this@ProductsListFragment
@@ -84,11 +74,7 @@ class ProductsListFragment : BaseDaggerFragment() {
                 }
             })
         }
-
-        setupObservers()
         viewModel.init()
-
-        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -110,23 +96,29 @@ class ProductsListFragment : BaseDaggerFragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setupObservers() {
+    override fun setupActionBar() {
+        (requireActivity() as AppCompatActivity).run {
+            setSupportActionBar(binding.layoutProductsListToolbar.tbAppBar)
+        }
+    }
+
+    override fun setupObservers() {
         viewModel.run {
             observerViewModelEvents(this)
-            productsList.observe(viewLifecycleOwner, {
+            productsList.observe(viewLifecycleOwner) {
                 adapter.submitList(
                     it.map { productUiModel -> ListItemDataAbstract(productUiModel) }
                 )
-            })
-            hideKeyboardEvent.observe(viewLifecycleOwner, {
+            }
+            hideKeyboardEvent.observe(viewLifecycleOwner) {
                 if (it == true && ::searchView.isInitialized) searchView.clearFocus()
-            })
-            errorEvent.observe(viewLifecycleOwner, { dialogInfo ->
+            }
+            errorEvent.observe(viewLifecycleOwner) { dialogInfo ->
                 dialogInfo?.let { showDialog(it) }
-            })
-            deleteRecentSearchesEvent.observe(viewLifecycleOwner, { dialogModel ->
+            }
+            deleteRecentSearchesEvent.observe(viewLifecycleOwner) { dialogModel ->
                 dialogModel?.let { showDialog(it) }
-            })
+            }
         }
     }
 
