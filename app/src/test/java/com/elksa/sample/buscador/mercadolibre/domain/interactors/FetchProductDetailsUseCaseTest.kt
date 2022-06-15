@@ -1,8 +1,8 @@
-package com.elksa.sample.buscador.mercadolibre.interactors
+package com.elksa.sample.buscador.mercadolibre.domain.interactors
 
 import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ItemDescriptionEntity
-import com.elksa.sample.buscador.mercadolibre.framework.networking.MeliBrowserApi
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ItemDescriptionEntity
+import com.elksa.sample.buscador.mercadolibre.framework.networking.services.MeliBrowserApi
 import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ProductDetailsDto
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever

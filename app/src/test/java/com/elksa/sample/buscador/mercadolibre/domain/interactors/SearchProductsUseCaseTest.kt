@@ -1,7 +1,7 @@
-package com.elksa.sample.buscador.mercadolibre.interactors
+package com.elksa.sample.buscador.mercadolibre.domain.interactors
 
 import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
-import com.elksa.sample.buscador.mercadolibre.framework.networking.MeliBrowserApi
+import com.elksa.sample.buscador.mercadolibre.framework.networking.services.MeliBrowserApi
 import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ProductsSearchResultDto
 import com.elksa.sample.buscador.mercadolibre.framework.networking.utils.SITE_ID_CO
 import com.elksa.sample.buscador.mercadolibre.utils.getSampleProductsDto

@@ -1,4 +1,4 @@
-package com.elksa.sample.buscador.mercadolibre.domain.utils
+package com.elksa.sample.buscador.mercadolibre.framework.networking.utils
 
 import io.reactivex.SingleTransformer
 

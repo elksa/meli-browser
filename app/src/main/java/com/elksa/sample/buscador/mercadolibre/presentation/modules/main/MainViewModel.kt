@@ -1,7 +1,7 @@
 package com.elksa.sample.buscador.mercadolibre.presentation.modules.main
 
 import androidx.lifecycle.ViewModel
-import com.elksa.sample.buscador.mercadolibre.interactors.SaveRecentSearchUseCase
+import com.elksa.sample.buscador.mercadolibre.domain.interactors.SaveRecentSearchUseCase
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBusPublisher
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.SearchProductEvent
 import javax.inject.Inject

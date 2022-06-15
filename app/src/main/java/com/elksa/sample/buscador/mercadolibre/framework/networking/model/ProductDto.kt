@@ -1,7 +1,7 @@
 package com.elksa.sample.buscador.mercadolibre.framework.networking.model
 
-import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity
-import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductEntity
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductEntity.ItemCondition
 import com.google.gson.annotations.SerializedName
 
 data class ProductDto(

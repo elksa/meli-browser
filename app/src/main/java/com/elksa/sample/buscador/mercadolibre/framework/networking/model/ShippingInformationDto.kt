@@ -1,6 +1,6 @@
 package com.elksa.sample.buscador.mercadolibre.framework.networking.model
 
-import com.elksa.sample.buscador.mercadolibre.domain.ShippingInformationEntity
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ShippingInformationEntity
 import com.google.gson.annotations.SerializedName
 
 class ShippingInformationDto(

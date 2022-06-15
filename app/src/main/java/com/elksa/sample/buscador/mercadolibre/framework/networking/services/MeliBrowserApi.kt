@@ -1,4 +1,4 @@
-package com.elksa.sample.buscador.mercadolibre.framework.networking
+package com.elksa.sample.buscador.mercadolibre.framework.networking.services
 
 import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ItemDescriptionDto
 import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ProductDetailsDto

@@ -1,6 +1,6 @@
 package com.elksa.sample.buscador.mercadolibre.framework.networking.model
 
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ItemDescriptionEntity
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ItemDescriptionEntity
 import com.google.gson.annotations.SerializedName
 
 data class ItemDescriptionDto(

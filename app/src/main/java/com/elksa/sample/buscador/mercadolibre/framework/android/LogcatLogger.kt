@@ -1,6 +1,7 @@
-package com.elksa.sample.buscador.mercadolibre.domain.utils
+package com.elksa.sample.buscador.mercadolibre.framework.android
 
 import android.util.Log
+import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.DEBUG
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR

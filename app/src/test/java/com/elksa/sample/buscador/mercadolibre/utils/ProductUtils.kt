@@ -1,8 +1,8 @@
 package com.elksa.sample.buscador.mercadolibre.utils
 
-import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity
-import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition
-import com.elksa.sample.buscador.mercadolibre.domain.ShippingInformationEntity
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductEntity
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductEntity.ItemCondition
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ShippingInformationEntity
 import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ProductDto
 import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ProductDto.ItemConditionDto.NEW
 import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ShippingInformationDto

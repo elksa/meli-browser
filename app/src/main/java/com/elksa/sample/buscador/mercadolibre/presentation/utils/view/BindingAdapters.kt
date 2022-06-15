@@ -5,10 +5,10 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.elksa.sample.buscador.mercadolibre.R
-import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition
-import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition.NEW
-import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition.NOT_SPECIFIED
-import com.elksa.sample.buscador.mercadolibre.domain.ProductEntity.ItemCondition.USED
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductEntity.ItemCondition
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductEntity.ItemCondition.NEW
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductEntity.ItemCondition.NOT_SPECIFIED
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductEntity.ItemCondition.USED
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductUiModel
 
 @BindingAdapter("freeShipping")

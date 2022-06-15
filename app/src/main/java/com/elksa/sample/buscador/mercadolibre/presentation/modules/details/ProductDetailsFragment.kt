@@ -59,15 +59,15 @@ class ProductDetailsFragment : BaseDaggerFragment() {
     private fun setupObservers() {
         viewModel.run {
             observerViewModelEvents(this)
-            productDetails.observe(viewLifecycleOwner, {
+            productDetails.observe(viewLifecycleOwner) {
                 setupPicturesPager()
                 adapter.submitList(
                     it.pictures.map { pictureUiModel -> ListItemDataAbstract(pictureUiModel) }
                 )
-            })
-            errorEvent.observe(viewLifecycleOwner, { dialogInfo ->
+            }
+            errorEvent.observe(viewLifecycleOwner) { dialogInfo ->
                 dialogInfo?.let { showDialog(it) }
-            })
+            }
         }
     }
 

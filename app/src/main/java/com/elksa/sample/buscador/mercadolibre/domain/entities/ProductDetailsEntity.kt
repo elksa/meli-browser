@@ -1,6 +1,4 @@
-package com.elksa.sample.buscador.mercadolibre.domain
-
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ItemDescriptionEntity
+package com.elksa.sample.buscador.mercadolibre.domain.entities
 
 data class ProductDetailsEntity(
     val id: String,

@@ -6,9 +6,9 @@ import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
-import com.elksa.sample.buscador.mercadolibre.interactors.ClearRecentSuggestionsUseCase
-import com.elksa.sample.buscador.mercadolibre.interactors.FetchProductRecommendationsUseCase
-import com.elksa.sample.buscador.mercadolibre.interactors.SearchProductsUseCase
+import com.elksa.sample.buscador.mercadolibre.domain.interactors.ClearRecentSuggestionsUseCase
+import com.elksa.sample.buscador.mercadolibre.domain.interactors.FetchProductRecommendationsUseCase
+import com.elksa.sample.buscador.mercadolibre.domain.interactors.SearchProductsUseCase
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductsListFragmentDirections.Companion.actionDestProductsListFragmentToDestProductDetailsFragment
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBusListener
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.formatters.MoneyFormatter

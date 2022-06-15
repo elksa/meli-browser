@@ -1,7 +1,7 @@
-package com.elksa.sample.buscador.mercadolibre.interactors
+package com.elksa.sample.buscador.mercadolibre.domain.interactors
 
-import com.elksa.sample.buscador.mercadolibre.domain.ProductDetailsEntity
-import com.elksa.sample.buscador.mercadolibre.framework.networking.MeliBrowserApi
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductDetailsEntity
+import com.elksa.sample.buscador.mercadolibre.framework.networking.services.MeliBrowserApi
 import io.reactivex.Single
 import javax.inject.Inject
 

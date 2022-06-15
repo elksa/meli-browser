@@ -1,4 +1,4 @@
-package com.elksa.sample.buscador.mercadolibre.interactors
+package com.elksa.sample.buscador.mercadolibre.domain.interactors
 
 import android.provider.SearchRecentSuggestions
 import com.nhaarman.mockitokotlin2.verify

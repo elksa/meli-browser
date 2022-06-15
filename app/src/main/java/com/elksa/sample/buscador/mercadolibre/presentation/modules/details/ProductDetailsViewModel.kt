@@ -5,11 +5,11 @@ import android.view.View.VISIBLE
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.elksa.sample.buscador.mercadolibre.R
-import com.elksa.sample.buscador.mercadolibre.domain.ProductDetailsEntity
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductDetailsEntity
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
 import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
-import com.elksa.sample.buscador.mercadolibre.domain.utils.IScheduler
-import com.elksa.sample.buscador.mercadolibre.interactors.FetchProductDetailsUseCase
+import com.elksa.sample.buscador.mercadolibre.framework.networking.utils.IScheduler
+import com.elksa.sample.buscador.mercadolibre.domain.interactors.FetchProductDetailsUseCase
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductUiModel
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseViewModel
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.OnBackPressedEvent

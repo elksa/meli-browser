@@ -1,4 +1,4 @@
-package com.elksa.sample.buscador.mercadolibre.domain
+package com.elksa.sample.buscador.mercadolibre.domain.entities
 
 data class ProductEntity(
     val id: String,
