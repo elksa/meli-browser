@@ -1,6 +1,6 @@
 package com.elksa.sample.buscador.mercadolibre.domain.interactors
 
-import android.provider.SearchRecentSuggestions
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ISuggestionsRepository
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Before
 import org.junit.Test
@@ -15,7 +15,7 @@ class ClearRecentSuggestionsUseCaseTest {
     private lateinit var sut: ClearRecentSuggestionsUseCase
 
     @Mock
-    private lateinit var searchRecentSuggestionsMock: SearchRecentSuggestions
+    private lateinit var searchRecentSuggestionsMock: ISuggestionsRepository
 
     @Before
     fun setUp() {

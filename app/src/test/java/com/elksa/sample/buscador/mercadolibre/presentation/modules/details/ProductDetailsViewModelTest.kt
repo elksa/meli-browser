@@ -8,8 +8,8 @@ import com.elksa.sample.buscador.mercadolibre.domain.entities.PictureEntity
 import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductDetailsEntity
 import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductEntity.ItemCondition.USED
 import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ILogger
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ILogger.LogLevel.ERROR
 import com.elksa.sample.buscador.mercadolibre.domain.entities.ItemDescriptionEntity
 import com.elksa.sample.buscador.mercadolibre.domain.interactors.FetchProductDetailsUseCase
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.ProductUiModel

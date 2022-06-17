@@ -1,6 +1,6 @@
 package com.elksa.sample.buscador.mercadolibre.domain.interactors
 
-import com.elksa.sample.buscador.mercadolibre.framework.android.RandomGenerator
+import com.elksa.sample.buscador.mercadolibre.domain.utils.RandomGenerator
 import javax.inject.Inject
 
 class FetchProductRecommendationsUseCase @Inject constructor(

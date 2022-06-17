@@ -1,4 +1,4 @@
-package com.elksa.sample.buscador.mercadolibre.framework.android
+package com.elksa.sample.buscador.mercadolibre.domain.utils
 
 import javax.inject.Inject
 import kotlin.random.Random

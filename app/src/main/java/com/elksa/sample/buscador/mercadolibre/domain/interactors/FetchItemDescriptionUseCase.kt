@@ -1,12 +1,12 @@
 package com.elksa.sample.buscador.mercadolibre.domain.interactors
 
 import com.elksa.sample.buscador.mercadolibre.domain.entities.ItemDescriptionEntity
-import com.elksa.sample.buscador.mercadolibre.framework.networking.services.MeliBrowserApi
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.IItemRepository
 import io.reactivex.Single
 import javax.inject.Inject
 
 class FetchItemDescriptionUseCase @Inject constructor(
-    private val meliBrowserApi: MeliBrowserApi
+    private val itemRepository: IItemRepository
 ) {
 
     /**
@@ -15,6 +15,6 @@ class FetchItemDescriptionUseCase @Inject constructor(
      * @return The item description entity.
      */
     fun fetchItemDescription(idItem: String): Single<ItemDescriptionEntity> {
-        return meliBrowserApi.getItemDescription(idItem).map { it.mapToDomain() }
+        return itemRepository.getItemDescription(idItem)
     }
 }

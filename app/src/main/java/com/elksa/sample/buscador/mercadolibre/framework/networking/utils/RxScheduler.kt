@@ -1,6 +1,5 @@
-package com.elksa.sample.buscador.mercadolibre.framework.android
+package com.elksa.sample.buscador.mercadolibre.framework.networking.utils
 
-import com.elksa.sample.buscador.mercadolibre.framework.networking.utils.IScheduler
 import io.reactivex.SingleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

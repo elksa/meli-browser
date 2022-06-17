@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ILogger
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ILogger.LogLevel.ERROR
 import com.elksa.sample.buscador.mercadolibre.domain.interactors.ClearRecentSuggestionsUseCase
 import com.elksa.sample.buscador.mercadolibre.domain.interactors.FetchProductRecommendationsUseCase
 import com.elksa.sample.buscador.mercadolibre.domain.interactors.SearchProductsUseCase

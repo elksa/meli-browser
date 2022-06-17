@@ -1,13 +1,14 @@
 package com.elksa.sample.buscador.mercadolibre.domain.interactors
 
 import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductEntity
-import com.elksa.sample.buscador.mercadolibre.framework.networking.services.MeliBrowserApi
-import com.elksa.sample.buscador.mercadolibre.framework.networking.utils.SITE_ID_CO
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.IProductRepository
 import io.reactivex.Single
 import javax.inject.Inject
 
+private const val SITE_ID_CO = "MCO"
+
 class SearchProductsUseCase @Inject constructor(
-    private val meliBrowserApi: MeliBrowserApi
+    private val productRepository: IProductRepository
 ) {
 
     /**
@@ -22,8 +23,6 @@ class SearchProductsUseCase @Inject constructor(
         offset: Int,
         limit: Int
     ): Single<List<ProductEntity>> {
-        return meliBrowserApi.searchProducts(SITE_ID_CO, query, offset, limit).map {
-            it.results.map { product -> product.mapToDomain() }
-        }
+        return productRepository.searchProducts(SITE_ID_CO, query, offset, limit)
     }
 }

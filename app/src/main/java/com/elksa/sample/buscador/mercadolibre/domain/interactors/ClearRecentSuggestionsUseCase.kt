@@ -1,13 +1,13 @@
 package com.elksa.sample.buscador.mercadolibre.domain.interactors
 
-import android.provider.SearchRecentSuggestions
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ISuggestionsRepository
 import javax.inject.Inject
 
 class ClearRecentSuggestionsUseCase @Inject constructor(
-    private val searchRecentSuggestions: SearchRecentSuggestions
+    private val suggestionsRepository: ISuggestionsRepository
 ) {
 
     fun clearRecentSuggestions() {
-        searchRecentSuggestions.clearHistory()
+        suggestionsRepository.clearHistory()
     }
 }

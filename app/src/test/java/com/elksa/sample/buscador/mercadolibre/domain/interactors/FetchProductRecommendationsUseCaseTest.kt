@@ -1,6 +1,6 @@
 package com.elksa.sample.buscador.mercadolibre.domain.interactors
 
-import com.elksa.sample.buscador.mercadolibre.framework.android.RandomGenerator
+import com.elksa.sample.buscador.mercadolibre.domain.utils.RandomGenerator
 import com.elksa.sample.buscador.mercadolibre.utils.getField
 import com.elksa.sample.buscador.mercadolibre.utils.getSampleProducts
 import com.elksa.sample.buscador.mercadolibre.utils.setField

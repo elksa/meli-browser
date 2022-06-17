@@ -1,13 +1,13 @@
 package com.elksa.sample.buscador.mercadolibre.framework.android
 
 import android.util.Log
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.DEBUG
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.INFORMATION
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.VERBOSE
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.WARNING
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ILogger
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ILogger.LogLevel
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ILogger.LogLevel.DEBUG
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ILogger.LogLevel.ERROR
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ILogger.LogLevel.INFORMATION
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ILogger.LogLevel.VERBOSE
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ILogger.LogLevel.WARNING
 import javax.inject.Inject
 
 class LogcatLogger @Inject constructor() : ILogger {

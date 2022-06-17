@@ -1,8 +1,8 @@
 package com.elksa.sample.buscador.mercadolibre.domain.interactors
 
+import com.elksa.sample.buscador.mercadolibre.domain.entities.ItemDescriptionEntity
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.IItemRepository
 import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
-import com.elksa.sample.buscador.mercadolibre.framework.networking.services.MeliBrowserApi
-import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ItemDescriptionDto
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
@@ -20,31 +20,30 @@ class FetchItemDescriptionUseCaseTest {
     private lateinit var sut: FetchItemDescriptionUseCase
 
     @Mock
-    private lateinit var meliBrowserApiMock: MeliBrowserApi
+    private lateinit var repositoryMock: IItemRepository
 
     @Before
     fun setUp() {
-        sut = FetchItemDescriptionUseCase(meliBrowserApiMock)
+        sut = FetchItemDescriptionUseCase(repositoryMock)
     }
 
     @Test
     fun fetchItemDescription_onSuccess_returnsItemDescription() {
         // given
-        val itemDescriptionDto = ItemDescriptionDto("text", "plaintext")
-        whenever(meliBrowserApiMock.getItemDescription(anyString()))
-            .thenReturn(Single.just(itemDescriptionDto))
-        val expectedResult = itemDescriptionDto.mapToDomain()
+        val itemDescription = ItemDescriptionEntity("text", "plaintext")
+        whenever(repositoryMock.getItemDescription(anyString()))
+            .thenReturn(Single.just(itemDescription))
         // when
         val result = sut.fetchItemDescription(EMPTY_STRING)
         // then
-        assertEquals(expectedResult, result.blockingGet())
+        assertEquals(itemDescription, result.blockingGet())
     }
 
     @Test
     fun fetchItemDescription_onFailure_returnsError() {
         // given
         val error = Throwable("error fetching item description")
-        whenever(meliBrowserApiMock.getItemDescription(anyString()))
+        whenever(repositoryMock.getItemDescription(anyString()))
             .thenReturn(Single.error(error))
         // when
         val result = sut.fetchItemDescription(EMPTY_STRING)
@@ -56,11 +55,11 @@ class FetchItemDescriptionUseCaseTest {
     fun fetchItemDescription_invocation_apiGetItemDescriptionInvokedWithItemId() {
         // given
         val itemId = "itemId"
-        whenever(meliBrowserApiMock.getItemDescription(anyString()))
+        whenever(repositoryMock.getItemDescription(anyString()))
             .thenReturn(Single.error(Throwable()))
         // when
         sut.fetchItemDescription(itemId)
         // then
-        verify(meliBrowserApiMock).getItemDescription(itemId)
+        verify(repositoryMock).getItemDescription(itemId)
     }
 }

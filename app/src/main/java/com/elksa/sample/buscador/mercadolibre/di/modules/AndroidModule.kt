@@ -1,15 +1,15 @@
 package com.elksa.sample.buscador.mercadolibre.di.modules
 
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ILogger
 import com.elksa.sample.buscador.mercadolibre.framework.networking.utils.IScheduler
 import com.elksa.sample.buscador.mercadolibre.framework.android.LogcatLogger
-import com.elksa.sample.buscador.mercadolibre.framework.android.RxScheduler
+import com.elksa.sample.buscador.mercadolibre.framework.networking.utils.RxScheduler
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton
 
 @Module
-abstract class DomainModule {
+abstract class AndroidModule {
 
     @Singleton
     @Binds

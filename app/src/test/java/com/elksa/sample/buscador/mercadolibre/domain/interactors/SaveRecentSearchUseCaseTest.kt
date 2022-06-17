@@ -1,6 +1,6 @@
 package com.elksa.sample.buscador.mercadolibre.domain.interactors
 
-import android.provider.SearchRecentSuggestions
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ISuggestionsRepository
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Before
 import org.junit.Test
@@ -14,11 +14,11 @@ class SaveRecentSearchUseCaseTest {
     private lateinit var sut: SaveRecentSearchUseCase
 
     @Mock
-    private lateinit var searchRecentSuggestionsMock: SearchRecentSuggestions
+    private lateinit var suggestionsRepositoryMock: ISuggestionsRepository
 
     @Before
     fun setUp() {
-        sut = SaveRecentSearchUseCase(searchRecentSuggestionsMock)
+        sut = SaveRecentSearchUseCase(suggestionsRepositoryMock)
     }
 
     @Test
@@ -28,6 +28,6 @@ class SaveRecentSearchUseCaseTest {
         // when
         sut.saveRecentSearchQuery(query)
         // then
-        verify(searchRecentSuggestionsMock).saveRecentQuery(query, null)
+        verify(suggestionsRepositoryMock).saveRecentSearchQuery(query)
     }
 }

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductEntity
 import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger
-import com.elksa.sample.buscador.mercadolibre.domain.utils.ILogger.LogLevel.ERROR
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ILogger
+import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ILogger.LogLevel.ERROR
 import com.elksa.sample.buscador.mercadolibre.framework.networking.utils.IScheduler
 import com.elksa.sample.buscador.mercadolibre.domain.interactors.ClearRecentSuggestionsUseCase
 import com.elksa.sample.buscador.mercadolibre.domain.interactors.FetchProductRecommendationsUseCase

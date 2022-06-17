@@ -1,4 +1,4 @@
-package com.elksa.sample.buscador.mercadolibre.domain.utils
+package com.elksa.sample.buscador.mercadolibre.domain.interfaces
 
 interface ILogger {
 
