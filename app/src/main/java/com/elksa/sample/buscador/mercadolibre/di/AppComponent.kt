@@ -1,10 +1,13 @@
 package com.elksa.sample.buscador.mercadolibre.di
 
 import android.app.Application
-import com.elksa.sample.buscador.mercadolibre.di.modules.*
+import com.elksa.sample.buscador.mercadolibre.di.modules.AndroidModule
 import com.elksa.sample.buscador.mercadolibre.di.modules.ActivityBuildersModule
 import com.elksa.sample.buscador.mercadolibre.di.modules.AppModule
 import com.elksa.sample.buscador.mercadolibre.di.modules.FragmentBuildersModule
+import com.elksa.sample.buscador.mercadolibre.di.modules.NetworkingModule
+import com.elksa.sample.buscador.mercadolibre.di.modules.PresentationModule
+import com.elksa.sample.buscador.mercadolibre.di.modules.RepositoryModule
 import com.elksa.sample.buscador.mercadolibre.presentation.application.MeliBrowserApplication
 import dagger.BindsInstance
 import dagger.Component
