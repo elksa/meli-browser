@@ -2,11 +2,13 @@ package com.elksa.sample.buscador.mercadolibre.presentation.utils.formatters
 
 import android.content.Context
 import com.elksa.sample.buscador.mercadolibre.R
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.text.NumberFormat
 import java.util.Locale.US
 import javax.inject.Inject
 
 class MoneyFormatter @Inject constructor(
+    @ApplicationContext
     val context: Context
 ) : IMoneyFormatter {
 

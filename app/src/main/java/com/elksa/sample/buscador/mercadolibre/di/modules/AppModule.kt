@@ -1,6 +1,5 @@
 package com.elksa.sample.buscador.mercadolibre.di.modules
 
-import android.app.Application
 import android.content.Context
 import android.provider.SearchRecentSuggestions
 import com.elksa.sample.buscador.mercadolibre.framework.android.SuggestionsProvider.Companion.AUTHORITY
@@ -10,20 +9,18 @@ import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.RxEventBus
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@Module(includes = [ViewModelModule::class])
+@InstallIn(SingletonComponent::class)
+@Module
 internal class AppModule {
 
     @Singleton
     @Provides
-    fun provideContext(application: Application): Context {
-        return application
-    }
-
-    @Singleton
-    @Provides
-    fun provideSearchRecentSuggestions(context: Context) =
+    fun provideSearchRecentSuggestions(@ApplicationContext context: Context) =
         SearchRecentSuggestions(context, AUTHORITY, MODE)
 
     @Singleton

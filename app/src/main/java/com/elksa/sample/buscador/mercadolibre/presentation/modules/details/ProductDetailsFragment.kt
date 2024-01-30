@@ -3,23 +3,20 @@ package com.elksa.sample.buscador.mercadolibre.presentation.modules.details
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2.ORIENTATION_HORIZONTAL
 import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.databinding.FragmentProductDetailsBinding
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.CustomListAdapter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.ListItemDataAbstract
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseDaggerFragment
-import javax.inject.Inject
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-class ProductDetailsFragment : BaseDaggerFragment() {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+@AndroidEntryPoint
+class ProductDetailsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentProductDetailsBinding
-    private val viewModel: ProductDetailsViewModel by viewModels { viewModelFactory }
+    private val viewModel: ProductDetailsViewModel by viewModels()
     private val args by navArgs<ProductDetailsFragmentArgs>()
     private val adapter by lazy {
         CustomListAdapter { parent, _ -> ProductItemView(parent.context) }

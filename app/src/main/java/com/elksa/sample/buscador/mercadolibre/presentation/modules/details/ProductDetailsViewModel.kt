@@ -14,11 +14,13 @@ import com.elksa.sample.buscador.mercadolibre.presentation.modules.products.Prod
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseViewModel
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.OnBackPressedEvent
 import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.DialogInfoUiModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 private const val TAG = "ProductDetailsViewModel"
 
+@HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val fetchProductDetailsUseCase: FetchProductDetailsUseCase,
     private val scheduler: IScheduler,

@@ -10,21 +10,18 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.databinding.FragmentProductsListBinding
-import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseDaggerFragment
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseFragment
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.CustomListAdapter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.ListItemDataAbstract
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class ProductsListFragment : BaseDaggerFragment() {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+@AndroidEntryPoint
+class ProductsListFragment : BaseFragment() {
 
     private var visibleItemCount = 0
     private var totalItemCount = 0
@@ -32,7 +29,7 @@ class ProductsListFragment : BaseDaggerFragment() {
     private lateinit var searchView: SearchView
 
     private lateinit var binding: FragmentProductsListBinding
-    private val viewModel: ProductsListViewModel by viewModels { viewModelFactory }
+    private val viewModel: ProductsListViewModel by viewModels()
     private val adapter by lazy {
         CustomListAdapter { parent, _ ->
             ProductItemView(

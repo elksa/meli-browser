@@ -20,6 +20,7 @@ import com.elksa.sample.buscador.mercadolibre.presentation.utils.formatters.IMon
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.SingleLiveEvent
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.navigation.NavigationToDirectionEvent
 import com.elksa.sample.buscador.mercadolibre.ui.dialogFragment.DialogInfoUiModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -27,6 +28,7 @@ private const val TAG = "ProductsListViewModel"
 private const val PAGE_SIZE = 50
 private const val PAGE_SIZE_RECOMMENDATIONS = 15
 
+@HiltViewModel
 class ProductsListViewModel @Inject constructor(
     private val searchProductsUseCase: SearchProductsUseCase,
     private val fetchProductRecommendationsUseCase: FetchProductRecommendationsUseCase,
