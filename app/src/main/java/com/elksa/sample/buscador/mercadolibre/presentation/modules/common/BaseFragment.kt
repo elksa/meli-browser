@@ -43,7 +43,7 @@ abstract class BaseFragment : Fragment() {
     private fun navigateFragment(navigation: NavigationEvent) {
         when (navigation) {
             is NavigationToDirectionEvent -> findNavController().navigate(navigation.navDirections)
-            is OnBackPressedEvent -> requireActivity().onBackPressed()
+            is OnBackPressedEvent -> requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 
