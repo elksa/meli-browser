@@ -43,7 +43,7 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glide_version"
     // Unit tests
     testImplementation "junit:junit:$junit_version"
-    androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"
+    androidTestImplementation "androidx.test.ext:junit:$junit_version_ext"
     // Instrumentation tests
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
 }

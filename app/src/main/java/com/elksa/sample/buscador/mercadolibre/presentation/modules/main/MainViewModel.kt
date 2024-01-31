@@ -1,15 +1,17 @@
 package com.elksa.sample.buscador.mercadolibre.presentation.modules.main
 
-import androidx.lifecycle.ViewModel
 import com.elksa.sample.buscador.mercadolibre.domain.interactors.SaveRecentSearchUseCase
+import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseViewModel
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBusPublisher
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.SearchProductEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class MainViewModel @Inject constructor(
     private val saveRecentSearchUseCase: SaveRecentSearchUseCase,
     private val eventBusPublisher: IEventBusPublisher
-): ViewModel() {
+): BaseViewModel() {
 
     private fun saveRecentQuery(query: String) {
         saveRecentSearchUseCase.saveRecentSearchQuery(query)
