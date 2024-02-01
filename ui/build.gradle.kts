@@ -1,4 +1,5 @@
 plugins {
+    id("com.google.devtools.ksp")
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
@@ -39,7 +40,7 @@ dependencies {
     implementation(libs.material)
     // Glide
     api(libs.glide.core)
-    kapt(libs.glide.compiler)
+    ksp(libs.glide.ksp)
     // Unit tests
     androidTestImplementation(libs.junit.ext)
     // Instrumentation tests
