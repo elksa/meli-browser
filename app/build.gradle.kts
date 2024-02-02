@@ -1,11 +1,11 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-parcelize")
-    id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
-    id("androidx.navigation.safeargs.kotlin")
-    id("org.sonarqube")
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.kotlinParcelize)
+    alias(libs.plugins.kotlinSafeArgs)
+    alias(libs.plugins.androidHilt)
+    alias(libs.plugins.sonarQube)
 }
 
 android {
