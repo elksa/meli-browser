@@ -3,8 +3,6 @@ package com.elksa.sample.buscador.mercadolibre.domain.interactors
 import com.elksa.sample.buscador.mercadolibre.domain.entities.ItemDescriptionEntity
 import com.elksa.sample.buscador.mercadolibre.domain.interfaces.IItemRepository
 import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -12,6 +10,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -31,7 +31,7 @@ class FetchItemDescriptionUseCaseTest {
     fun fetchItemDescription_onSuccess_returnsItemDescription() {
         // given
         val itemDescription = ItemDescriptionEntity("text", "plaintext")
-        whenever(repositoryMock.getItemDescription(anyString()))
+        `when`(repositoryMock.getItemDescription(anyString()))
             .thenReturn(Single.just(itemDescription))
         // when
         val result = sut.fetchItemDescription(EMPTY_STRING)
@@ -43,7 +43,7 @@ class FetchItemDescriptionUseCaseTest {
     fun fetchItemDescription_onFailure_returnsError() {
         // given
         val error = Throwable("error fetching item description")
-        whenever(repositoryMock.getItemDescription(anyString()))
+        `when`(repositoryMock.getItemDescription(anyString()))
             .thenReturn(Single.error(error))
         // when
         val result = sut.fetchItemDescription(EMPTY_STRING)
@@ -55,7 +55,7 @@ class FetchItemDescriptionUseCaseTest {
     fun fetchItemDescription_invocation_apiGetItemDescriptionInvokedWithItemId() {
         // given
         val itemId = "itemId"
-        whenever(repositoryMock.getItemDescription(anyString()))
+        `when`(repositoryMock.getItemDescription(anyString()))
             .thenReturn(Single.error(Throwable()))
         // when
         sut.fetchItemDescription(itemId)

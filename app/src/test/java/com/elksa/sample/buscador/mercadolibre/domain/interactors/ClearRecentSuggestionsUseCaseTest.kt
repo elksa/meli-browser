@@ -1,12 +1,12 @@
 package com.elksa.sample.buscador.mercadolibre.domain.interactors
 
 import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ISuggestionsRepository
-import com.nhaarman.mockitokotlin2.verify
 import org.junit.Before
 import org.junit.Test
 
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)

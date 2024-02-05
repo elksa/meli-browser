@@ -17,8 +17,8 @@ kotlin = "1.9.21"
 kotlin-parcelize = "1.9.22"
 lifecycle = "2.7.0"
 material = "1.11.0"
-mockito = "3.3.0"
-mockito-kotlin = "2.2.0"
+mockito = "4.8.0"
+mockito-kotlin = "4.0.0"
 navigation = "2.7.6"
 retrofit = "2.9.0"
 rxandroid = "2.1.1"
@@ -62,7 +62,7 @@ core-testing = { group = "androidx.arch.core", name = "core-testing", version.re
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
-mockito-kotlin = { group = "com.nhaarman.mockitokotlin2", name = "mockito-kotlin", version.ref = "mockito-kotlin" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin" }
 glide-core = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-ksp = { group = "com.github.bumptech.glide", name = "ksp", version.ref = "glide" }
 

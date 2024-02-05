@@ -4,12 +4,12 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.elksa.sample.buscador.mercadolibre.domain.interactors.SaveRecentSearchUseCase
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.IEventBusPublisher
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.eventBus.SearchProductEvent
-import com.nhaarman.mockitokotlin2.verify
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)

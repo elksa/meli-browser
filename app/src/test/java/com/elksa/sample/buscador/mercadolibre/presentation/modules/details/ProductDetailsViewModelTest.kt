@@ -20,9 +20,6 @@ import com.elksa.sample.buscador.mercadolibre.utils.callPrivateFun
 import com.elksa.sample.buscador.mercadolibre.utils.getProductUiModelFromProductEntity
 import com.elksa.sample.buscador.mercadolibre.utils.getSampleProducts
 import com.elksa.sample.buscador.mercadolibre.utils.setField
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
-import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import org.junit.Assert.assertEquals
@@ -33,6 +30,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyNoInteractions
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 private const val TAG = "ProductDetailsViewModel"
@@ -102,7 +102,7 @@ class ProductDetailsViewModelTest {
     fun init_productSet_productIsSet() {
         // given
         val expectedProduct = getProductUiModelFromProductEntity(getSampleProducts()[0])
-        whenever(fetchProductDetailsUseCaseMock.fetchProductDetails(anyString()))
+        `when`(fetchProductDetailsUseCaseMock.fetchProductDetails(anyString()))
             .thenReturn(Single.just(getSampleProductDetails()))
         // when
         sut.init(expectedProduct)
@@ -114,7 +114,7 @@ class ProductDetailsViewModelTest {
     fun init_productSet_invokedFetchProductDetailsWithProductId() {
         // given
         val product = getProductUiModelFromProductEntity(getSampleProducts()[0])
-        whenever(fetchProductDetailsUseCaseMock.fetchProductDetails(product.id))
+        `when`(fetchProductDetailsUseCaseMock.fetchProductDetails(product.id))
             .thenReturn(Single.just(getSampleProductDetails()))
         // when
         sut.init(product)
@@ -128,7 +128,7 @@ class ProductDetailsViewModelTest {
         val productDetails = getSampleProductDetails()
         val product = getProductUiModelFromProductEntity(getSampleProducts()[0])
         val expectedProductDetailsUiModel = ProductDetailsUiModel.mapFromDomain(productDetails)
-        whenever(fetchProductDetailsUseCaseMock.fetchProductDetails(product.id))
+        `when`(fetchProductDetailsUseCaseMock.fetchProductDetails(product.id))
             .thenReturn(Single.just(productDetails))
         // when
         sut.init(product)
@@ -142,7 +142,7 @@ class ProductDetailsViewModelTest {
         // given
         val productDetails = getSampleProductDetails()
         val product = getProductUiModelFromProductEntity(getSampleProducts()[0])
-        whenever(fetchProductDetailsUseCaseMock.fetchProductDetails(product.id))
+        `when`(fetchProductDetailsUseCaseMock.fetchProductDetails(product.id))
             .thenReturn(Single.just(productDetails))
         // when
         sut.init(product)
@@ -155,7 +155,7 @@ class ProductDetailsViewModelTest {
         // given
         val productDetails = getSampleProductDetails(0)
         val product = getProductUiModelFromProductEntity(getSampleProducts()[0])
-        whenever(fetchProductDetailsUseCaseMock.fetchProductDetails(product.id))
+        `when`(fetchProductDetailsUseCaseMock.fetchProductDetails(product.id))
             .thenReturn(Single.just(productDetails))
         // when
         sut.init(product)
@@ -167,7 +167,7 @@ class ProductDetailsViewModelTest {
     fun init_onFetchProductDetailsFailure_loaderGoneErrorLoggedThumbnailVisible() {
         // given
         val error = Throwable("error loadig product details")
-        whenever(fetchProductDetailsUseCaseMock.fetchProductDetails(anyString()))
+        `when`(fetchProductDetailsUseCaseMock.fetchProductDetails(anyString()))
             .thenReturn(Single.error(error))
         val info = DialogInfoUiModel(
             R.drawable.ic_error,
@@ -188,7 +188,7 @@ class ProductDetailsViewModelTest {
         // given
         val product = getProductUiModelFromProductEntity(getSampleProducts()[0])
         setField(FIELD_NAME_PRODUCT, MutableLiveData(product), sut)
-        whenever(fetchProductDetailsUseCaseMock.fetchProductDetails(anyString()))
+        `when`(fetchProductDetailsUseCaseMock.fetchProductDetails(anyString()))
             .thenReturn(Single.error(Throwable()))
         val newProduct = ProductUiModel(
             "newId",
@@ -213,7 +213,7 @@ class ProductDetailsViewModelTest {
         // when
         sut.init(getProductUiModelFromProductEntity(getSampleProducts()[0]))
         // then
-        verifyZeroInteractions(fetchProductDetailsUseCaseMock)
+        verifyNoInteractions(fetchProductDetailsUseCaseMock)
     }
 
     @Test
