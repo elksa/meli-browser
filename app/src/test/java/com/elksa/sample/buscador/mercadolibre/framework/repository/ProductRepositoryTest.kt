@@ -6,8 +6,6 @@ import com.elksa.sample.buscador.mercadolibre.framework.networking.model.Product
 import com.elksa.sample.buscador.mercadolibre.framework.networking.model.ProductsSearchResultDto
 import com.elksa.sample.buscador.mercadolibre.framework.networking.services.MeliBrowserApi
 import com.elksa.sample.buscador.mercadolibre.utils.getSampleProductsDto
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -16,6 +14,8 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 private const val ID_SITE = "idSite"
@@ -42,7 +42,7 @@ class ProductRepositoryTest {
         // given
         val productsDto = getSampleProductsDto()
         val searchResult = ProductsSearchResultDto(ID_SITE, productsDto)
-        whenever(apiMock.searchProducts(anyString(), anyString(), anyInt(), anyInt()))
+        `when`(apiMock.searchProducts(anyString(), anyString(), anyInt(), anyInt()))
             .thenReturn(Single.just(searchResult))
         // when
         val result = sut.searchProducts(ID_SITE, EMPTY_STRING, 0, 0)
@@ -62,7 +62,7 @@ class ProductRepositoryTest {
     fun searchProducts_onFailure_returnsError() {
         // given
         val error = Throwable("error searching products")
-        whenever(apiMock.searchProducts(anyString(), anyString(), anyInt(), anyInt()))
+        `when`(apiMock.searchProducts(anyString(), anyString(), anyInt(), anyInt()))
             .thenReturn(Single.error(error))
         // when
         val result = sut.searchProducts(ID_SITE, QUERY, OFFSET, LIMIT)
@@ -74,7 +74,7 @@ class ProductRepositoryTest {
     fun searchProducts_invocation_apiSearchProductsInvokedWithProperParams() {
         // given
         val error = Throwable("error searching products")
-        whenever(apiMock.searchProducts(anyString(), anyString(), anyInt(), anyInt()))
+        `when`(apiMock.searchProducts(anyString(), anyString(), anyInt(), anyInt()))
             .thenReturn(Single.error(error))
         // when
         sut.searchProducts(ID_SITE, QUERY, OFFSET, LIMIT)
@@ -91,7 +91,7 @@ class ProductRepositoryTest {
             "category",
             listOf(PictureDto("idPicture", "url"))
         )
-        whenever(apiMock.getProductDetails(anyString())).thenReturn(Single.just(productDetailsDto))
+        `when`(apiMock.getProductDetails(anyString())).thenReturn(Single.just(productDetailsDto))
         // when
         val result = sut.getProductDetails(EMPTY_STRING)
         // then
@@ -106,7 +106,7 @@ class ProductRepositoryTest {
     fun getProductDetails_onFailure_returnsError() {
         // given
         val error = Throwable("error loading description")
-        whenever(apiMock.getProductDetails(anyString())).thenReturn(Single.error(error))
+        `when`(apiMock.getProductDetails(anyString())).thenReturn(Single.error(error))
         // when
         val result = sut.getProductDetails(EMPTY_STRING)
         // then
@@ -117,7 +117,7 @@ class ProductRepositoryTest {
     fun getProductDetails_invocation_apiGetDetailsInvokedWithProductId() {
         // given
         val error = Throwable("error loading description")
-        whenever(apiMock.getProductDetails(anyString())).thenReturn(Single.error(error))
+        `when`(apiMock.getProductDetails(anyString())).thenReturn(Single.error(error))
         // when
         sut.getProductDetails(ID_PRODUCT)
         // then

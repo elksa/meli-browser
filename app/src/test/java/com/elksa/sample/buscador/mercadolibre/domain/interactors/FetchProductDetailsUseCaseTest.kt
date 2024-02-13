@@ -4,8 +4,6 @@ import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
 import com.elksa.sample.buscador.mercadolibre.domain.entities.ItemDescriptionEntity
 import com.elksa.sample.buscador.mercadolibre.domain.entities.ProductDetailsEntity
 import com.elksa.sample.buscador.mercadolibre.domain.interfaces.IProductRepository
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -13,6 +11,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -38,9 +39,9 @@ class FetchProductDetailsUseCaseTest {
             "id", "title", listOf(), ItemDescriptionEntity()
         )
         val itemDescription = ItemDescriptionEntity("text", "plaintext")
-        whenever(productRepositoryMock.getProductDetails(anyString()))
+        `when`(productRepositoryMock.getProductDetails(anyString()))
             .thenReturn(Single.just(productDetails))
-        whenever(fetchItemDescriptionUseCaseMock.fetchItemDescription(anyString()))
+        `when`(fetchItemDescriptionUseCaseMock.fetchItemDescription(anyString()))
             .thenReturn(Single.just(itemDescription))
         // when
         val result = sut.fetchProductDetails(EMPTY_STRING)
@@ -55,9 +56,9 @@ class FetchProductDetailsUseCaseTest {
         val productDetails = ProductDetailsEntity(
             "id", "title", listOf(), ItemDescriptionEntity()
         )
-        whenever(fetchItemDescriptionUseCaseMock.fetchItemDescription(anyString()))
+        `when`(fetchItemDescriptionUseCaseMock.fetchItemDescription(anyString()))
             .thenReturn(Single.error(error))
-        whenever(productRepositoryMock.getProductDetails(anyString()))
+        `when`(productRepositoryMock.getProductDetails(anyString()))
             .thenReturn(Single.just(productDetails))
         // when
         val result = sut.fetchProductDetails(EMPTY_STRING)
@@ -69,7 +70,7 @@ class FetchProductDetailsUseCaseTest {
     fun fetchProductDetails_onFailureDetails_returnsError() {
         // given
         val error = Throwable("error loading details")
-        whenever(productRepositoryMock.getProductDetails(anyString()))
+        `when`(productRepositoryMock.getProductDetails(anyString()))
             .thenReturn(Single.error(error))
         // when
         val result = sut.fetchProductDetails(EMPTY_STRING)
@@ -84,7 +85,7 @@ class FetchProductDetailsUseCaseTest {
         val productDetails = ProductDetailsEntity(
             "id", "title", listOf(), ItemDescriptionEntity()
         )
-        whenever(productRepositoryMock.getProductDetails(anyString()))
+        `when`(productRepositoryMock.getProductDetails(anyString()))
             .thenReturn(Single.just(productDetails))
         // when
         sut.fetchProductDetails(itemId)

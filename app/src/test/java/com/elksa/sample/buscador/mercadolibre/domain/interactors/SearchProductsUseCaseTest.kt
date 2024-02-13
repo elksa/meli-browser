@@ -3,8 +3,6 @@ package com.elksa.sample.buscador.mercadolibre.domain.interactors
 import com.elksa.sample.buscador.mercadolibre.domain.interfaces.IProductRepository
 import com.elksa.sample.buscador.mercadolibre.domain.utils.EMPTY_STRING
 import com.elksa.sample.buscador.mercadolibre.utils.getSampleProductsDto
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -13,6 +11,8 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 private const val SITE_ID_CO = "MCO"
@@ -34,7 +34,7 @@ class SearchProductsUseCaseTest {
     fun searchProducts_onSuccess_returnsProductsSearch() {
         // given
         val products = getSampleProductsDto().map { it.mapToDomain() }
-        whenever(productRepositoryMock.searchProducts(anyString(), anyString(), anyInt(), anyInt()))
+        `when`(productRepositoryMock.searchProducts(anyString(), anyString(), anyInt(), anyInt()))
             .thenReturn(Single.just(products))
         // when
         val result = sut.searchProducts(EMPTY_STRING, 0, 0)
@@ -56,7 +56,7 @@ class SearchProductsUseCaseTest {
     fun searchProducts_onFailure_returnsError() {
         // given
         val error = Throwable("error searching products")
-        whenever(productRepositoryMock.searchProducts(anyString(), anyString(), anyInt(), anyInt()))
+        `when`(productRepositoryMock.searchProducts(anyString(), anyString(), anyInt(), anyInt()))
             .thenReturn(Single.error(error))
         // when
         val result = sut.searchProducts(EMPTY_STRING, 0, 0)
@@ -70,7 +70,7 @@ class SearchProductsUseCaseTest {
         val query = "query"
         val offset = 1
         val limit = 2
-        whenever(productRepositoryMock.searchProducts(anyString(), anyString(), anyInt(), anyInt()))
+        `when`(productRepositoryMock.searchProducts(anyString(), anyString(), anyInt(), anyInt()))
             .thenReturn(Single.error(Throwable()))
         // when
         sut.searchProducts(query, offset, limit)
