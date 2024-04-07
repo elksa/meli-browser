@@ -34,6 +34,11 @@ android {
     buildFeatures {
         dataBinding = true
         buildConfig = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     compileOptions {
@@ -92,6 +97,23 @@ dependencies {
     implementation(libs.app.compat)
     implementation(libs.constraintlayout)
     implementation(libs.support)
+    // Compose
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.constraintlayout)
+    implementation(libs.compose.runtime)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.foundation.layout)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.ui.viewbinding)
+    // Compose integrations
+    implementation(libs.compose.activity)
+    implementation(libs.compose.runtime.livedata)
+    implementation(libs.compose.lifecycle.viewmodel)
+    implementation(libs.compose.rxjava)
+    // Android Studio Preview support
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling.preview)
     // Lifecycle
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
@@ -122,4 +144,6 @@ dependencies {
     // Instrumentation tests
     androidTestImplementation(libs.junit.ext)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.compose.ui.tooling.preview)
+    debugImplementation(libs.compose.ui.test.manifest)
 }
