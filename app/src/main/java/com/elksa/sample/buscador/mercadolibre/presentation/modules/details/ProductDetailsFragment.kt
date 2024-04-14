@@ -2,14 +2,15 @@ package com.elksa.sample.buscador.mercadolibre.presentation.modules.details
 
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.viewpager2.widget.ViewPager2.ORIENTATION_HORIZONTAL
 import com.elksa.sample.buscador.mercadolibre.R
 import com.elksa.sample.buscador.mercadolibre.databinding.FragmentProductDetailsBinding
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.CustomListAdapter
 import com.elksa.sample.buscador.mercadolibre.presentation.utils.view.adapter.ListItemDataAbstract
 import com.elksa.sample.buscador.mercadolibre.presentation.modules.common.BaseFragment
+import com.elksa.sample.buscador.mercadolibre.presentation.ui.theme.MeliTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,6 +29,16 @@ class ProductDetailsFragment : BaseFragment() {
         binding = FragmentProductDetailsBinding.inflate(inflater).apply {
             viewModel = this@ProductDetailsFragment.viewModel
             lifecycleOwner = this@ProductDetailsFragment
+            composeView.apply {
+                setViewCompositionStrategy(
+                    ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+                )
+                setContent {
+                    MeliTheme {
+                        ProductDetails(viewModel!!, adapter)
+                    }
+                }
+            }
         }
         viewModel.init(args.product)
     }
@@ -47,7 +58,6 @@ class ProductDetailsFragment : BaseFragment() {
         viewModel.run {
             observerViewModelEvents(this)
             productDetails.observe(viewLifecycleOwner) {
-                setupPicturesPager()
                 adapter.submitList(
                     it.pictures.map { pictureUiModel -> ListItemDataAbstract(pictureUiModel) }
                 )
@@ -56,14 +66,5 @@ class ProductDetailsFragment : BaseFragment() {
                 dialogInfo?.let { showDialog(it) }
             }
         }
-    }
-
-    private fun setupPicturesPager() {
-        binding.carouselProductDetailsPictures.setupCarousel(
-            ORIENTATION_HORIZONTAL,
-            adapter,
-            viewModel::updatePageIndicator,
-            ZoomOutTransformation()
-        )
     }
 }
