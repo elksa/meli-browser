@@ -21,7 +21,7 @@ jobs:
   tests-results:
     needs: unit-tests
     if: always()
-    runs-on: ununtu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Upload test results
         uses: actions/upload-artifact@v3
