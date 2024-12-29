@@ -16,8 +16,12 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
+      - name: Check build output
+        run: cat build/reports/build.txt || echo "Build output not found"
       - name: Run tests with Gradle
         run: ./gradlew testDebugUnitTest
+      - name: List build directory
+        run: ls -R build
 
   tests-results:
     needs: unit-tests
