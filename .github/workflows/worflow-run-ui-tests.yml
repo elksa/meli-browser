@@ -33,15 +33,32 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
+      - name: Install system image
+        run: sdkmanager "system-images;android-30;google_apis;x86_64"
+
       - name: Start emulator
         run: |
           sudo apt-get update
           sudo apt-get install -y qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
           sudo adduser $USER libvirt
           sudo adduser $USER kvm
-          avdmanager create avd -n test -k "system-images;android-30;google_apis;x86_64" --device "pixel"
-          $ANDROID_HOME/emulator/emulator -avd test -no-window -no-audio -no-boot-anim -accel on &
+          echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86_64" --device "pixel"
+          $ANDROID_HOME/emulator/emulator -avd test -no-window -no-audio -no-boot-anim -no-snapshot -accel off &
           adb wait-for-device
+          boot_completed=false
+          retries=0
+          while [ $boot_completed = false ] && [ $retries -lt 10 ]; do
+            if adb shell getprop sys.boot_completed | grep -m 1 '1'; then
+              boot_completed=true
+            else
+              sleep 30
+              retries=$((retries + 1))
+            fi
+          done
+          if [ $boot_completed = false ]; then
+            echo "Emulator failed to start"
+            exit 1
+          fi
           adb shell input keyevent 82
 
       - name: Run instrumentation tests
