@@ -1,5 +1,9 @@
 name: Unit Tests
-on: [push, workflow_dispatch]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
@@ -16,22 +20,20 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Check build output
-        run: cat build/reports/build.txt || echo "Build output not found"
       - name: Run tests with Gradle
         run: ./gradlew testDebugUnitTest
-      - name: List build directory
-        run: ls -R build
-
-  tests-results:
-    needs: unit-tests
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
       - name: Upload test results
+        if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: Unit Tests results
+          name: test-results
           path: |
             **/build/test-results/testDebugUnitTest/
             **/build/reports/tests/testDebugUnitTest/
+      - name: Upload lint report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: lint-report
+          path: |
+            **/build/reports/lint-results-debug.html
