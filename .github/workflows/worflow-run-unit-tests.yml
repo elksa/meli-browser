@@ -23,14 +23,14 @@ jobs:
       - name: Run tests with Gradle
         run: ./gradlew testDebugUnitTest
 
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: |
-            **/build/test-results/testDebugUnitTest/
-            **/build/reports/tests/testDebugUnitTest/
+#      - name: Upload test results
+#        if: always()
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: test-results
+#          path: |
+#            **/build/test-results/testDebugUnitTest/
+#            **/build/reports/tests/testDebugUnitTest/
 
       - name: Comment on pull request
         if: github.event_name == 'pull_request'
@@ -39,7 +39,16 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
-            const results = fs.readFileSync('**/build/reports/tests/testDebugUnitTest/index.html', 'utf8');
+            const path = require('path');
+            const testResultsDir = path.join(process.cwd(), 'build/test-results/testDebugUnitTest');
+            const files = fs.readdirSync(testResultsDir);
+            let results = '';
+            files.forEach(file => {
+              if (file.endsWith('.xml')) {
+                const content = fs.readFileSync(path.join(testResultsDir, file), 'utf8');
+                results += content;
+              }
+            });
             const comment = `### Unit Test Results\n\n${results}`;
             github.issues.createComment({
               issue_number: context.issue.number,
