@@ -63,6 +63,9 @@ jobs:
       - name: Install xmllint
         run: sudo apt-get install -y libxml2-utils
 
+      - name: List current directory files
+        run: ls -la
+
       - name: Make parse_test_results.sh executable
         run: chmod +x parse_test_results.sh
 
