@@ -28,9 +28,15 @@ for file in "$TEST_RESULTS_DIR"/*.xml; do
 done
 
 # Print the total amounts
-echo "Tests execution summary:"
-echo "Executed: $total_tests"
-echo "Skipped: $total_skipped"
-echo "Failed: $total_failures"
-echo "Errors: $total_errors"
-echo "Time: $total_time"
+echo "Total tests: $total_tests"
+echo "Total skipped: $total_skipped"
+echo "Total failures: $total_failures"
+echo "Total errors: $total_errors"
+echo "Total time: $total_time"
+
+# Set the output for GitHub Actions
+echo "::set-output name=total_tests::$total_tests"
+echo "::set-output name=total_skipped::$total_skipped"
+echo "::set-output name=total_failures::$total_failures"
+echo "::set-output name=total_errors::$total_errors"
+echo "::set-output name=total_time::$total_time"
