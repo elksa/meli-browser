@@ -29,8 +29,8 @@ done
 
 # Print the total amounts
 echo "Tests execution summary:"
-echo "Tests executed: $total_tests"
-echo "Tests skipped: $total_skipped"
-echo "Tests failed: $total_failures"
-echo "Total errors: $total_errors"
-echo "Total time: $total_time"
+echo "Executed: $total_tests"
+echo "Skipped: $total_skipped"
+echo "Failed: $total_failures"
+echo "Errors: $total_errors"
+echo "Time: $total_time"
