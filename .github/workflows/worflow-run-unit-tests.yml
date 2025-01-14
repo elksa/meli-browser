@@ -67,7 +67,7 @@ jobs:
         run: ls -la
 
       - name: Make parse_test_results.sh executable
-        run: chmod +x parse_test_results.sh
+        run: chmod +x .github/workflows/parse_test_results.sh
 
       - name: Parse test results
         run: ./parse_test_results.sh
