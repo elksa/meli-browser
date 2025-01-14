@@ -68,3 +68,17 @@ jobs:
 
       - name: Parse test results
         run: ./.github/workflows/parse_test_results.sh
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request' || github.event_name == 'pull_request_target'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            const output = execSync('cat ${{ steps.parse_results.outputs.stdout }}').toString();
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Tests execution summary:\n${output}`
+            });
