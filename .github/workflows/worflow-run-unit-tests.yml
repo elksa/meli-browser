@@ -74,11 +74,11 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const totalTests = '${{ steps.parse_results.outputs.total_tests }}';
-            const totalSkipped = '${{ steps.parse_results.outputs.total_skipped }}';
-            const totalFailures = '${{ steps.parse_results.outputs.total_failures }}';
-            const totalErrors = '${{ steps.parse_results.outputs.total_errors }}';
-            const totalTime = '${{ steps.parse_results.outputs.total_time }}';
+            const totalTests = process.env.total_tests;
+            const totalSkipped = process.env.total_skipped;
+            const totalFailures = process.env.total_failures;
+            const totalErrors = process.env.total_errors;
+            const totalTime = process.env.total_time;
             const summary = `Tests execution summary:\nExecuted: ${totalTests}\nSkipped: ${totalSkipped}\nFailed: ${totalFailures}\nErrors: ${totalErrors}\nTime: ${totalTime}`;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
