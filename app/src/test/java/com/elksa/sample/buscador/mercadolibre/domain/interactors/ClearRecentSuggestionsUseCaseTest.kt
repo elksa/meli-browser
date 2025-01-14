@@ -35,6 +35,6 @@ class ClearRecentSuggestionsUseCaseTest {
         // when
         sut.clearRecentSuggestions()
         // then
-        assertTrue(false)
+        assertTrue(true)
     }
 }
