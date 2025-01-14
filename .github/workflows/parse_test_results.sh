@@ -7,6 +7,7 @@ TEST_RESULTS_DIR="test-results/app/build/test-results/testDebugUnitTest"
 for file in "$TEST_RESULTS_DIR"/*.xml; do
   # Extract the required attributes using xmllint
   testsuite_name=$(xmllint --xpath 'string(/testsuite/@name)' "$file")
+  class_name=$(basename "$testsuite_name" | awk -F. '{print $NF}')
   tests=$(xmllint --xpath 'string(/testsuite/@tests)' "$file")
   skipped=$(xmllint --xpath 'string(/testsuite/@skipped)' "$file")
   failures=$(xmllint --xpath 'string(/testsuite/@failures)' "$file")
@@ -14,8 +15,7 @@ for file in "$TEST_RESULTS_DIR"/*.xml; do
   time=$(xmllint --xpath 'string(/testsuite/@time)' "$file")
 
   # Print the extracted information
-  echo "File: $file"
-  echo "testsuite name: $testsuite_name"
+  echo "test class: $class_name"
   echo "tests: $tests"
   echo "skipped: $skipped"
   echo "failures: $failures"
