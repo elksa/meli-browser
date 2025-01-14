@@ -36,7 +36,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --continue
 
       - name: Run tests with Gradle
         run: ./gradlew testDebugUnitTest
@@ -74,11 +74,15 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const { execSync } = require('child_process');
-            const output = execSync('cat ${{ steps.parse_results.outputs.stdout }}').toString();
+            const totalTests = '${{ steps.parse_results.outputs.total_tests }}';
+            const totalSkipped = '${{ steps.parse_results.outputs.total_skipped }}';
+            const totalFailures = '${{ steps.parse_results.outputs.total_failures }}';
+            const totalErrors = '${{ steps.parse_results.outputs.total_errors }}';
+            const totalTime = '${{ steps.parse_results.outputs.total_time }}';
+            const summary = `Tests execution summary:\nExecuted: ${totalTests}\nSkipped: ${totalSkipped}\nFailed: ${totalFailures}\nErrors: ${totalErrors}\nTime: ${totalTime}`;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `Tests execution summary:\n${output}`
+              body: summary
             });
