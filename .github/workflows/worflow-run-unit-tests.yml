@@ -61,6 +61,4 @@ jobs:
 
       - name: List files in test results
         run: |
-          unzip -l test-results/test-results
-          unzip -o test-results/test-results -d test-results
           find test-results/app/build/test-results/testDebugUnitTest -type f
