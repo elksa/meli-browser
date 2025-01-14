@@ -49,3 +49,15 @@ jobs:
           path: |
             **/build/test-results/testDebugUnitTest/
             **/build/reports/tests/testDebugUnitTest/
+
+      - name: Download test results
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results.zip
+          path: test-results
+
+      - name: List files in test results
+        run: |
+          unzip -l test-results/test-results.zip
+          unzip -o test-results/test-results.zip -d test-results
+          find test-results/app/build/test-results/testDebugUnitTest -type f
