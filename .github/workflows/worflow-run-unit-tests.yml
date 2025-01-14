@@ -59,3 +59,12 @@ jobs:
       - name: List files in test results
         run: |
           find test-results/app/build/test-results/testDebugUnitTest -maxdepth 1 -type f
+
+      - name: Install xmllint
+        run: sudo apt-get install -y libxml2-utils
+
+      - name: Make parse_test_results.sh executable
+        run: chmod +x parse_test_results.sh
+
+      - name: Parse test results
+        run: ./parse_test_results.sh
