@@ -31,7 +31,7 @@ class ClearRecentSuggestionsUseCaseTest {
     }
 
     @Test
-    fun clearRecentSuggestions_invoked_dummyFail() {
+    fun clearRecentSuggestions_invoked_dummyOk() {
         // when
         sut.clearRecentSuggestions()
         // then
