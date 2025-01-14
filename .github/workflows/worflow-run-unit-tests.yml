@@ -56,9 +56,6 @@ jobs:
           name: test-results
           path: test-results
 
-      - name: List contents of test-results directory
-        run: ls -R test-results
-
       - name: List files in test results
         run: |
-          find test-results/app/build/test-results/testDebugUnitTest -type f
+          find test-results/app/build/test-results/testDebugUnitTest -maxdepth 1 -type f
