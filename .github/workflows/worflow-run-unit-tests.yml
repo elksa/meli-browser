@@ -56,6 +56,9 @@ jobs:
           name: test-results
           path: test-results
 
+      - name: List contents of test-results directory
+        run: ls -R test-results
+
       - name: List files in test results
         run: |
           unzip -l test-results/test-results.zip
