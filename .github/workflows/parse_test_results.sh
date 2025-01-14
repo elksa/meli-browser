@@ -34,9 +34,9 @@ echo "Total failures: $total_failures"
 echo "Total errors: $total_errors"
 echo "Total time: $total_time"
 
-# Set the output for GitHub Actions
-echo "::set-output name=total_tests::$total_tests"
-echo "::set-output name=total_skipped::$total_skipped"
-echo "::set-output name=total_failures::$total_failures"
-echo "::set-output name=total_errors::$total_errors"
-echo "::set-output name=total_time::$total_time"
+# Set the output for GitHub Actions using environment files
+echo "total_tests=$total_tests" >> $GITHUB_ENV
+echo "total_skipped=$total_skipped" >> $GITHUB_ENV
+echo "total_failures=$total_failures" >> $GITHUB_ENV
+echo "total_errors=$total_errors" >> $GITHUB_ENV
+echo "total_time=$total_time" >> $GITHUB_ENV
