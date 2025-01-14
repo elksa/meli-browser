@@ -1,3 +1,6 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
@@ -50,14 +53,29 @@ android {
             property("sonar.sourceEncoding", "UTF-8")
             property("sonar.sources", "src/main/java")
             property(
-                    "sonar.exclusions", "**/*Test*/**," +
-                    "*.json," +
-                    "**/*test*/**," +
-                    "**/.gradle/**," +
-                    "**/R.class"
+                "sonar.exclusions", "**/*Test*/**," +
+                        "*.json," +
+                        "**/*test*/**," +
+                        "**/.gradle/**," +
+                        "**/R.class"
             )
         }
     }
+
+    @Suppress("UnstableApiUsage")
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+        unitTests.all {
+            it.testLogging {
+                events = setOf(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
+                exceptionFormat = TestExceptionFormat.FULL
+                showStandardStreams = true
+            }
+            it.reports.junitXml.required.set(true)
+            it.reports.html.required.set(false)
+        }
+    }
+
     namespace = "com.elksa.sample.buscador.mercadolibre"
 }
 
