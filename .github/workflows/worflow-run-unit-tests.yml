@@ -24,14 +24,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle
 
-      - name: Cache Android SDK
-        uses: actions/cache@v3
-        with:
-          path: /usr/local/lib/android/sdk
-          key: ${{ runner.os }}-android-sdk-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-android-sdk
-
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -60,16 +52,8 @@ jobs:
         run: |
           find test-results/app/build/test-results/testDebugUnitTest -maxdepth 1 -type f
 
-      - name: Cache APT packages
-        uses: actions/cache@v3
-        with:
-          path: /var/cache/apt
-          key: ${{ runner.os }}-apt-cache
-
-      - name: Update APT and install xmllint
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libxml2-utils
+      - name: Install xmllint
+        run: sudo apt-get install -y libxml2-utils
 
       - name: Parse test results
         run: |
