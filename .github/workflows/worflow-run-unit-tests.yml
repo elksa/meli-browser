@@ -60,15 +60,9 @@ jobs:
         run: |
           find test-results/app/build/test-results/testDebugUnitTest -maxdepth 1 -type f
 
-      - name: Install xmllint
-        run: sudo apt-get install -y libxml2-utils
-
-      - name: Make parse_test_results.sh executable
-        run: chmod +x .github/workflows/parse_test_results.sh
-
       - name: Parse test results
         run: |
-          TEST_RESULTS_DIR="test-results/app/build/test-results/testDebugUnitTest"
+          TEST_RESULTS_DIR="test-results"
 
           # Initialize total counters
           total_tests=0
@@ -78,7 +72,7 @@ jobs:
           total_time=0
 
           # Iterate through each XML file in the directory
-          for file in "$TEST_RESULTS_DIR"/*.xml; do
+          for file in $(find "$TEST_RESULTS_DIR" -type f -name "*.xml"); do
             # Extract the required attributes using xmllint
             tests=$(xmllint --xpath 'string(/testsuite/@tests)' "$file")
             skipped=$(xmllint --xpath 'string(/testsuite/@skipped)' "$file")
