@@ -11,8 +11,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-          distribution: 'adopt'
-          cache: gradle
 
       - name: Cache Gradle
         uses: actions/cache@v3
