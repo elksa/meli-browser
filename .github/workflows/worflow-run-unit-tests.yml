@@ -118,7 +118,7 @@ jobs:
               body: summary
             });
 
-      - name: Fail if previous steps failed
+      - name: Fail if build or unit tests fail
         if: always()
         run: |
           if [ "${{ steps.build.outcome }}" == 'failure' ] || [ "${{ steps.test.outcome }}" == 'failure' ]; then
