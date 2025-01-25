@@ -1,9 +1,9 @@
 package com.elksa.sample.buscador.mercadolibre.domain.interactors
 
 import com.elksa.sample.buscador.mercadolibre.domain.interfaces.ISuggestionsRepository
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.verify
@@ -28,5 +28,13 @@ class ClearRecentSuggestionsUseCaseTest {
         sut.clearRecentSuggestions()
         // then
         verify(searchRecentSuggestionsMock).clearHistory()
+    }
+
+    @Test
+    fun dummy_invoked_fail() {
+        // when
+        sut.clearRecentSuggestions()
+        // then
+        assertTrue(false)
     }
 }
