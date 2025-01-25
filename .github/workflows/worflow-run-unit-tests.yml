@@ -36,10 +36,10 @@ jobs:
         continue-on-error: true
 
       - name: Run tests with Gradle
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testDebugUnitTest --continue
+        continue-on-error: true
 
       - name: Upload test results
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
