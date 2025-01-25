@@ -32,10 +32,12 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
+        id: build
         run: ./gradlew build --continue
         continue-on-error: true
 
       - name: Run tests with Gradle
+        id: test
         run: ./gradlew testDebugUnitTest --continue
         continue-on-error: true
 
@@ -119,6 +121,6 @@ jobs:
       - name: Fail if previous steps failed
         if: always()
         run: |
-          if [ ${{ steps.build.outcome }} == 'failure' ] || [ ${{ steps.test.outcome }} == 'failure' ]; then
+          if [ "${{ steps.build.outcome }}" == 'failure' ] || [ "${{ steps.test.outcome }}" == 'failure' ]; then
             exit 1
           fi
