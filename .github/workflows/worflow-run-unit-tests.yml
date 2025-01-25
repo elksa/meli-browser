@@ -115,3 +115,7 @@ jobs:
               repo: context.repo.repo,
               body: summary
             });
+
+      - name: Fail if previous steps failed
+        if: failure()
+        run: exit 1
