@@ -27,7 +27,7 @@ jobs:
       - name: Cache Android SDK
         uses: actions/cache@v3
         with:
-          path: ${{ runner.tool_cache }}/android-sdk
+          path: /usr/local/lib/android/sdk
           key: ${{ runner.os }}-android-sdk-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-android-sdk
@@ -60,15 +60,16 @@ jobs:
         run: |
           find test-results/app/build/test-results/testDebugUnitTest -maxdepth 1 -type f
 
-      - name: Cache xmllint
+      - name: Cache APT packages
         uses: actions/cache@v3
         with:
-          path: /usr/bin/xmllint
-          key: ${{ runner.os }}-xmllint
+          path: /var/cache/apt
+          key: ${{ runner.os }}-apt-cache
 
-      - name: Install xmllint
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: sudo apt-get install -y libxml2-utils
+      - name: Update APT and install xmllint
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2-utils
 
       - name: Parse test results
         run: |
