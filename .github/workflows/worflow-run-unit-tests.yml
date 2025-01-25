@@ -46,12 +46,8 @@ jobs:
           name: test-results
           path: test-results
 
-      - name: List files in test results
-        run: |
-          find test-results/app/build/test-results/testDebugUnitTest -maxdepth 1 -type f
-
-      - name: Install xmllint
-        run: sudo apt-get install -y libxml2-utils
+      - name: Install xmlstarlet
+        run: sudo apt-get install -y xmlstarlet
 
       - name: Parse test results
         run: |
@@ -66,12 +62,12 @@ jobs:
 
           # Iterate through each XML file in the directory
           for file in $(find "$TEST_RESULTS_DIR" -type f -name "*.xml"); do
-            # Extract the required attributes using xmllint
-            tests=$(xmllint --xpath 'string(/testsuite/@tests)' "$file")
-            skipped=$(xmllint --xpath 'string(/testsuite/@skipped)' "$file")
-            failures=$(xmllint --xpath 'string(/testsuite/@failures)' "$file")
-            errors=$(xmllint --xpath 'string(/testsuite/@errors)' "$file")
-            time=$(xmllint --xpath 'string(/testsuite/@time)' "$file")
+            # Extract the required attributes using xmlstarlet
+            tests=$(xmlstarlet sel -t -v "/testsuite/@tests" "$file")
+            skipped=$(xmlstarlet sel -t -v "/testsuite/@skipped" "$file")
+            failures=$(xmlstarlet sel -t -v "/testsuite/@failures" "$file")
+            errors=$(xmlstarlet sel -t -v "/testsuite/@errors" "$file")
+            time=$(xmlstarlet sel -t -v "/testsuite/@time" "$file")
 
             # Sum the values to the total counters
             total_tests=$((total_tests + tests))
