@@ -140,7 +140,6 @@ private fun ItemShipping(item: ProductUiModel) {
                 color = colorResource(id = colorRes),
                 shape = RoundedCornerShape(dimensionResource(id = R.dimen.radius_xsmall))
             ),
-//        .padding(16.dp), // Padding for the background size
         style = MaterialTheme.typography.labelSmall
     )
 }
