@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         compileSdk = 34
-
+        minSdk = 21
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -45,5 +45,5 @@ dependencies {
     androidTestImplementation(libs.junit.ext)
     // Instrumentation tests
     androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.core)
 }
