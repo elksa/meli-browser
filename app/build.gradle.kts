@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.kotlinKsp)
     alias(libs.plugins.kotlinParcelize)
     alias(libs.plugins.kotlinSafeArgs)
     alias(libs.plugins.androidHilt)
@@ -34,6 +35,11 @@ android {
     buildFeatures {
         dataBinding = true
         buildConfig = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     compileOptions {
@@ -92,6 +98,23 @@ dependencies {
     implementation(libs.app.compat)
     implementation(libs.constraintlayout)
     implementation(libs.support)
+    // Compose
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.constraintlayout)
+    implementation(libs.compose.runtime)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.foundation.layout)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.ui.viewbinding)
+    // Compose integrations
+    implementation(libs.compose.activity)
+    implementation(libs.compose.runtime.livedata)
+    implementation(libs.compose.lifecycle.viewmodel)
+    implementation(libs.compose.rxjava)
+    // Android Studio Preview support
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling.preview)
     // Lifecycle
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
@@ -121,5 +144,20 @@ dependencies {
     testImplementation(libs.mockito.kotlin)
     // Instrumentation tests
     androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.compose.ui.tooling.preview)
+    debugImplementation(libs.compose.ui.test.manifest)
+    debugImplementation(libs.androidx.monitor)
+    kspAndroidTest(libs.hilt.android.compiler)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.androidx.arch.core.testing)
+    androidTestImplementation(libs.androidx.espresso.contrib)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.intents)
+    androidTestImplementation(libs.androidx.test.uiautomator)
+    androidTestImplementation(libs.androidx.work.testing)
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.guava)
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.accessibility.test.framework)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }
