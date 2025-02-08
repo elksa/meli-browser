@@ -1,6 +1,6 @@
 [versions]
 accessibility-test-framework = "4.1.0"
-agp = "8.3.1"
+agp = "8.8.0"
 android-arch = "2.2.0"
 
 androidx-monitor = "1.6.1"
